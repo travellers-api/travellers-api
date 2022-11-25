@@ -1,9 +1,4 @@
 import * as functions from 'firebase-functions';
+import { addressApp } from './handlers/address';
 
-// // Start writing functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+export const address = functions.region('asia-northeast1').https.onRequest(addressApp);
