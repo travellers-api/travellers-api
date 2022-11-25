@@ -6,7 +6,21 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    spacing: {
+      // 0 ~ 400px
+      ...Object.fromEntries(
+        new Array(401)
+          .fill(0)
+          .map((_, i) => i)
+          .map((num) => [num, `${num}px`])
+      ),
+    },
+    maxWidth: {
+      480: '480px',
+    },
+    fontFamily: {
+      sans: ['--font-serif', 'sans-serif'],
+    },
   },
   plugins: [],
 };
