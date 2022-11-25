@@ -10,7 +10,9 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "next": "^13.0.4",
+    "@next/font": "^13.0.5",
+    "dayjs": "^1.11.6",
+    "next": "^13.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -22,7 +24,7 @@
     "@typescript-eslint/parser": "^5.43.0",
     "autoprefixer": "^10.4.13",
     "eslint": "^8.28.0",
-    "eslint-config-next": "^13.0.4",
+    "eslint-config-next": "^13.0.5",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "postcss": "^8.4.19",
