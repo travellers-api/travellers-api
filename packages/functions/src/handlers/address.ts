@@ -15,7 +15,7 @@ addressApp.get<
     email: string;
     password: string;
   }
->('/reservations', async (req, res) => {
+>('/address/reservations', async (req, res) => {
   try {
     const cookie = await getCookie({
       email: req.query.email,
