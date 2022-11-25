@@ -1,4 +1,16 @@
 {
+  "hosting": [
+    {
+      "target": "api",
+      "rewrites": [
+        {
+          "source": "/address/**",
+          "function": "address",
+          "region": "asia-northeast1"
+        }
+      ]
+    }
+  ],
   "functions": [
     {
       "source": "packages/functions",
