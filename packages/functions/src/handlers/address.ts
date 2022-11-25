@@ -2,6 +2,7 @@ import * as express from 'express';
 import { getCookie } from '../modules/address/authentication';
 import { getReservations } from '../modules/address/reservation';
 import { Reservation } from '../modules/address/reservation/types';
+import { getAddressSecret } from '../modules/firestore';
 
 export const addressApp = express();
 
@@ -24,6 +25,30 @@ addressApp.get<
     const reservations = await getReservations(cookie);
     res.json({ reservations });
   } catch (e) {
+    res.status(500).end();
+  }
+});
+
+addressApp.get<
+  {
+    screenName: string;
+  },
+  {
+    reservations: Reservation[];
+  }
+>('/address/users/:screenName/reservations', async (req, res) => {
+  try {
+    const { screenName } = req.params;
+    const { email, password } = await getAddressSecret(screenName);
+
+    const cookie = await getCookie({ email, password });
+    const reservations = await getReservations(cookie);
+    res.json({ reservations });
+  } catch (e) {
+    if (e instanceof Error && e.message === 'not found') {
+      res.status(404).end();
+    }
+
     res.status(500).end();
   }
 });
