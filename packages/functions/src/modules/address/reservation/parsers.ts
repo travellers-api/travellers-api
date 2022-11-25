@@ -12,8 +12,9 @@ export const parseReservations = (html: string): Reservation[] => {
   const data = elms.map((elm) => {
     const $target = $(elm);
     return {
-      checkInDate: parseDate($(elm).find('li:nth-child(1)').text()),
-      checkOutDate: parseDate($(elm).find('li:nth-child(2)').text()),
+      id: $target.find('.btn.btn-white.btn-single').attr('href')?.replace('/reservations/', '') ?? '',
+      checkInDate: parseDate($target.find('li:nth-child(1)').text()),
+      checkOutDate: parseDate($target.find('li:nth-child(2)').text()),
       home: {
         id: $target.find('h4 a').attr('href')?.replace('/homes/', '') ?? '',
         name: $target.find('h4 a').text(),
