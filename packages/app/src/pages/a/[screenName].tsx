@@ -61,7 +61,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
 
 const Page: NextPage<Props> = ({ screenName, reservations }) => {
   return (
-    <div>
+    <div className="pb-80">
       <Head>
         <title>{screenName}のADDress滞在予定</title>
       </Head>
