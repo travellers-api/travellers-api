@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
+import { useMemo } from 'react';
 
 type Reservation = {
   id: string;
@@ -60,10 +61,12 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
 };
 
 const Page: NextPage<Props> = ({ screenName, reservations }) => {
+  const title = useMemo(() => `${screenName}のADDress滞在予定`, [screenName]);
+
   return (
     <div>
       <Head>
-        <title>{screenName}のADDress滞在予定</title>
+        <title>{title}</title>
       </Head>
       <header className="mx-auto mb-20 flex max-w-480 flex-col gap-10 px-20 py-20">
         <h1 className="text-center font-sans text-xl font-bold tracking-wide opacity-80">
