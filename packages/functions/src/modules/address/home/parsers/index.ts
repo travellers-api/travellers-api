@@ -13,7 +13,7 @@ const fields: {
   {
     name: 'url',
     parse: ($) => {
-      return $('link[rel="canonical"]').attr('href') || '';
+      return $('link[rel="canonical"]').attr('href') ?? '';
     },
   },
   {
@@ -25,7 +25,7 @@ const fields: {
   {
     name: 'thumbnail',
     parse: ($) => {
-      return $('.homes-card__thumbnail img').attr('src') || '';
+      return $('.homes-card__thumbnail img').attr('src') ?? '';
     },
   },
   {
@@ -50,7 +50,7 @@ const fields: {
           .map((li) => {
             const $li = $(li);
             return $li.find('p:nth-child(2)').text().split('\n')[0]?.trim() ?? '';
-          })[0] || null
+          })[0] ?? null
       );
     },
   },
@@ -70,7 +70,7 @@ const fields: {
           .map((li) => {
             const $li = $(li);
             return $li.find('p:nth-child(2)').text().split('\n')[0]?.trim() ?? '予約制限なし';
-          })[0] || '予約制限なし'
+          })[0] ?? '予約制限なし'
       );
     },
   },
@@ -95,9 +95,9 @@ const fields: {
       return $('#room-all .room')
         .get()
         .map((elm) => ({
-          id: Number($(elm).find('button').attr('data-bs-room-id') || ''),
+          id: Number($(elm).find('button').attr('data-bs-room-id') ?? ''),
           name: $(elm).find('h3').text(),
-          thumbnail: $(elm).find('.card__image').attr('src') || '',
+          thumbnail: $(elm).find('.card__image').attr('src') ?? '',
           type: $(elm).find('ul li:first-child').text().trim().replace(/（.+$/, ''),
           capacity: Number(
             $(elm)
