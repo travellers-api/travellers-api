@@ -24,8 +24,12 @@ export const setAddressSecret = async (screenName: string, secret: Partial<Addre
   const uid = screenNameDocumentSnapshot.get('uid');
 
   const dataObj: Partial<Record<`address.${keyof AddressSecret}`, string>> = {};
-  Object.entries(secret).forEach(([key, value]) => {
-    dataObj[`address.${key as keyof AddressSecret}`] = value;
+  const keys: (keyof AddressSecret)[] = ['email', 'password', 'cookie'];
+  keys.forEach((key) => {
+    if (key in secret) {
+      dataObj[`address.${key}`] = secret[key];
+    }
   });
+
   await firestore.collection('userSecrets').doc(uid).set(dataObj, { merge: true });
 };
