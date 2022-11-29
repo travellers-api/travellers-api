@@ -16,6 +16,6 @@ export const fetchHome = async (id: string, cookie: string): Promise<any> => {
 
   const html = await res.text();
 
-  const home = parseHomePage(html);
+  const home = await parseHomePage(html);
   return home;
 };
