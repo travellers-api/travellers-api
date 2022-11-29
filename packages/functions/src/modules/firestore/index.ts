@@ -31,5 +31,5 @@ export const setAddressSecret = async (screenName: string, secret: Partial<Addre
     }
   });
 
-  await firestore.collection('userSecrets').doc(uid).set(dataObj, { merge: true });
+  await firestore.collection('userSecrets').doc(uid).update(dataObj);
 };
