@@ -15,7 +15,8 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "lint": "eslint --ext .js,.ts .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "jest"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
