@@ -17,10 +17,15 @@ export const getAddressSecret = async (screenName: string): Promise<AddressSecre
 
   return secret;
 };
+
 export const setAddressSecret = async (screenName: string, secret: Partial<AddressSecret>): Promise<void> => {
   const screenNameDocumentSnapshot = await firestore.collection('screenNames').doc(screenName).get();
   if (!screenNameDocumentSnapshot.exists) throw new Error('not found');
   const uid = screenNameDocumentSnapshot.get('uid');
 
-  await firestore.collection('userSecrets').doc(uid).set(secret, { merge: true });
+  const dataObj: Partial<Record<`address.${keyof AddressSecret}`, string>> = {};
+  Object.entries(secret).forEach(([key, value]) => {
+    dataObj[`address.${key as keyof AddressSecret}`] = value;
+  });
+  await firestore.collection('userSecrets').doc(uid).set(dataObj, { merge: true });
 };
