@@ -2,7 +2,7 @@ import * as express from 'express';
 import { getCookie } from '../modules/address/authentication';
 import { getReservations } from '../modules/address/reservation';
 import { Reservation } from '../modules/address/reservation/types';
-import { getAddressSecret } from '../modules/firestore';
+import { getAddressSecret, setAddressSecret } from '../modules/firestore';
 
 export const addressApp = express();
 
@@ -39,9 +39,14 @@ addressApp.get<
 >('/address/users/:screenName/reservations', async (req, res) => {
   try {
     const { screenName } = req.params;
-    const { email, password } = await getAddressSecret(screenName);
+    const secret = await getAddressSecret(screenName);
 
-    const cookie = await getCookie({ email, password });
+    const cookie =
+      secret.cookie ||
+      (await getCookie(secret).then(async (cookie) => {
+        await setAddressSecret(screenName, { cookie });
+        return cookie;
+      }));
     const reservations = await getReservations(cookie);
     res.json({ reservations });
   } catch (e) {
