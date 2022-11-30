@@ -72,13 +72,14 @@ const Page: NextPage<Props> = ({ screenName, reservations }) => {
         <h1 className="text-center font-sans text-xl font-bold tracking-wide opacity-80">
           {screenName}のADDress滞在予定
         </h1>
-        <p className="text-center font-sans text-sm tracking-wide opacity-80">
-          「避けたい」にご活用ください
-          <br />
-          <a className="underline" href="https://twitter.com/amotarao">
-            Twitter @amotarao
-          </a>
-        </p>
+        <div className="text-center font-sans text-sm tracking-wide opacity-80">
+          <p>「避けたい」にご活用ください</p>
+          <p>
+            <a className="underline" href="https://twitter.com/amotarao">
+              Twitter @amotarao
+            </a>
+          </p>
+        </div>
       </header>
       <section className="mx-auto max-w-480 px-20">
         <ul className="flex flex-col gap-20">
