@@ -1,0 +1,36 @@
+export type Home = {
+  id: number;
+  url: string;
+  name: string;
+  thumbnail: string;
+  prefecture: string;
+  homeType: string;
+  reservationLimit: '予約制限あり' | '予約制限なし';
+  address: {
+    postalCode: string;
+    text: string;
+    lat: number;
+    lng: number;
+  };
+  rooms: {
+    id: number;
+    name: string;
+    thumbnail: string;
+    type: string;
+    capacity: number;
+  }[];
+  calendar: {
+    rooms: {
+      room: {
+        id: number;
+        name: string;
+      };
+      reserved_dates: string[];
+    }[];
+    calStartDate: string;
+    calEndDate: string;
+    reservablePeriod: string;
+    holidays: (0 | 1 | 2 | 3 | 4 | 5 | 6)[];
+    minDays: number;
+  };
+};

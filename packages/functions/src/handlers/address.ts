@@ -40,13 +40,13 @@ addressApp.get<
   try {
     const { screenName } = req.params;
     const secret = await getAddressSecret(screenName);
-
     const cookie =
       secret.cookie ||
       (await getCookie(secret).then(async (cookie) => {
         await setAddressSecret(screenName, { cookie });
         return cookie;
       }));
+
     const reservations = await getReservations(cookie);
     res.json({ reservations });
   } catch (e) {
