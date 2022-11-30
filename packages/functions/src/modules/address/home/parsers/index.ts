@@ -95,20 +95,25 @@ const fields: {
     parse: ($) => {
       return $('#room-all .room')
         .get()
-        .map((elm) => ({
-          id: Number($(elm).find('button').attr('data-bs-room-id') ?? ''),
-          name: $(elm).find('h3').text(),
-          thumbnail: $(elm).find('.card__image').attr('src') ?? '',
-          type: $(elm).find('ul li:first-child').text().trim().replace(/（.+$/, ''),
-          capacity: Number(
-            $(elm)
-              .find('ul li:first-child')
-              .text()
-              .trim()
-              .replace(/^.+（定員/, '')
-              .replace(/名）$/, '')
-          ),
-        }));
+        .map((elm) => {
+          const type = $(elm).find('ul li:first-child').text().trim().replace(/（.+$/, '');
+
+          return {
+            id: Number($(elm).find('button').attr('data-bs-room-id') ?? ''),
+            name: $(elm).find('h3').text(),
+            thumbnail: $(elm).find('.card__image').attr('src') ?? '',
+            type: type.replace(/^[男女]性専用/, ''),
+            capacity: Number(
+              $(elm)
+                .find('ul li:first-child')
+                .text()
+                .trim()
+                .replace(/^.+（定員/, '')
+                .replace(/名）$/, '')
+            ),
+            sex: type.startsWith('男性専用') ? 'male' : type.startsWith('女性専用') ? 'female' : null,
+          };
+        });
     },
   },
   {

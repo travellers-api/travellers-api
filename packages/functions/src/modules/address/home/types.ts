@@ -16,8 +16,9 @@ export type Home = {
     id: number;
     name: string;
     thumbnail: string;
-    type: string;
+    type: '個室' | 'ドミトリー';
     capacity: number;
+    sex: 'male' | 'female' | null;
   }[];
   calendar: {
     rooms: {
