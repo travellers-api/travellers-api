@@ -1,11 +1,16 @@
 import fetch from 'node-fetch';
+import { userAgent } from '../../client/user-agent';
 import { parseToken } from './parsers';
 
 export const fetchToken = async (): Promise<{
   cookie: string;
   authenticityToken: string;
 }> => {
-  const res = await fetch('https://address.love/login');
+  const res = await fetch('https://address.love/login', {
+    headers: {
+      'User-Agent': userAgent,
+    },
+  });
   const html = await res.text();
 
   const cookie = res.headers.get('set-cookie');
@@ -43,6 +48,7 @@ export const fetchCookie = async ({
     body: params,
     headers: {
       cookie,
+      'User-Agent': userAgent,
     },
     redirect: 'manual',
   });

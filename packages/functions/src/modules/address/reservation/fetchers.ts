@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { userAgent } from '../../client/user-agent';
 import { parseReservations } from './parsers';
 import { Reservation } from './types';
 
@@ -9,6 +10,7 @@ export const fetchReservations = async (
   const res = await fetch(`https://address.love/reservations?tab=${tab}`, {
     headers: {
       cookie,
+      'User-Agent': userAgent,
     },
   });
   const html = await res.text();
