@@ -1,8 +1,10 @@
 import * as express from 'express';
 import { getCookie } from '../modules/address/authentication';
+import { Home } from '../modules/address/home/types';
 import { getReservations } from '../modules/address/reservation';
 import { Reservation } from '../modules/address/reservation/types';
 import { getAddressSecret, setAddressSecret } from '../modules/firestore';
+import { getHomes } from '../modules/firestore/cachedAddressHomes';
 
 export const addressApp = express();
 
@@ -54,6 +56,20 @@ addressApp.get<
       res.status(404).end();
     }
 
+    res.status(500).end();
+  }
+});
+
+addressApp.get<
+  undefined,
+  {
+    homes: Omit<Home, 'address'>[];
+  }
+>('/address/calendar', async (req, res) => {
+  try {
+    const homes = await getHomes();
+    res.json({ homes: homes.map(({ data: { address, ...data } }) => data) });
+  } catch (e) {
     res.status(500).end();
   }
 });
