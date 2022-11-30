@@ -1,7 +1,8 @@
 import * as cheerio from 'cheerio';
+import { Home } from '../types';
 
 const fields: {
-  name: string;
+  name: keyof Home;
   parse: ($: cheerio.CheerioAPI) => any | Promise<any>;
 }[] = [
   {
@@ -50,7 +51,7 @@ const fields: {
           .map((li) => {
             const $li = $(li);
             return $li.find('p:nth-child(2)').text().split('\n')[0]?.trim() ?? '';
-          })[0] ?? null
+          })[0] ?? ''
       );
     },
   },
@@ -133,14 +134,14 @@ const fields: {
   },
 ];
 
-export const parseHomePage = async (html: string): Promise<any> => {
+export const parseHomePage = async (html: string): Promise<Home> => {
   const $ = cheerio.load(html);
 
-  const obj: any = {};
+  const obj: Partial<Home> = {};
   await Promise.all(
     fields.map(async (field) => {
       obj[field.name] = await field.parse($);
     })
   );
-  return obj;
+  return obj as Home;
 };
