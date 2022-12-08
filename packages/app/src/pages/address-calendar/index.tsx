@@ -1,9 +1,10 @@
+import { useVirtual } from '@tanstack/react-virtual';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 type Home = {
   id: number;
@@ -390,8 +391,35 @@ const Page: NextPage<Props> = ({ homes, dates, filters }) => {
           </div>
         </details>
       </nav>
-      <section className="mx-auto px-20">
-        <header className="sticky top-0 w-max bg-white">
+      <Calendar homes={homes} dates={dates} />
+    </div>
+  );
+};
+
+const Calendar: React.FC<
+  {
+    className?: string;
+  } & Pick<Props, 'homes' | 'dates'>
+> = ({ className, homes, dates }) => {
+  const parentRef = useRef<HTMLDivElement>(null);
+
+  const estimateSize = useCallback(
+    (i: number) => {
+      return homes[i]!.rooms.length * 31 + 10;
+    },
+    [homes]
+  );
+  const virtual = useVirtual({
+    size: homes.length,
+    parentRef,
+    overscan: 5,
+    estimateSize,
+  });
+
+  return (
+    <section className={classNames('w-full overflow-x-scroll', className)}>
+      <div className="w-max">
+        <header className="w-full px-20">
           <div className="grid grid-cols-[280px_1fr] border-b">
             <p className="self-center py-5 text-xs">拠点名</p>
             <div className="grid grid-cols-[160px_1fr] gap-4 py-5">
@@ -408,88 +436,111 @@ const Page: NextPage<Props> = ({ homes, dates, filters }) => {
             </div>
           </div>
         </header>
-        <ul className="flex w-max flex-col">
-          {homes.map((home) => (
-            <li key={home.id}>
-              <div className="grid grid-cols-[280px_1fr] border-b pb-10">
-                <div className="flex items-start gap-4 py-5 text-sm">
-                  <p className="shrink-0 font-bold">
-                    <a className="underline" href={home.url} target="_blank" rel="noreferrer">
-                      {home.name}
-                    </a>
-                  </p>
-                  <p className="shrink-0 border px-4 text-xs">{home.prefecture}</p>
-                  <p className="shrink-0 border px-4 text-xs">{home.homeType}</p>
-                  {home.reservationLimit === '予約制限あり' && <p className="shrink-0 border px-4 text-xs">制限</p>}
-                </div>
-                <ul>
-                  {home.rooms.map((room, i) => {
-                    const calendarRoom = home.calendar.rooms.find((calendarRoom) => calendarRoom.room.id === room.id);
-                    // 女性専用部屋は ID が 0 になるので index も利用
-                    const key = `${room.id}_${i}`;
-                    return (
-                      <li key={key} className="border-b last:border-b-0">
-                        <div className="grid grid-cols-[160px_1fr] gap-4 py-5">
-                          <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-4 text-sm">
-                            <div className="flex gap-4 self-center">
-                              {room.sex && (
-                                <p className="shrink-0 border px-4 text-xs">{room.sex === 'male' ? '男' : '女'}</p>
+        <div
+          ref={parentRef}
+          className="h-screen max-h-[70vh] w-full overflow-y-auto px-20"
+          style={{
+            height: virtual.totalSize,
+          }}
+        >
+          <ul className="relative flex flex-col">
+            {virtual.virtualItems.map((virtualRow) => {
+              const home = homes[virtualRow.index]!;
+
+              return (
+                <li
+                  key={virtualRow.key}
+                  className="absolute left-0 w-full"
+                  style={{
+                    top: `${virtualRow.start}px`,
+                    height: `${virtualRow.size}px`,
+                  }}
+                >
+                  <div className="grid grid-cols-[280px_1fr] border-b pb-10">
+                    <div className="flex items-start gap-4 py-5 text-sm">
+                      <p className="shrink-0 font-bold">
+                        <a className="underline" href={home.url} target="_blank" rel="noreferrer">
+                          {home.name}
+                        </a>
+                      </p>
+                      <p className="shrink-0 border px-4 text-xs">{home.prefecture}</p>
+                      <p className="shrink-0 border px-4 text-xs">{home.homeType}</p>
+                      {home.reservationLimit === '予約制限あり' && <p className="shrink-0 border px-4 text-xs">制限</p>}
+                    </div>
+                    <ul>
+                      {home.rooms.map((room, i) => {
+                        const calendarRoom = home.calendar.rooms.find(
+                          (calendarRoom) => calendarRoom.room.id === room.id
+                        );
+                        // 女性専用部屋は ID が 0 になるので index も利用
+                        const key = `${room.id}_${i}`;
+                        return (
+                          <li key={key} className="border-b last:border-b-0">
+                            <div className="grid grid-cols-[160px_1fr] gap-4 py-5">
+                              <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-4 text-sm">
+                                <div className="flex gap-4 self-center">
+                                  {room.sex && (
+                                    <p className="shrink-0 border px-4 text-xs">{room.sex === 'male' ? '男' : '女'}</p>
+                                  )}
+                                  <p className="shrink-0 border px-4 text-xs">
+                                    {room.type.replace('ドミトリー', 'ドミ')}
+                                  </p>
+                                </div>
+                                <p className="shrink-0 line-clamp-1">
+                                  {room.name
+                                    .replace(/\s+/g, ' ')
+                                    .replace(/[(（]/, '(')
+                                    .replace(/[）)]/, ')')
+                                    .replace('(2022/2/1~)', '')
+                                    .replace('一階ゲストルーム', '')
+                                    .replace('(リンガー)', '')
+                                    .replace('(グラバー)', '')
+                                    .replace(/(シングルルーム|ツインルーム) (\d号室)/, '$2')
+                                    .replace('男女共用', '')
+                                    .replace(/シングルルーム(.+)/, '$1')
+                                    .replace(/(区画(オート)?)(サイト.+)[(（](.+)[)）]/, '$3 ($4)')
+                                    .replace(/約/g, '')
+                                    .replace('(2段ベッドツインルーム)', '')
+                                    .replace('ツインルーム116号室', '116号室')
+                                    .replace(/：[男女]性用/, ' ')}
+                                </p>
+                              </div>
+                              {calendarRoom ? (
+                                <div className="self-center text-xs">
+                                  <ul className="grid grid-cols-[repeat(40,24px)] self-center">
+                                    {calendarRoom.availables.split('').map((available, i) => {
+                                      return (
+                                        <li key={i}>
+                                          <div
+                                            className={classNames(
+                                              'border-l text-center',
+                                              available === 'N' && 'bg-black/20'
+                                            )}
+                                          >
+                                            <span>&nbsp;</span>
+                                            <span className="sr-only">{available === 'Y' ? '予約可' : '予約不可'}</span>
+                                          </div>
+                                        </li>
+                                      );
+                                    })}
+                                  </ul>
+                                </div>
+                              ) : (
+                                <div className="self-center text-xs">取得不可</div>
                               )}
-                              <p className="shrink-0 border px-4 text-xs">{room.type.replace('ドミトリー', 'ドミ')}</p>
                             </div>
-                            <p className="shrink-0 line-clamp-1">
-                              {room.name
-                                .replace(/\s+/g, ' ')
-                                .replace(/[(（]/, '(')
-                                .replace(/[）)]/, ')')
-                                .replace('(2022/2/1~)', '')
-                                .replace('一階ゲストルーム', '')
-                                .replace('(リンガー)', '')
-                                .replace('(グラバー)', '')
-                                .replace(/(シングルルーム|ツインルーム) (\d号室)/, '$2')
-                                .replace('男女共用', '')
-                                .replace(/シングルルーム(.+)/, '$1')
-                                .replace(/(区画(オート)?)(サイト.+)[(（](.+)[)）]/, '$3 ($4)')
-                                .replace(/約/g, '')
-                                .replace('(2段ベッドツインルーム)', '')
-                                .replace('ツインルーム116号室', '116号室')
-                                .replace(/：[男女]性用/, ' ')}
-                            </p>
-                          </div>
-                          {calendarRoom ? (
-                            <div className="self-center text-xs">
-                              <ul className="grid grid-cols-[repeat(40,24px)] self-center">
-                                {calendarRoom.availables.split('').map((available, i) => {
-                                  return (
-                                    <li key={i}>
-                                      <div
-                                        className={classNames(
-                                          'border-l text-center',
-                                          available === 'N' && 'bg-black/20'
-                                        )}
-                                      >
-                                        <span>&nbsp;</span>
-                                        <span className="sr-only">{available === 'Y' ? '予約可' : '予約不可'}</span>
-                                      </div>
-                                    </li>
-                                  );
-                                })}
-                              </ul>
-                            </div>
-                          ) : (
-                            <div className="self-center text-xs">取得不可</div>
-                          )}
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+    </section>
   );
 };
 
