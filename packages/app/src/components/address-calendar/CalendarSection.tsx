@@ -1,6 +1,6 @@
 import { useVirtual } from '@tanstack/react-virtual';
 import classNames from 'classnames';
-import { useCallback, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { LabelText } from '../../components/address-calendar/LabelText';
 import { Home } from '../../lib/address/calendar/types';
 import {
@@ -37,14 +37,21 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
   });
 
   return (
-    <section className={classNames('w-full overflow-x-scroll', className)}>
+    <section
+      className={classNames('w-full overflow-x-scroll', className)}
+      style={
+        {
+          '--dates-count': dates.length,
+        } as React.CSSProperties
+      }
+    >
       <div className="w-max">
         <header className="w-full px-20">
           <div className="grid grid-cols-[224px_1fr] border-b">
             <p className="self-center py-5 text-xs">拠点名</p>
             <div className="grid grid-cols-[144px_1fr] gap-4 py-5">
               <p className="self-center text-xs">部屋名</p>
-              <ul className="grid grid-cols-[repeat(40,24px)] self-center">
+              <ul className="grid grid-cols-[repeat(var(--dates-count),24px)] self-center">
                 {dates.map((date) => (
                   <li key={date.date} className="border-l text-center text-xs">
                     <p>{date.date.slice(5, 7)}</p>
@@ -58,10 +65,12 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
         </header>
         <div ref={parentRef} className="h-max max-h-[70vh] w-full overflow-y-auto px-20">
           <ul
-            className="relative flex flex-col"
-            style={{
-              height: virtual.totalSize,
-            }}
+            className="relative flex h-[var(--total-size)] flex-col"
+            style={
+              {
+                '--total-size': `${virtual.totalSize}px`,
+              } as React.CSSProperties
+            }
           >
             {virtual.virtualItems.map((virtualRow) => {
               const home = homes[virtualRow.index]!;
@@ -69,11 +78,13 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
               return (
                 <li
                   key={virtualRow.key}
-                  className="absolute left-0 w-full"
-                  style={{
-                    top: `${virtualRow.start}px`,
-                    height: `${virtualRow.size}px`,
-                  }}
+                  className="absolute left-0 top-[var(--start)] h-[var(--size)] w-full"
+                  style={
+                    {
+                      '--start': `${virtualRow.start}px`,
+                      '--size': `${virtualRow.size}px`,
+                    } as React.CSSProperties
+                  }
                 >
                   <div className="grid grid-cols-[224px_1fr] border-b pb-10">
                     <div className="flex items-center gap-4 self-start py-5 text-sm">
@@ -106,7 +117,7 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
                               </div>
                               {room.availables ? (
                                 <div className="self-center text-xs">
-                                  <ul className="grid grid-cols-[repeat(40,24px)] self-center">
+                                  <ul className="grid grid-cols-[repeat(var(--dates-count),24px)] self-center">
                                     {room.availables.split('').map((available, i) => {
                                       return (
                                         <li key={i}>
