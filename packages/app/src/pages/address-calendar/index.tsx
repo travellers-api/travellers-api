@@ -21,9 +21,9 @@ export type Props = {
     day: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   }[];
   filters: {
-    prefecture: { name: string; value: string }[];
-    homeType: { name: string; value: string }[];
-    roomType: { name: string; value: string }[];
+    prefecture: string[];
+    homeType: string[];
+    roomType: string[];
     sex: { name: string; value: string }[];
   };
 };
@@ -54,19 +54,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
   return {
     props: {
       filters: {
-        prefecture: prefectures.map((prefecture) => ({
-          name: prefecture.name,
-          value: prefecture.name,
-        })),
+        prefecture: prefectures.map((prefecture) => prefecture.name),
         homeType: (() => {
           const values = new Set<string>();
           homes.forEach((home) => {
             values.add(home.homeType);
           });
-          return Array.from(values).map((value) => ({
-            name: value,
-            value,
-          }));
+          return Array.from(values).map((value) => value);
         })(),
         roomType: (() => {
           const values = new Set<string>();
@@ -75,10 +69,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
               values.add(room.type);
             });
           });
-          return Array.from(values).map((value) => ({
-            name: value,
-            value,
-          }));
+          return Array.from(values).map((value) => value);
         })(),
         sex: [
           { name: '男性', value: 'male' },
@@ -97,27 +88,33 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
             home.rooms = home.rooms.filter((room) => sexQuery.some((q) => [q, null].includes(room.sex)));
           }
 
-          // サムネイル削除
-          home.thumbnail = '';
-          home.rooms.map((room) => {
-            room.thumbnail = '';
+          home.rooms = home.rooms.map((room) => {
+            const calendarRoom = home.calendar?.rooms.find((calendarRoom) => calendarRoom.room.id === room.id);
+            const availables = calendarRoom
+              ? dates
+                  .map((date) => {
+                    const available =
+                      !calendarRoom.reserved_dates.includes(date.date) &&
+                      !home.calendar?.holidays.includes(date.day) &&
+                      date.date <= (home.calendar?.calEndDate ?? '9999/12/31');
+                    return available ? 'Y' : 'N';
+                  })
+                  .join('')
+              : null;
+
+            return {
+              ...room,
+              availables,
+            };
           });
 
-          home.calendar.rooms = home.calendar.rooms
-            .map((room) => ({
-              ...room,
-              reserved_dates: [],
-              availables: dates
-                .map((date) => {
-                  const available =
-                    !room.reserved_dates.includes(date.date) &&
-                    !home.calendar.holidays.includes(date.day) &&
-                    date.date <= home.calendar.calEndDate;
-                  return available ? 'Y' : 'N';
-                })
-                .join(''),
-            }))
-            .sort((a, z) => a.room.id - z.room.id);
+          // 不要フィールド削除
+          home.url = '';
+          home.thumbnail = '';
+          home.rooms.forEach((room) => {
+            room.thumbnail = '';
+          });
+          home.calendar = null;
 
           return home;
         })
@@ -227,8 +224,8 @@ const Page: NextPage<Props> = ({ homes, dates, filters }) => {
                       size={Math.min(filters.prefecture.length, 10)}
                     >
                       {filters.prefecture.map((prefecture) => (
-                        <option key={prefecture.value} value={prefecture.value}>
-                          {prefecture.name}
+                        <option key={prefecture} value={prefecture}>
+                          {prefecture}
                         </option>
                       ))}
                     </select>
@@ -246,8 +243,8 @@ const Page: NextPage<Props> = ({ homes, dates, filters }) => {
                       size={Math.min(filters.homeType.length, 10)}
                     >
                       {filters.homeType.map((homeType) => (
-                        <option key={homeType.value} value={homeType.value}>
-                          {homeType.name}
+                        <option key={homeType} value={homeType}>
+                          {homeType}
                         </option>
                       ))}
                     </select>
@@ -265,8 +262,8 @@ const Page: NextPage<Props> = ({ homes, dates, filters }) => {
                       size={Math.min(filters.roomType.length, 10)}
                     >
                       {filters.roomType.map((roomType) => (
-                        <option key={roomType.value} value={roomType.value}>
-                          {roomType.name}
+                        <option key={roomType} value={roomType}>
+                          {roomType}
                         </option>
                       ))}
                     </select>
@@ -374,9 +371,6 @@ const Calendar: React.FC<
                     </div>
                     <ul>
                       {home.rooms.map((room, i) => {
-                        const calendarRoom = home.calendar.rooms.find(
-                          (calendarRoom) => calendarRoom.room.id === room.id
-                        );
                         // 女性専用部屋は ID が 0 になるので index も利用
                         const key = `${room.id}_${i}`;
                         return (
@@ -391,10 +385,10 @@ const Calendar: React.FC<
                                 </div>
                                 <p className="shrink-0 line-clamp-1">{simplifyRoomName(room.name)}</p>
                               </div>
-                              {calendarRoom ? (
+                              {room.availables ? (
                                 <div className="self-center text-xs">
                                   <ul className="grid grid-cols-[repeat(40,24px)] self-center">
-                                    {calendarRoom.availables.split('').map((available, i) => {
+                                    {room.availables.split('').map((available, i) => {
                                       return (
                                         <li key={i}>
                                           <div
