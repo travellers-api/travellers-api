@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import React, { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { queryToArray } from '../../utils/router';
 
 export type CalendarFilterProps = {
@@ -44,9 +44,14 @@ export const CalendarFilter: React.FC<CalendarFilterProps> = ({ className, filte
     [router]
   );
 
+  const [isShownSelectText, setIsShownSelectText] = useState(false);
+  useEffect(() => {
+    setIsShownSelectText(window.matchMedia('(pointer: fine)').matches);
+  }, []);
+
   return (
     <nav className={classNames('px-20', className)}>
-      <details className="w-full rounded-2xl border px-20 py-10 md:w-max" ref={filterRef}>
+      <details className="w-full rounded-xl border px-20 py-10 md:w-max" ref={filterRef}>
         <summary>フィルタ</summary>
         <div className="mt-20">
           <form onSubmit={handleSubmit}>
@@ -55,7 +60,7 @@ export const CalendarFilter: React.FC<CalendarFilterProps> = ({ className, filte
                 <button className="rounded border px-12 py-4 text-sm" type="submit">
                   フィルタ確定
                 </button>
-                <p className="text-sm">Ctrl/Cmdキーで複数選択、選択解除可能</p>
+                {isShownSelectText && <p className="text-sm">Ctrl/Cmdキーで複数選択、選択解除可能</p>}
               </div>
               <div className="flex flex-col gap-20 md:flex-row">
                 <Filter
