@@ -175,7 +175,7 @@ const Page: NextPage<Props> = ({ homes, dates, filters }) => {
         </div>
       </header>
       <nav className="mb-20 px-20">
-        <details className="w-max rounded-2xl border px-20 py-10" ref={filterRef}>
+        <details className="w-full rounded-2xl border px-20 py-10 md:w-max" ref={filterRef}>
           <summary>フィルタ</summary>
           <div className="mt-20">
             <form
@@ -210,7 +210,7 @@ const Page: NextPage<Props> = ({ homes, dates, filters }) => {
                   </button>
                   <p className="text-sm">Ctrl/Cmdキーで複数選択、選択解除可能</p>
                 </div>
-                <div className="flex gap-20">
+                <div className="flex flex-col gap-20 md:flex-row">
                   <div className="flex flex-col gap-4 text-sm">
                     <label className="font-bold" htmlFor="prefecture">
                       都道府県
