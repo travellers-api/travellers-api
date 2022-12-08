@@ -345,14 +345,13 @@ const Calendar: React.FC<
             </div>
           </div>
         </header>
-        <div
-          ref={parentRef}
-          className="h-screen max-h-[70vh] w-full overflow-y-auto px-20"
-          style={{
-            height: virtual.totalSize,
-          }}
-        >
-          <ul className="relative flex flex-col">
+        <div ref={parentRef} className="h-max max-h-[70vh] w-full overflow-y-auto px-20">
+          <ul
+            className="relative flex flex-col"
+            style={{
+              height: virtual.totalSize,
+            }}
+          >
             {virtual.virtualItems.map((virtualRow) => {
               const home = homes[virtualRow.index]!;
 
