@@ -5,6 +5,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useCallback, useRef } from 'react';
+import { LabelText } from '../../components/address-calendar/LabelText';
 import { fetchCalendar } from '../../lib/address/calendar/fetchers';
 import { Home } from '../../lib/address/calendar/types';
 import {
@@ -365,15 +366,15 @@ const Calendar: React.FC<
                   }}
                 >
                   <div className="grid grid-cols-[224px_1fr] border-b pb-10">
-                    <div className="flex items-start gap-4 py-5 text-sm">
+                    <div className="flex items-center gap-4 self-start py-5 text-sm">
                       <p className="shrink-0 font-bold">
                         <a className="underline" href={home.url} target="_blank" rel="noreferrer">
                           {home.name}
                         </a>
                       </p>
-                      <p className="shrink-0 border px-4 text-xs">{shortenPrefectureName(home.prefecture)}</p>
-                      <p className="shrink-0 border px-4 text-xs">{shortenHomeType(home.homeType)}</p>
-                      {home.reservationLimit === '予約制限あり' && <p className="shrink-0 border px-4 text-xs">限</p>}
+                      <LabelText className="shrink-0">{shortenPrefectureName(home.prefecture)}</LabelText>
+                      <LabelText className="shrink-0">{shortenHomeType(home.homeType)}</LabelText>
+                      {home.reservationLimit === '予約制限あり' && <LabelText className="shrink-0">限</LabelText>}
                     </div>
                     <ul>
                       {home.rooms.map((room, i) => {
@@ -385,13 +386,13 @@ const Calendar: React.FC<
                               <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-4 text-sm">
                                 <div className="flex gap-4 self-center">
                                   {room.sex && (
-                                    <p className="shrink-0 border px-4 text-xs">{room.sex === 'male' ? '男' : '女'}</p>
+                                    <LabelText className="shrink-0">{room.sex === 'male' ? '男' : '女'}</LabelText>
                                   )}
-                                  <p className="shrink-0 border px-4 text-xs">
+                                  <LabelText className="shrink-0">
                                     {shortenRoomType(simplifyRoomType(room.type))}
-                                  </p>
+                                  </LabelText>
                                 </div>
-                                <p className="shrink-0 line-clamp-1">{simplifyRoomName(room.name)}</p>
+                                <p className="self-center line-clamp-1">{simplifyRoomName(room.name)}</p>
                               </div>
                               {room.availables ? (
                                 <div className="self-center text-xs">
