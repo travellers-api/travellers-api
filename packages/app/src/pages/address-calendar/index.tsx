@@ -5,6 +5,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useCallback, useRef } from 'react';
+import { prefectures } from '../../lib/prefecture/constants';
 
 type Home = {
   id: number;
@@ -44,56 +45,6 @@ type Home = {
     minDays: number;
   };
 };
-
-const prefectures: { name: string; code: number }[] = [
-  { name: '北海道', code: 1 },
-  { name: '青森県', code: 2 },
-  { name: '岩手県', code: 3 },
-  { name: '宮城県', code: 4 },
-  { name: '秋田県', code: 5 },
-  { name: '山形県', code: 6 },
-  { name: '福島県', code: 7 },
-  { name: '茨城県', code: 8 },
-  { name: '栃木県', code: 9 },
-  { name: '群馬県', code: 10 },
-  { name: '埼玉県', code: 11 },
-  { name: '千葉県', code: 12 },
-  { name: '東京都', code: 13 },
-  { name: '神奈川県', code: 14 },
-  { name: '新潟県', code: 15 },
-  { name: '富山県', code: 16 },
-  { name: '石川県', code: 17 },
-  { name: '福井県', code: 18 },
-  { name: '山梨県', code: 19 },
-  { name: '長野県', code: 20 },
-  { name: '岐阜県', code: 21 },
-  { name: '静岡県', code: 22 },
-  { name: '愛知県', code: 23 },
-  { name: '三重県', code: 24 },
-  { name: '滋賀県', code: 25 },
-  { name: '京都府', code: 26 },
-  { name: '大阪府', code: 27 },
-  { name: '兵庫県', code: 28 },
-  { name: '奈良県', code: 29 },
-  { name: '和歌山県', code: 30 },
-  { name: '鳥取県', code: 31 },
-  { name: '島根県', code: 32 },
-  { name: '岡山県', code: 33 },
-  { name: '広島県', code: 34 },
-  { name: '山口県', code: 35 },
-  { name: '徳島県', code: 36 },
-  { name: '香川県', code: 37 },
-  { name: '愛媛県', code: 38 },
-  { name: '高知県', code: 39 },
-  { name: '福岡県', code: 40 },
-  { name: '佐賀県', code: 41 },
-  { name: '長崎県', code: 42 },
-  { name: '熊本県', code: 43 },
-  { name: '大分県', code: 44 },
-  { name: '宮崎県', code: 45 },
-  { name: '鹿児島県', code: 46 },
-  { name: '沖縄県', code: 47 },
-];
 
 const queryToArray = (query: string | string[] | undefined): string[] | null => {
   return query ? (typeof query === 'string' ? query.split(',') : query) : null;
