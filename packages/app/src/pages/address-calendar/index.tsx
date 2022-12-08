@@ -7,7 +7,14 @@ import { useRouter } from 'next/router';
 import { useCallback, useRef } from 'react';
 import { fetchCalendar } from '../../lib/address/calendar/fetchers';
 import { Home } from '../../lib/address/calendar/types';
-import { excludeClosedRooms, simplifyRoomName, simplifyRoomType } from '../../lib/address/calendar/utils';
+import {
+  excludeClosedRooms,
+  shortenHomeType,
+  shortenPrefectureName,
+  shortenRoomType,
+  simplifyRoomName,
+  simplifyRoomType,
+} from '../../lib/address/calendar/utils';
 import { prefectures } from '../../lib/prefecture/constants';
 
 const queryToArray = (query: string | string[] | undefined): string[] | null => {
@@ -322,9 +329,9 @@ const Calendar: React.FC<
     <section className={classNames('w-full overflow-x-scroll', className)}>
       <div className="w-max">
         <header className="w-full px-20">
-          <div className="grid grid-cols-[280px_1fr] border-b">
+          <div className="grid grid-cols-[224px_1fr] border-b">
             <p className="self-center py-5 text-xs">拠点名</p>
-            <div className="grid grid-cols-[160px_1fr] gap-4 py-5">
+            <div className="grid grid-cols-[144px_1fr] gap-4 py-5">
               <p className="self-center text-xs">部屋名</p>
               <ul className="grid grid-cols-[repeat(40,24px)] self-center">
                 {dates.map((date) => (
@@ -358,16 +365,16 @@ const Calendar: React.FC<
                     height: `${virtualRow.size}px`,
                   }}
                 >
-                  <div className="grid grid-cols-[280px_1fr] border-b pb-10">
+                  <div className="grid grid-cols-[224px_1fr] border-b pb-10">
                     <div className="flex items-start gap-4 py-5 text-sm">
                       <p className="shrink-0 font-bold">
                         <a className="underline" href={home.url} target="_blank" rel="noreferrer">
                           {home.name}
                         </a>
                       </p>
-                      <p className="shrink-0 border px-4 text-xs">{home.prefecture}</p>
-                      <p className="shrink-0 border px-4 text-xs">{home.homeType}</p>
-                      {home.reservationLimit === '予約制限あり' && <p className="shrink-0 border px-4 text-xs">制限</p>}
+                      <p className="shrink-0 border px-4 text-xs">{shortenPrefectureName(home.prefecture)}</p>
+                      <p className="shrink-0 border px-4 text-xs">{shortenHomeType(home.homeType)}</p>
+                      {home.reservationLimit === '予約制限あり' && <p className="shrink-0 border px-4 text-xs">限</p>}
                     </div>
                     <ul>
                       {home.rooms.map((room, i) => {
@@ -375,13 +382,15 @@ const Calendar: React.FC<
                         const key = `${room.id}_${i}`;
                         return (
                           <li key={key} className="border-b last:border-b-0">
-                            <div className="grid grid-cols-[160px_1fr] gap-4 py-5">
+                            <div className="grid grid-cols-[144px_1fr] gap-4 py-5">
                               <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-4 text-sm">
                                 <div className="flex gap-4 self-center">
                                   {room.sex && (
                                     <p className="shrink-0 border px-4 text-xs">{room.sex === 'male' ? '男' : '女'}</p>
                                   )}
-                                  <p className="shrink-0 border px-4 text-xs">{simplifyRoomType(room.type)}</p>
+                                  <p className="shrink-0 border px-4 text-xs">
+                                    {shortenRoomType(simplifyRoomType(room.type))}
+                                  </p>
                                 </div>
                                 <p className="shrink-0 line-clamp-1">{simplifyRoomName(room.name)}</p>
                               </div>
