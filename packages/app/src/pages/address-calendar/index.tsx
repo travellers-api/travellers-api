@@ -5,95 +5,10 @@ import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useCallback, useRef } from 'react';
-
-type Home = {
-  id: number;
-  url: string;
-  name: string;
-  thumbnail: string;
-  prefecture: string;
-  homeType: string;
-  reservationLimit: '予約制限あり' | '予約制限なし';
-  address: {
-    postalCode: string;
-    text: string;
-    lat: number;
-    lng: number;
-  };
-  rooms: {
-    id: number;
-    name: string;
-    thumbnail: string;
-    type: '個室' | 'ドミトリー';
-    capacity: number;
-    sex: 'male' | 'female' | null;
-  }[];
-  calendar: {
-    rooms: {
-      room: {
-        id: number;
-        name: string;
-      };
-      reserved_dates: string[];
-      availables: string;
-    }[];
-    calStartDate: string;
-    calEndDate: string;
-    reservablePeriod: string;
-    holidays: (0 | 1 | 2 | 3 | 4 | 5 | 6)[];
-    minDays: number;
-  };
-};
-
-const prefectures: { name: string; code: number }[] = [
-  { name: '北海道', code: 1 },
-  { name: '青森県', code: 2 },
-  { name: '岩手県', code: 3 },
-  { name: '宮城県', code: 4 },
-  { name: '秋田県', code: 5 },
-  { name: '山形県', code: 6 },
-  { name: '福島県', code: 7 },
-  { name: '茨城県', code: 8 },
-  { name: '栃木県', code: 9 },
-  { name: '群馬県', code: 10 },
-  { name: '埼玉県', code: 11 },
-  { name: '千葉県', code: 12 },
-  { name: '東京都', code: 13 },
-  { name: '神奈川県', code: 14 },
-  { name: '新潟県', code: 15 },
-  { name: '富山県', code: 16 },
-  { name: '石川県', code: 17 },
-  { name: '福井県', code: 18 },
-  { name: '山梨県', code: 19 },
-  { name: '長野県', code: 20 },
-  { name: '岐阜県', code: 21 },
-  { name: '静岡県', code: 22 },
-  { name: '愛知県', code: 23 },
-  { name: '三重県', code: 24 },
-  { name: '滋賀県', code: 25 },
-  { name: '京都府', code: 26 },
-  { name: '大阪府', code: 27 },
-  { name: '兵庫県', code: 28 },
-  { name: '奈良県', code: 29 },
-  { name: '和歌山県', code: 30 },
-  { name: '鳥取県', code: 31 },
-  { name: '島根県', code: 32 },
-  { name: '岡山県', code: 33 },
-  { name: '広島県', code: 34 },
-  { name: '山口県', code: 35 },
-  { name: '徳島県', code: 36 },
-  { name: '香川県', code: 37 },
-  { name: '愛媛県', code: 38 },
-  { name: '高知県', code: 39 },
-  { name: '福岡県', code: 40 },
-  { name: '佐賀県', code: 41 },
-  { name: '長崎県', code: 42 },
-  { name: '熊本県', code: 43 },
-  { name: '大分県', code: 44 },
-  { name: '宮崎県', code: 45 },
-  { name: '鹿児島県', code: 46 },
-  { name: '沖縄県', code: 47 },
-];
+import { fetchCalendar } from '../../lib/address/calendar/fetchers';
+import { Home } from '../../lib/address/calendar/types';
+import { excludeClosedRooms, simplifyRoomName, simplifyRoomType } from '../../lib/address/calendar/utils';
+import { prefectures } from '../../lib/prefecture/constants';
 
 const queryToArray = (query: string | string[] | undefined): string[] | null => {
   return query ? (typeof query === 'string' ? query.split(',') : query) : null;
@@ -114,17 +29,13 @@ export type Props = {
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) => {
-  const res = await fetch(`https://api.traveller-api.amon.dev/address/calendar`);
-  if (!res.ok) {
+  const homes = await fetchCalendar().catch(() => null);
+  if (!homes) {
     return {
       notFound: true,
       revalidate: 0,
     };
   }
-
-  const { homes } = (await res.json()) as {
-    homes: Home[];
-  };
 
   const now = dayjs();
   const dates = [...Array(40)].map((_, i) => {
@@ -176,13 +87,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
       },
       homes: homes
         .map((home) => {
-          // 終了除外
-          home.rooms = home.rooms.filter(
-            (room) =>
-              !room.name.match(
-                /[(（【](予約停止中|提供終了|2022年10月で提供終了|予約不可|2022年2月で提供終了|提供終了|〜2022\/1\/31 {2}契約終了)[)）】]/
-              )
-          );
+          home.rooms = excludeClosedRooms(home.rooms);
 
           if (roomTypeQuery) {
             home.rooms = home.rooms.filter((room) => roomTypeQuery.includes(room.type));
@@ -482,28 +387,9 @@ const Calendar: React.FC<
                                   {room.sex && (
                                     <p className="shrink-0 border px-4 text-xs">{room.sex === 'male' ? '男' : '女'}</p>
                                   )}
-                                  <p className="shrink-0 border px-4 text-xs">
-                                    {room.type.replace('ドミトリー', 'ドミ')}
-                                  </p>
+                                  <p className="shrink-0 border px-4 text-xs">{simplifyRoomType(room.type)}</p>
                                 </div>
-                                <p className="shrink-0 line-clamp-1">
-                                  {room.name
-                                    .replace(/\s+/g, ' ')
-                                    .replace(/[(（]/, '(')
-                                    .replace(/[）)]/, ')')
-                                    .replace('(2022/2/1~)', '')
-                                    .replace('一階ゲストルーム', '')
-                                    .replace('(リンガー)', '')
-                                    .replace('(グラバー)', '')
-                                    .replace(/(シングルルーム|ツインルーム) (\d号室)/, '$2')
-                                    .replace('男女共用', '')
-                                    .replace(/シングルルーム(.+)/, '$1')
-                                    .replace(/(区画(オート)?)(サイト.+)[(（](.+)[)）]/, '$3 ($4)')
-                                    .replace(/約/g, '')
-                                    .replace('(2段ベッドツインルーム)', '')
-                                    .replace('ツインルーム116号室', '116号室')
-                                    .replace(/：[男女]性用/, ' ')}
-                                </p>
+                                <p className="shrink-0 line-clamp-1">{simplifyRoomName(room.name)}</p>
                               </div>
                               {calendarRoom ? (
                                 <div className="self-center text-xs">
