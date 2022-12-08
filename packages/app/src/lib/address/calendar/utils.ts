@@ -2,7 +2,6 @@ import { Home } from './types';
 
 export const excludeClosedRooms = (rooms: Home['rooms']): Home['rooms'] => {
   return rooms.filter((room) => {
-    console.log(room.name);
     return !room.name.match(
       /[(（【](予約停止中|提供終了|2022年10月で提供終了|予約不可|2022年2月で提供終了|提供終了|〜2022\/1\/31 {2}契約終了|2022\/5で契約終了)[)）】]/
     );
