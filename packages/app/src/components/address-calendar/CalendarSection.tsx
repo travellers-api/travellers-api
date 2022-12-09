@@ -1,6 +1,6 @@
 import { useVirtual } from '@tanstack/react-virtual';
 import classNames from 'classnames';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { LabelText } from '../../components/address-calendar/LabelText';
 import { Home } from '../../lib/address/calendar/types';
 import {
@@ -21,6 +21,8 @@ export type CalendarSectionProps = {
 };
 
 export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, homes, dates }) => {
+  const [isShownHomeLabel, setIsShownHomeLabel] = useState(true);
+  const [isShownRoomLabel, setIsShownRoomLabel] = useState(true);
   const parentRef = useRef<HTMLDivElement>(null);
 
   const estimateSize = useCallback(
@@ -42,15 +44,49 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
       style={
         {
           '--dates-count': dates.length,
+          '--home-width': isShownHomeLabel ? '224px' : '108px',
+          '--room-width': isShownRoomLabel ? '144px' : '64px',
         } as React.CSSProperties
       }
     >
       <div className="w-max">
         <header className="w-full px-20">
-          <div className="grid grid-cols-[224px_1fr] border-b">
-            <p className="self-center py-5 text-xs">拠点名</p>
-            <div className="grid grid-cols-[144px_1fr] gap-4 py-5">
-              <p className="self-center text-xs">部屋名</p>
+          <div className="grid grid-cols-[var(--home-width)_1fr] border-b">
+            <div className="flex flex-col gap-4 self-center py-5 text-xs">
+              <p>拠点</p>
+              <p className="flex">
+                <input
+                  id="isShownHomeLabel"
+                  name="isShownHomeLabel"
+                  type="checkbox"
+                  checked={isShownHomeLabel}
+                  onChange={(e) => {
+                    setIsShownHomeLabel(e.currentTarget.checked);
+                  }}
+                />
+                <label htmlFor="isShownHomeLabel" className="pl-5">
+                  ラベル
+                </label>
+              </p>
+            </div>
+            <div className="grid grid-cols-[var(--room-width)_1fr] gap-4 py-5">
+              <div className="flex flex-col gap-4 self-center text-xs">
+                <p>部屋</p>
+                <p className="flex">
+                  <input
+                    id="isShownRoomLabel"
+                    name="isShownRoomLabel"
+                    type="checkbox"
+                    checked={isShownRoomLabel}
+                    onChange={(e) => {
+                      setIsShownRoomLabel(e.currentTarget.checked);
+                    }}
+                  />
+                  <label htmlFor="isShownRoomLabel" className="pl-5">
+                    ラベル
+                  </label>
+                </p>
+              </div>
               <ul className="grid grid-cols-[repeat(var(--dates-count),24px)] self-center">
                 {dates.map((date) => (
                   <li key={date.date} className="border-l text-center text-xs">
@@ -86,16 +122,20 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
                     } as React.CSSProperties
                   }
                 >
-                  <div className="grid grid-cols-[224px_1fr] border-b pb-10">
+                  <div className="grid grid-cols-[var(--home-width)_1fr] border-b pb-10">
                     <div className="flex items-center gap-4 self-start py-5 text-sm">
                       <p className="shrink-0 font-bold">
                         <a className="underline" href={home.url} target="_blank" rel="noreferrer">
                           {home.name}
                         </a>
                       </p>
-                      <LabelText className="shrink-0">{shortenPrefectureName(home.prefecture)}</LabelText>
-                      <LabelText className="shrink-0">{shortenHomeType(home.homeType)}</LabelText>
-                      {home.reservationLimit === '予約制限あり' && <LabelText className="shrink-0">限</LabelText>}
+                      {isShownHomeLabel && (
+                        <div className="itesm-center flex gap-4">
+                          <LabelText className="shrink-0">{shortenPrefectureName(home.prefecture)}</LabelText>
+                          <LabelText className="shrink-0">{shortenHomeType(home.homeType)}</LabelText>
+                          {home.reservationLimit === '予約制限あり' && <LabelText className="shrink-0">限</LabelText>}
+                        </div>
+                      )}
                     </div>
                     <ul>
                       {home.rooms.map((room, i) => {
@@ -103,17 +143,21 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
                         const key = `${room.id}_${i}`;
                         return (
                           <li key={key} className="border-b last:border-b-0">
-                            <div className="grid grid-cols-[144px_1fr] gap-4 py-5">
+                            <div className="grid grid-cols-[var(--room-width)_1fr] gap-4 py-5">
                               <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-4 text-sm">
-                                <div className="flex gap-4 self-center">
-                                  {room.sex && (
-                                    <LabelText className="shrink-0">{room.sex === 'male' ? '男' : '女'}</LabelText>
-                                  )}
-                                  <LabelText className="shrink-0">
-                                    {shortenRoomType(simplifyRoomType(room.type))}
-                                  </LabelText>
-                                </div>
-                                <p className="self-center line-clamp-1">{simplifyRoomName(room.name)}</p>
+                                {isShownRoomLabel && (
+                                  <div className="flex gap-4 self-center">
+                                    {room.sex && (
+                                      <LabelText className="shrink-0">{room.sex === 'male' ? '男' : '女'}</LabelText>
+                                    )}
+                                    <LabelText className="shrink-0">
+                                      {shortenRoomType(simplifyRoomType(room.type))}
+                                    </LabelText>
+                                  </div>
+                                )}
+                                <p className="self-center overflow-hidden whitespace-nowrap">
+                                  {simplifyRoomName(room.name)}
+                                </p>
                               </div>
                               {room.availables ? (
                                 <div className="self-center text-xs">
