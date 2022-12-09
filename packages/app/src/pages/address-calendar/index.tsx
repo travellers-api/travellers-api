@@ -104,7 +104,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
           });
 
           // 不要フィールド削除
-          home.url = '';
           home.thumbnail = '';
           home.rooms.forEach((room) => {
             room.thumbnail = '';
