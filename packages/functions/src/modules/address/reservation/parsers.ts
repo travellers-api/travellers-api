@@ -15,6 +15,7 @@ export const parseReservations = (html: string): Reservation[] => {
       id: $target.find('.btn.btn-white.btn-single').attr('href')?.replace('/reservations/', '') ?? '',
       checkInDate: parseDate($target.find('li:nth-child(1)').text()),
       checkOutDate: parseDate($target.find('li:nth-child(2)').text()),
+      status: parseStatus($target.find('h4 + p').text()),
       home: {
         id: $target.find('h4 a').attr('href')?.replace('/homes/', '') ?? '',
         name: $target.find('h4 a').text(),
@@ -31,4 +32,16 @@ const parseDate = (text: string): string => {
     'YYYY年MM月DD日',
     true
   ).format('YYYY-MM-DD');
+};
+
+const parseStatus = (text: string): Reservation['status'] => {
+  text = text.replace('●', '').trim();
+
+  if (text === '申請中') return 'pending';
+  if (text === '承認済み') return 'approved';
+  if (text === '滞在中') return 'staying';
+  if (text === '滞在済み') return 'stayed';
+  if (text === 'キャンセル') return 'canceled';
+
+  return null;
 };
