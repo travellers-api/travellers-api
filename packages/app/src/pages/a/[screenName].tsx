@@ -7,6 +7,7 @@ type Reservation = {
   id: string;
   checkInDate: string;
   checkOutDate: string;
+  status: 'pending' | 'approved' | 'staying' | 'stayed' | 'canceled' | null;
   home: {
     id: string;
     name: string;
@@ -54,7 +55,9 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
   return {
     props: {
       screenName,
-      reservations,
+      reservations: reservations.filter(
+        (reservation) => reservation.status === 'approved' || reservation.status === 'staying'
+      ),
     },
     revalidate: 60 * 60,
   };
