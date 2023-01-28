@@ -152,10 +152,10 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
                                     <LabelText className="shrink-0">
                                       {shortenRoomType(simplifyRoomType(room.type))}
                                     </LabelText>
-                                    {room.calendar?.availableWeeks === 4 ? (
+                                    {room.calendar && room.calendar.availableWeeks === 4 ? (
                                       <LabelText className="shrink-0">制限</LabelText>
-                                    ) : room.calendar?.availableWeeks !== 12 ? (
-                                      <LabelText className="shrink-0">{room.calendar?.availableWeeks}</LabelText>
+                                    ) : room.calendar && room.calendar.availableWeeks !== 12 ? (
+                                      <LabelText className="shrink-0">{room.calendar?.availableWeeks}週</LabelText>
                                     ) : null}
                                   </div>
                                 )}
