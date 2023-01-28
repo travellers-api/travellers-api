@@ -96,14 +96,14 @@ const fields: {
       return $('#room-all .room')
         .get()
         .map((elm): Room => {
-          const type = $(elm).find('ul li:first-child').text().trim().replace(/（.+$/, '');
+          const type = $(elm).find('ul li img[src*="Icon-door"] + p').text().trim().replace(/（.+$/, '');
 
           const id = Number($(elm).find('button').attr('data-bs-room-id') ?? '');
           const name = $(elm).find('h3').text();
           const thumbnail = $(elm).find('.card__image').attr('src') ?? '';
           const capacity = Number(
             $(elm)
-              .find('ul li:first-child')
+              .find('ul li img[src*="Icon-door"] + p')
               .text()
               .trim()
               .replace(/^.+（定員/, '')

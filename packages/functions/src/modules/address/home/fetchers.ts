@@ -23,16 +23,21 @@ export const fetchHome = async (id: string, cookie: string): Promise<any> => {
   await Promise.all(
     home.rooms.map(async (room) => {
       const id = room.id;
-      const roomData = await fetchRoomJson(id, cookie);
-      room.calendar = {
-        reservedDates: roomData.room.reserved_dates,
-        calStartDate: roomData.room.calendar_start_date,
-        calEndDate: roomData.room.calendar_end_date,
-        reservablePeriod: roomData.room.reservable_period,
-        holidays: roomData.room.holydays,
-        minDays: roomData.room.min_days,
-        availableWeeks: roomData.room.available_weeks,
-      };
+      const roomData = await fetchRoomJson(id, cookie).catch(() => null);
+
+      if (!roomData) {
+        room.calendar = null;
+      } else {
+        room.calendar = {
+          reservedDates: roomData.room.reserved_dates,
+          calStartDate: roomData.room.calendar_start_date,
+          calEndDate: roomData.room.calendar_end_date,
+          reservablePeriod: roomData.room.reservable_period,
+          holidays: roomData.room.holydays,
+          minDays: roomData.room.min_days,
+          availableWeeks: roomData.room.available_weeks,
+        };
+      }
     })
   );
 
