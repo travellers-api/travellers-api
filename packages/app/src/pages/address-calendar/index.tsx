@@ -91,7 +91,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
                     const available =
                       !calendar.reservedDates.includes(date.date) &&
                       !calendar.holidays.includes(date.day) &&
-                      date.date <= (calendar.calEndDate || '9999/12/31');
+                      date.date >= (calendar.calStartDate || '0000/01/01');
+                    date.date <= (calendar.calEndDate || '9999/12/31');
                     return available ? 'Y' : 'N';
                   })
                   .join('')
