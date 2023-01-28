@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { Home } from '../types';
+import { Home, Room } from '../types';
 
 const fields: {
   name: keyof Home;
@@ -95,46 +95,43 @@ const fields: {
     parse: ($) => {
       return $('#room-all .room')
         .get()
-        .map((elm) => {
+        .map((elm): Room => {
           const type = $(elm).find('ul li:first-child').text().trim().replace(/（.+$/, '');
 
-          return {
-            id: Number($(elm).find('button').attr('data-bs-room-id') ?? ''),
-            name: $(elm).find('h3').text(),
-            thumbnail: $(elm).find('.card__image').attr('src') ?? '',
-            type: type.replace(/^[男女]性専用/, ''),
-            capacity: Number(
-              $(elm)
-                .find('ul li:first-child')
-                .text()
-                .trim()
-                .replace(/^.+（定員/, '')
-                .replace(/名）$/, '')
-            ),
-            sex: type.startsWith('男性専用') ? 'male' : type.startsWith('女性専用') ? 'female' : null,
-          };
-        });
-    },
-  },
-  {
-    name: 'calendar',
-    parse: ($) => {
-      const $calendar = $('#roomReserveCalendar');
-      const rooms = JSON.parse($calendar.attr('data-rooms') ?? '');
-      const calStartDate = $calendar.attr('data-cal-start-date') ?? '';
-      const calEndDate = $calendar.attr('data-cal-end-date') ?? '';
-      const reservablePeriod = $calendar.attr('data-reservable-period') ?? '';
-      const holidays = JSON.parse($calendar.attr('data-holydays') ?? '[]');
-      const minDays = Number($calendar.attr('data-min-days') ?? '');
+          const id = Number($(elm).find('button').attr('data-bs-room-id') ?? '');
+          const name = $(elm).find('h3').text();
+          const thumbnail = $(elm).find('.card__image').attr('src') ?? '';
+          const capacity = Number(
+            $(elm)
+              .find('ul li:first-child')
+              .text()
+              .trim()
+              .replace(/^.+（定員/, '')
+              .replace(/名）$/, '')
+          );
+          const sex = type.startsWith('男性専用') ? 'male' : type.startsWith('女性専用') ? 'female' : null;
 
-      return {
-        rooms,
-        calStartDate,
-        calEndDate,
-        reservablePeriod,
-        holidays,
-        minDays,
-      };
+          const room: Home['rooms'][0] = {
+            id,
+            name,
+            thumbnail,
+            type: type.replace(/^[男女]性専用/, '') as Room['type'],
+            capacity,
+            sex,
+            // あとから合成
+            calendar: {
+              reservedDates: [],
+              calStartDate: '',
+              calEndDate: '',
+              reservablePeriod: '',
+              holidays: [],
+              minDays: -1,
+              availableWeeks: -1,
+            },
+          };
+
+          return room;
+        });
     },
   },
 ];
