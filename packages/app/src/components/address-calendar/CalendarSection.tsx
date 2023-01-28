@@ -152,18 +152,18 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
                                     <LabelText className="shrink-0">
                                       {shortenRoomType(simplifyRoomType(room.type))}
                                     </LabelText>
-                                    {room.calendar.availableWeeks === 4 ? (
+                                    {room.calendar && room.calendar.availableWeeks === 4 ? (
                                       <LabelText className="shrink-0">制限</LabelText>
-                                    ) : room.calendar.availableWeeks === 12 ? null : (
-                                      <LabelText className="shrink-0">{room.calendar.availableWeeks}</LabelText>
-                                    )}
+                                    ) : room.calendar && room.calendar.availableWeeks !== 12 ? (
+                                      <LabelText className="shrink-0">{room.calendar?.availableWeeks}週</LabelText>
+                                    ) : null}
                                   </div>
                                 )}
                                 <p className="self-center overflow-hidden whitespace-nowrap">
                                   {simplifyRoomName(room.name)}
                                 </p>
                               </div>
-                              {room.availables ? (
+                              {room.calendar && room.availables ? (
                                 <div className="self-center text-xs">
                                   <ul className="grid grid-cols-[repeat(var(--dates-count),24px)] self-center">
                                     {room.availables.split('').map((available, i) => {
