@@ -98,8 +98,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
                   .join('')
               : null;
 
-            room.calendar.reservedDates = [];
-
             return {
               ...room,
               availables,
