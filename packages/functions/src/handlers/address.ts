@@ -68,7 +68,7 @@ addressApp.get<
 >('/address/calendar', async (req, res) => {
   try {
     const homes = await getHomes();
-    res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600, must-revalidate');
+    res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=60, must-revalidate');
     res.json({ homes: homes.map(({ data: { address, ...data } }) => data) });
   } catch (e) {
     res.status(500).end();
