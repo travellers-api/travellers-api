@@ -12,27 +12,24 @@ export type Home = {
     lat: number;
     lng: number;
   };
-  rooms: {
-    id: number;
-    name: string;
-    thumbnail: string;
-    type: '個室' | 'ドミトリー';
-    capacity: number;
-    sex: 'male' | 'female' | null;
-    availables: string | null;
-  }[];
+  rooms: Room[];
+};
+
+export type Room = {
+  id: number;
+  name: string;
+  thumbnail: string;
+  type: '個室' | 'ドミトリー';
+  capacity: number;
+  sex: 'male' | 'female' | null;
+  availables: string | null;
   calendar: {
-    rooms: {
-      room: {
-        id: number;
-        name: string;
-      };
-      reserved_dates: string[];
-    }[];
+    reservedDates: string[];
     calStartDate: string;
     calEndDate: string;
     reservablePeriod: string;
     holidays: (0 | 1 | 2 | 3 | 4 | 5 | 6)[];
     minDays: number;
-  } | null;
+    availableWeeks: number;
+  };
 };

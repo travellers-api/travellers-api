@@ -84,18 +84,20 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
           }
 
           home.rooms = home.rooms.map((room) => {
-            const calendarRoom = home.calendar?.rooms.find((calendarRoom) => calendarRoom.room.id === room.id);
-            const availables = calendarRoom
+            const calendar = room.calendar;
+            const availables = calendar
               ? dates
                   .map((date) => {
                     const available =
-                      !calendarRoom.reserved_dates.includes(date.date) &&
-                      !home.calendar?.holidays.includes(date.day) &&
-                      date.date <= (home.calendar?.calEndDate ?? '9999/12/31');
+                      !calendar.reservedDates.includes(date.date) &&
+                      !calendar.holidays.includes(date.day) &&
+                      date.date <= (calendar.calEndDate || '9999/12/31');
                     return available ? 'Y' : 'N';
                   })
                   .join('')
               : null;
+
+            room.calendar.reservedDates = [];
 
             return {
               ...room,
@@ -108,7 +110,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
           home.rooms.forEach((room) => {
             room.thumbnail = '';
           });
-          home.calendar = null;
 
           return home;
         })

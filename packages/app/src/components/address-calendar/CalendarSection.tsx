@@ -133,7 +133,6 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
                         <div className="itesm-center flex gap-4">
                           <LabelText className="shrink-0">{shortenPrefectureName(home.prefecture)}</LabelText>
                           <LabelText className="shrink-0">{shortenHomeType(home.homeType)}</LabelText>
-                          {home.reservationLimit === '予約制限あり' && <LabelText className="shrink-0">限</LabelText>}
                         </div>
                       )}
                     </div>
@@ -153,6 +152,11 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
                                     <LabelText className="shrink-0">
                                       {shortenRoomType(simplifyRoomType(room.type))}
                                     </LabelText>
+                                    {room.calendar.availableWeeks === 4 ? (
+                                      <LabelText className="shrink-0">制限</LabelText>
+                                    ) : room.calendar.availableWeeks === 12 ? null : (
+                                      <LabelText className="shrink-0">{room.calendar.availableWeeks}</LabelText>
+                                    )}
                                   </div>
                                 )}
                                 <p className="self-center overflow-hidden whitespace-nowrap">
