@@ -166,21 +166,22 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
                               {room.calendar && room.availables ? (
                                 <div className="self-center text-xs">
                                   <ul className="grid grid-cols-[repeat(var(--dates-count),24px)] self-center">
-                                    {room.availables.split('').map((available, i) => {
-                                      return (
-                                        <li key={i}>
-                                          <div
-                                            className={classNames(
-                                              'border-l text-center',
-                                              available === 'N' && 'bg-black/20'
-                                            )}
-                                          >
-                                            <span>&nbsp;</span>
-                                            <span className="sr-only">{available === 'Y' ? '予約可' : '予約不可'}</span>
-                                          </div>
-                                        </li>
-                                      );
-                                    })}
+                                    {room.availables.split('').map((available, i) => (
+                                      <li key={i}>
+                                        <div
+                                          className={classNames(
+                                            'border-l text-center',
+                                            available === 'N' && 'bg-black/40',
+                                            available === 'O' && 'bg-black/20',
+                                            available === 'H' && 'bg-black/20',
+                                            available === 'Y' && ''
+                                          )}
+                                        >
+                                          <span>&nbsp;</span>
+                                          <span className="sr-only">{available === 'Y' ? '予約可' : '予約不可'}</span>
+                                        </div>
+                                      </li>
+                                    ))}
                                   </ul>
                                 </div>
                               ) : (
