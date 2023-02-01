@@ -186,14 +186,29 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
                                           <div
                                             className={classNames(
                                               'border-l text-center',
-                                              available === 'N' && 'bg-black/40',
-                                              available === 'O' && 'bg-black/20',
-                                              available === 'H' && 'bg-black/20',
-                                              available === 'Y' && ''
+                                              available === 'N'
+                                                ? 'bg-black/40'
+                                                : available === 'O'
+                                                ? 'bg-black/20'
+                                                : available === 'H'
+                                                ? 'bg-black/20'
+                                                : available === 'Y'
+                                                ? ''
+                                                : null
                                             )}
                                           >
                                             <span>&nbsp;</span>
-                                            <span className="sr-only">{available === 'Y' ? '予約可' : '予約不可'}</span>
+                                            <span className="sr-only">
+                                              {available === 'N'
+                                                ? '予約済み・予約不可'
+                                                : available === 'O'
+                                                ? '予約期間外'
+                                                : available === 'H'
+                                                ? '拠点休日'
+                                                : available === 'Y'
+                                                ? '予約可能'
+                                                : null}
+                                            </span>
                                           </div>
                                         </li>
                                       ))}
