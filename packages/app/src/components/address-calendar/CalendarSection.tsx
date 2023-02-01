@@ -155,6 +155,7 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                         <div className="itesm-center flex gap-4">
                           <LabelText className="shrink-0">{shortenPrefectureName(home.prefecture)}</LabelText>
                           <LabelText className="shrink-0">{shortenHomeType(home.homeType)}</LabelText>
+                          {home.reservationLimit === '予約制限あり' && <LabelText className="shrink-0">制限</LabelText>}
                         </div>
                       )}
                     </div>
@@ -174,10 +175,8 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                                     <LabelText className="shrink-0">
                                       {shortenRoomType(simplifyRoomType(room.type))}
                                     </LabelText>
-                                    {room.calendar && room.calendar.availableWeeks === 4 ? (
-                                      <LabelText className="shrink-0">制限</LabelText>
-                                    ) : room.calendar && room.calendar.availableWeeks !== 12 ? (
-                                      <LabelText className="shrink-0">{room.calendar?.availableWeeks}週</LabelText>
+                                    {room.calendar && room.calendar.availableWeeks !== 12 ? (
+                                      <LabelText className="shrink-0">{room.calendar.availableWeeks}週</LabelText>
                                     ) : null}
                                   </div>
                                 )}
