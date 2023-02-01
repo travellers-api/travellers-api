@@ -88,12 +88,24 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
             const availables = calendar
               ? dates
                   .map((date) => {
-                    const available =
-                      !calendar.reservedDates.includes(date.date) &&
-                      !calendar.holidays.includes(date.day) &&
-                      date.date >= (calendar.calStartDate || '0000/01/01') &&
-                      date.date <= (calendar.calEndDate || '9999/12/31');
-                    return available ? 'Y' : 'N';
+                    const isUnavailable = calendar.reservedDates.includes(date.date);
+                    if (isUnavailable) {
+                      return 'N';
+                    }
+
+                    const isOutOfTerm =
+                      date.date < (calendar.calStartDate || '0000/01/01') ||
+                      date.date > (calendar.calEndDate || '9999/12/31');
+                    if (isOutOfTerm) {
+                      return 'O';
+                    }
+
+                    const isHoliday = calendar.holidays.includes(date.day);
+                    if (isHoliday) {
+                      return 'H';
+                    }
+
+                    return 'Y';
                   })
                   .join('')
               : null;

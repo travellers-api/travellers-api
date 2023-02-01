@@ -21,6 +21,28 @@ export type CalendarSectionProps = {
 };
 
 export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, homes, dates }) => {
+  return (
+    <section className={className}>
+      <aside className="mb-10 flex items-center gap-10 px-20">
+        <p className="text-xs">凡例</p>
+        <ul className="flex py-5 text-xs">
+          <li>
+            <div className="border-y border-l px-8 py-2 text-center">予約可能</div>
+          </li>
+          <li>
+            <div className="border-y border-l bg-black/20 px-8 py-2 text-center">予約期間外・拠点休日</div>
+          </li>
+          <li>
+            <div className="border-y border-l bg-black/50 px-8 py-2 text-center text-white">予約済み・予約不可</div>
+          </li>
+        </ul>
+      </aside>
+      <InnerSection homes={homes} dates={dates} />
+    </section>
+  );
+};
+
+const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({ homes, dates }) => {
   const [isShownHomeLabel, setIsShownHomeLabel] = useState(true);
   const [isShownRoomLabel, setIsShownRoomLabel] = useState(true);
   const parentRef = useRef<HTMLDivElement>(null);
@@ -40,7 +62,7 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
 
   return (
     <section
-      className={classNames('w-full overflow-x-scroll', className)}
+      className="w-full overflow-x-scroll"
       style={
         {
           '--dates-count': dates.length,
@@ -165,21 +187,37 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
                               {room.calendar && room.availables ? (
                                 <div className="self-center text-xs">
                                   <ul className="grid grid-cols-[repeat(var(--dates-count),24px)] self-center">
-                                    {room.availables.split('').map((available, i) => {
-                                      return (
-                                        <li key={i}>
-                                          <div
-                                            className={classNames(
-                                              'border-l text-center',
-                                              available === 'N' && 'bg-black/20'
-                                            )}
-                                          >
-                                            <span>&nbsp;</span>
-                                            <span className="sr-only">{available === 'Y' ? '予約可' : '予約不可'}</span>
-                                          </div>
-                                        </li>
-                                      );
-                                    })}
+                                    {room.availables.split('').map((available, i) => (
+                                      <li key={i}>
+                                        <div
+                                          className={classNames(
+                                            'border-l text-center',
+                                            available === 'N'
+                                              ? 'bg-black/40'
+                                              : available === 'O'
+                                              ? 'bg-black/20'
+                                              : available === 'H'
+                                              ? 'bg-black/20'
+                                              : available === 'Y'
+                                              ? ''
+                                              : null
+                                          )}
+                                        >
+                                          <span>&nbsp;</span>
+                                          <span className="sr-only">
+                                            {available === 'N'
+                                              ? '予約済み・予約不可'
+                                              : available === 'O'
+                                              ? '予約期間外'
+                                              : available === 'H'
+                                              ? '拠点休日'
+                                              : available === 'Y'
+                                              ? '予約可能'
+                                              : null}
+                                          </span>
+                                        </div>
+                                      </li>
+                                    ))}
                                   </ul>
                                 </div>
                               ) : (
