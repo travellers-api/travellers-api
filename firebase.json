@@ -7,6 +7,11 @@
           "source": "/address/**",
           "function": "address",
           "region": "asia-northeast1"
+        },
+        {
+          "source": "/circle/**",
+          "function": "circle",
+          "region": "asia-northeast1"
         }
       ]
     }
