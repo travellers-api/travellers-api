@@ -1,4 +1,4 @@
 export type HomeReservationStatus = {
   date: string;
-  vacancy: boolean;
+  vacancy: boolean | null;
 };

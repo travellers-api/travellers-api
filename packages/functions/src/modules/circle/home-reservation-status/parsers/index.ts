@@ -14,6 +14,13 @@ export const parseHomeReservationStatusesPage = (targetDate: string, html: strin
       if ($date.attr('class') === 'complete') {
         return {
           date,
+          vacancy: null,
+        };
+      }
+
+      if ($date.attr('class') === 'full') {
+        return {
+          date,
           vacancy: false,
         };
       }

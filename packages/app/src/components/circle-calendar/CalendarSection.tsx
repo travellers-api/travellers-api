@@ -23,6 +23,9 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
             <div className="border-y border-l px-8 py-2 text-center">予約可能</div>
           </li>
           <li>
+            <div className="border-y border-l bg-black/20 px-8 py-2 text-center">予約期間外・拠点休日</div>
+          </li>
+          <li>
             <div className="border-y border-l bg-black/50 px-8 py-2 text-center text-white">予約済み・予約不可</div>
           </li>
         </ul>
