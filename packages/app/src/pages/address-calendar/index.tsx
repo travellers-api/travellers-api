@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import { CalendarFilter } from '../../components/address-calendar/CalendarFilter';
 import { CalendarSection } from '../../components/address-calendar/CalendarSection';
 import { fetchCalendar } from '../../lib/address/calendar/fetchers';
@@ -167,13 +168,17 @@ const Page: NextPage<Props> = ({ homes, dates, filters }) => {
       <header className="mx-auto mb-20 flex flex-col gap-10 px-20 py-20">
         <h1 className="text-center font-sans text-xl font-bold tracking-wide opacity-80">{title}</h1>
         <div className="text-center font-sans text-sm tracking-wide opacity-80">
-          <p>部屋別・フィルタ機能付き 非公式カレンダー</p>
+          <p>[非公式] 部屋別・フィルタ機能付き ADDress予約状況カレンダー</p>
           <p>気が向けば機能増やします</p>
           <p>
             問い合わせ:{' '}
             <a className="underline" href="https://twitter.com/amotarao">
               Twitter @amotarao
-            </a>
+            </a>{' '}
+            /{' '}
+            <Link className="underline" href="/circle-calendar">
+              circle版
+            </Link>
           </p>
         </div>
       </header>
