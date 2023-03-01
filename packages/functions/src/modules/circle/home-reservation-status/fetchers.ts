@@ -1,4 +1,3 @@
-import * as URLSearchParams from 'form-data';
 import fetch from 'node-fetch';
 import { userAgent } from '../../client/user-agent';
 import { parseHomeReservationStatusesPage } from './parsers';
