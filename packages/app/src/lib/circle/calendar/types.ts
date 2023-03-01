@@ -9,7 +9,7 @@ export type Home = {
   calendar:
     | {
         date: string;
-        vacancy: boolean;
+        vacancy: boolean | null;
       }[]
     | null;
   availables: string;

@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
           home.availables =
             home.calendar
               ?.slice(0, dates.length)
-              .map((cal) => (cal.vacancy ? 'Y' : 'N'))
+              .map((cal) => (cal.vacancy === true ? 'Y' : cal.vacancy === false ? 'N' : 'O'))
               .join('') ?? '';
           home.calendar = null;
           return home;
