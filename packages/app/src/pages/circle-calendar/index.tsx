@@ -74,9 +74,8 @@ const Page: NextPage<Props> = ({ homes, dates }) => {
           <p>[非公式] circle予約状況カレンダー</p>
           <p>気が向けば機能増やします</p>
           <p>
-            問い合わせ:{' '}
             <a className="underline" href="https://twitter.com/amotarao">
-              Twitter @amotarao
+              問い合わせ: Twitter @amotarao
             </a>{' '}
             /{' '}
             <Link className="underline" href="/address-calendar">
