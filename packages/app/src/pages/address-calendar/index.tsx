@@ -168,7 +168,7 @@ const Page: NextPage<Props> = ({ homes, dates, filters }) => {
       <header className="mx-auto mb-20 flex flex-col gap-10 px-20 py-20">
         <h1 className="text-center font-sans text-xl font-bold tracking-wide opacity-80">{title}</h1>
         <div className="text-center font-sans text-sm leading-6 tracking-wide opacity-80">
-          <ul className="flex flex-wrap justify-center gap-8">
+          <ul className="flex flex-wrap justify-center gap-x-8">
             <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
               <a className="underline" href="https://address.home/" target="_blank" rel="noopener noreferrer">
                 ADDress公式サイト
