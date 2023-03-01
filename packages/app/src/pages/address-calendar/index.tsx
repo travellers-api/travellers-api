@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
   }
 
   const now = dayjs();
-  const dates = [...Array(40)].map((_, i) => {
+  const dates = [...Array(60)].map((_, i) => {
     const dayjsObj = now.add(i, 'days');
     return {
       date: dayjsObj.format('YYYY/MM/DD'),
