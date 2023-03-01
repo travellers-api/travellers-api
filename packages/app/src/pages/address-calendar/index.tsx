@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import { CalendarFilter } from '../../components/address-calendar/CalendarFilter';
 import { CalendarSection } from '../../components/address-calendar/CalendarSection';
 import { fetchCalendar } from '../../lib/address/calendar/fetchers';
@@ -33,7 +34,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
   }
 
   const now = dayjs();
-  const dates = [...Array(40)].map((_, i) => {
+  const dates = [...Array(60)].map((_, i) => {
     const dayjsObj = now.add(i, 'days');
     return {
       date: dayjsObj.format('YYYY/MM/DD'),
@@ -157,7 +158,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
 };
 
 const Page: NextPage<Props> = ({ homes, dates, filters }) => {
-  const title = 'ADDress予約状況カレンダー';
+  const title = 'ADDress予約状況カレンダー (非公式)';
 
   return (
     <div className="pb-80">
@@ -166,15 +167,24 @@ const Page: NextPage<Props> = ({ homes, dates, filters }) => {
       </Head>
       <header className="mx-auto mb-20 flex flex-col gap-10 px-20 py-20">
         <h1 className="text-center font-sans text-xl font-bold tracking-wide opacity-80">{title}</h1>
-        <div className="text-center font-sans text-sm tracking-wide opacity-80">
-          <p>部屋別・フィルタ機能付き 非公式カレンダー</p>
-          <p>気が向けば機能増やします</p>
-          <p>
-            問い合わせ:{' '}
-            <a className="underline" href="https://twitter.com/amotarao">
-              Twitter @amotarao
-            </a>
-          </p>
+        <div className="text-center font-sans text-sm leading-6 tracking-wide opacity-80">
+          <ul className="flex flex-wrap justify-center gap-x-8">
+            <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
+              <a className="underline" href="https://address.home/" target="_blank" rel="noopener noreferrer">
+                ADDress公式サイト
+              </a>
+            </li>
+            <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
+              <a className="underline" href="https://twitter.com/amotarao" target="_blank" rel="noopener noreferrer">
+                問い合わせ: あもん
+              </a>
+            </li>
+            <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
+              <Link className="underline" href="/circle-calendar">
+                circle版
+              </Link>
+            </li>
+          </ul>
         </div>
       </header>
       <CalendarFilter className="mb-20" filters={filters} />
