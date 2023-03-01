@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { CalendarSection } from '../../components/circle-calendar/CalendarSection';
 import { fetchCalendar } from '../../lib/circle/calendar/fetchers';
 import { Home } from '../../lib/circle/calendar/types';
+import { prefectures } from '../../lib/prefecture/constants';
 
 export type Props = {
   homes: Home[];
@@ -33,15 +34,26 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
 
   return {
     props: {
-      homes: homes.map((home) => {
-        home.availables =
-          home.calendar
-            ?.slice(0, dates.length)
-            .map((cal) => (cal.vacancy ? 'Y' : 'N'))
-            .join('') ?? '';
-        home.calendar = null;
-        return home;
-      }),
+      homes: homes
+        .map((home) => {
+          home.availables =
+            home.calendar
+              ?.slice(0, dates.length)
+              .map((cal) => (cal.vacancy ? 'Y' : 'N'))
+              .join('') ?? '';
+          home.calendar = null;
+          return home;
+        })
+        .sort((a, z) => {
+          const aPrefecture = prefectures.find((prefecture) => a.city.startsWith(prefecture.name))?.code ?? 0;
+          const zPrefecture = prefectures.find((prefecture) => z.city.startsWith(prefecture.name))?.code ?? 0;
+
+          if (aPrefecture !== zPrefecture) {
+            return aPrefecture - zPrefecture;
+          }
+
+          return a.name > z.name ? 1 : -1;
+        }),
       dates,
     },
   };
