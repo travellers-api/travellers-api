@@ -61,7 +61,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
 };
 
 const Page: NextPage<Props> = ({ homes, dates }) => {
-  const title = 'circle予約状況カレンダー';
+  const title = 'circle予約状況カレンダー (非公式)';
 
   return (
     <div className="pb-80">
@@ -70,18 +70,24 @@ const Page: NextPage<Props> = ({ homes, dates }) => {
       </Head>
       <header className="mx-auto mb-20 flex flex-col gap-10 px-20 py-20">
         <h1 className="text-center font-sans text-xl font-bold tracking-wide opacity-80">{title}</h1>
-        <div className="text-center font-sans text-sm tracking-wide opacity-80">
-          <p>[非公式] circle予約状況カレンダー</p>
-          <p>気が向けば機能増やします</p>
-          <p>
-            <a className="underline" href="https://twitter.com/amotarao">
-              問い合わせ: Twitter @amotarao
-            </a>{' '}
-            /{' '}
-            <Link className="underline" href="/address-calendar">
-              ADDress版
-            </Link>
-          </p>
+        <div className="text-center font-sans text-sm leading-6 tracking-wide opacity-80">
+          <ul className="flex flex-wrap justify-center gap-8">
+            <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
+              <a className="underline" href="https://circle-cw.studio.site/" target="_blank" rel="noopener noreferrer">
+                circle公式サイト
+              </a>
+            </li>
+            <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
+              <a className="underline" href="https://twitter.com/amotarao" target="_blank" rel="noopener noreferrer">
+                問い合わせ: あもん
+              </a>
+            </li>
+            <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
+              <Link className="underline" href="/address-calendar">
+                ADDress版
+              </Link>
+            </li>
+          </ul>
         </div>
       </header>
       <CalendarSection homes={homes} dates={dates} />
