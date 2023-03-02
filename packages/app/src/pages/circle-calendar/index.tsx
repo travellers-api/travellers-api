@@ -37,11 +37,17 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
     props: {
       homes: homes
         .map((home) => {
-          home.availables =
-            home.calendar
-              ?.slice(0, dates.length)
-              .map((cal) => (cal.vacancy === true ? 'Y' : cal.vacancy === false ? 'N' : 'O'))
-              .join('') ?? '';
+          const firstIndex = home.calendar?.findIndex((cal) => cal.date === now.format('YYYY/MM/DD')) ?? -1;
+          if (firstIndex >= 0) {
+            home.availables =
+              home.calendar
+                ?.slice(firstIndex, firstIndex + dates.length)
+                .map((cal) => (cal.vacancy === true ? 'Y' : cal.vacancy === false ? 'N' : 'O'))
+                .join('') ?? '';
+          } else {
+            home.availables = '';
+          }
+
           home.calendar = null;
           return home;
         })
