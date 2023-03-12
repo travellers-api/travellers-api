@@ -106,7 +106,7 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                       <p className="shrink-0 font-bold">
                         <a
                           className="underline"
-                          href={`https://reserva.be/circle01cw/reserve?mode=htl&evt_no=${home.id}`}
+                          href={`https://reserva.be/circle01cw/reserve?mode=htl&evt_no=${home.id}&room_num=1&people=1.0.0.0`}
                           target="_blank"
                           rel="noreferrer"
                         >
