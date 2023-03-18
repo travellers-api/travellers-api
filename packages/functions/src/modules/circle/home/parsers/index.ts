@@ -3,13 +3,13 @@ import { Home } from '../types';
 
 const parseTitle = (title: string): Pick<Home, 'name' | 'city' | 'roomType' | 'sex'> => {
   const name = title.replace(/^【.+】/, '').trim();
-  const matches = title.match(/^【(.+?)? \/ (.+?)?(（(.+?)）)?】/);
+  const matches = title.match(/^【(.+?)?\/(.+?)?(（(.+?)）)?】/);
 
   return {
     name,
-    city: matches?.[1] ?? '',
-    roomType: matches?.[2] ?? '',
-    sex: matches?.[4] ?? null,
+    city: matches?.[1]?.trim() ?? '',
+    roomType: matches?.[2]?.trim() ?? '',
+    sex: matches?.[4]?.trim() ?? null,
   };
 };
 
