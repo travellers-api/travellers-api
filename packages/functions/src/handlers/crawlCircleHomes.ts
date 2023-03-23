@@ -1,7 +1,7 @@
 import * as dayjs from 'dayjs';
 /* eslint-disable-next-line import/no-unresolved */
 import { ScheduleBuilder } from 'firebase-functions/v1/pubsub';
-import { getCookie } from '../modules/circle/authentication';
+import { getAikotobaCookie } from '../modules/circle/authentication';
 import { getHomes } from '../modules/circle/home';
 import { getHomeReservationStatuses } from '../modules/circle/home-reservation-status';
 import { setHome } from '../modules/firestore/cachedCircleHomes';
@@ -11,7 +11,7 @@ export const crawlCircleHomesHandler: Parameters<ScheduleBuilder['onRun']>[0] = 
   const day = dayjs(context.timestamp);
 
   const aikotoba = process.env.CIRCLE_AIKOTOBA ?? '';
-  const cookie = await getCookie(aikotoba);
+  const cookie = await getAikotobaCookie(aikotoba);
   const homes = await getHomes(cookie);
 
   await Promise.all(
