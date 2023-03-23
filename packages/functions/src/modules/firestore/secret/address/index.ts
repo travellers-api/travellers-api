@@ -1,12 +1,7 @@
-import { firestore } from '../firebase';
+import { firestore } from '../../../firebase';
+import { AddressSecret } from './types';
 
-type AddressSecret = {
-  email: string;
-  password: string;
-  cookie: string;
-};
-
-export const getAddressSecret = async (screenName: string): Promise<AddressSecret> => {
+export const getSecret = async (screenName: string): Promise<AddressSecret> => {
   const screenNameDocumentSnapshot = await firestore.collection('screenNames').doc(screenName).get();
   if (!screenNameDocumentSnapshot.exists) throw new Error('not found');
   const uid = screenNameDocumentSnapshot.get('uid');
@@ -18,7 +13,7 @@ export const getAddressSecret = async (screenName: string): Promise<AddressSecre
   return secret;
 };
 
-export const setAddressSecret = async (screenName: string, secret: Partial<AddressSecret>): Promise<void> => {
+export const updateSecret = async (screenName: string, secret: Partial<AddressSecret>): Promise<void> => {
   const screenNameDocumentSnapshot = await firestore.collection('screenNames').doc(screenName).get();
   if (!screenNameDocumentSnapshot.exists) throw new Error('not found');
   const uid = screenNameDocumentSnapshot.get('uid');
