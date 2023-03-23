@@ -38,7 +38,7 @@ const parseStatus = (text: string): Reservation['status'] => {
   if (text === '予約確定') return 'approved';
   if (text === '滞在中') return 'staying'; // 不明
   if (text === '滞在済み') return 'stayed'; // 不明
-  if (text === 'キャンセル') return 'canceled'; // 不明
+  if (text === 'キャンセル') return 'canceled';
 
   return null;
 };
