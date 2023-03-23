@@ -4,6 +4,5 @@ export type Home = {
   name: string;
   city: string;
   roomType: string;
-  sex: string | null;
   tags: string[];
 };
