@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { parseHotelTitle } from '../../shared/hotel-title/parsers';
+import { parseHomeTitle } from '../../shared/house-title/parsers';
 import { Home } from '../types';
 
 export const parseHomesPage = (html: string): Home[] => {
@@ -17,7 +17,7 @@ export const parseHomesPage = (html: string): Home[] => {
           ?.replace(/^hotel_no_/, '') ?? ''
       );
       const id = $home.find('[id^="hotel_no_"]').attr('value') ?? '';
-      const { name, city, roomType } = parseHotelTitle($home.find('.title').text());
+      const { name, city, roomType } = parseHomeTitle($home.find('.title').text());
       const tags = $home
         .find('.info span')
         .get()

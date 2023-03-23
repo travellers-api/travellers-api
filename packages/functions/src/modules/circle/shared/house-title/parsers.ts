@@ -1,6 +1,6 @@
-import { Hotel } from './types';
+import { Home } from './types';
 
-export const parseHotelTitle = (input: string): Hotel => {
+export const parseHomeTitle = (input: string): Home => {
   const regex = /^【(.+?)\s*\/\s*(.+?)】(.+)$/;
   const match = regex.exec(input);
   if (!match) {
