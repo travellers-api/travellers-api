@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { getCookie } from '../modules/address/authentication';
+import { checkValidityCookie, getCookie } from '../modules/address/authentication';
 import { Home } from '../modules/address/home/types';
 import { getReservations } from '../modules/address/reservation';
 import { Reservation } from '../modules/address/reservation/types';
@@ -42,12 +42,16 @@ addressApp.get<
   try {
     const { screenName } = req.params;
     const secret = await getSecret(screenName);
-    const cookie =
-      secret.cookie ||
-      (await getCookie(secret).then(async (cookie) => {
+    const cookie = await checkValidityCookie(secret.cookie)
+      .then((isValid) => {
+        if (isValid) return secret.cookie;
+        throw new Error();
+      })
+      .catch(() => getCookie(secret))
+      .then(async (cookie) => {
         await updateSecret(screenName, { cookie });
         return cookie;
-      }));
+      });
 
     const reservations = await getReservations(cookie);
     res.json({ reservations });

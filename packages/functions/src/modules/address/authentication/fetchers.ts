@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { setCookieStringToMap } from '../../../utils/cookie';
 import { userAgent } from '../../client/user-agent';
 import { parseToken } from './parsers';
 
@@ -52,11 +53,13 @@ export const fetchCookie = async ({
     },
     redirect: 'manual',
   });
-  const newCookie = res.headers.get('set-cookie');
+  const cookieMap = setCookieStringToMap(res.headers.get('set-cookie') || '');
+  const rememberUserToken = cookieMap.get('remember_user_token');
+  const addressCoreSession = cookieMap.get('_address_core_session');
 
-  if (!newCookie) {
+  if (!rememberUserToken || !addressCoreSession) {
     throw new Error('cookie is not set.');
   }
 
-  return newCookie;
+  return `remember_user_token=${rememberUserToken}; _address_core_session=${addressCoreSession}`;
 };

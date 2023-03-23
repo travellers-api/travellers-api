@@ -1,3 +1,5 @@
+import fetch from 'node-fetch';
+import { userAgent } from '../../client/user-agent';
 import { fetchToken, fetchCookie } from './fetchers';
 
 export const getCookie = async ({ email, password }: { email: string; password: string }): Promise<string> => {
@@ -9,4 +11,17 @@ export const getCookie = async ({ email, password }: { email: string; password: 
     password,
   });
   return cookie;
+};
+
+export const checkValidityCookie = async (cookie: string): Promise<boolean> => {
+  const res = await fetch('https://address.love/mypage/profile', {
+    method: 'HEAD',
+    headers: {
+      cookie,
+      'User-Agent': userAgent,
+    },
+    redirect: 'manual',
+  });
+  const location = res.headers.get('location');
+  return !location;
 };

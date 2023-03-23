@@ -1,6 +1,8 @@
 import fetch from 'node-fetch';
+import { setCookieStringToMap } from '../../../utils/cookie';
 import { userAgent } from '../../client/user-agent';
-import { cookieStringToMap, mergeCookie } from './utils';
+import { ignoreCookieKeys } from './constants';
+import { mergeCookie } from './utils';
 
 export const fetchAikotobaCookie = async (aikotoba: string): Promise<string> => {
   const body = new URLSearchParams();
@@ -97,7 +99,7 @@ export const fetchUserCookie = async (email: string, password: string): Promise<
   });
   cookie = mergeCookie(res6.headers.get('set-cookie'), cookie);
 
-  const sessionId = cookieStringToMap(cookie).get('PHPSESSID');
+  const sessionId = setCookieStringToMap(cookie, ignoreCookieKeys).get('PHPSESSID');
   if (!sessionId) {
     throw new Error('cookie is not set.');
   }
