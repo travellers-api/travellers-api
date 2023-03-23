@@ -15,6 +15,7 @@ export const getCookie = async ({ email, password }: { email: string; password: 
 
 export const checkValidityCookie = async (cookie: string): Promise<boolean> => {
   const res = await fetch('https://address.love/mypage/profile', {
+    method: 'HEAD',
     headers: {
       cookie,
       'User-Agent': userAgent,
