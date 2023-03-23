@@ -13,9 +13,9 @@ export const parseReservations = (html: string): Reservation[] => {
     const $target = $(elm);
     return {
       id: $target.find('.btn.btn-white.btn-single').attr('href')?.replace('/reservations/', '') ?? '',
+      status: parseStatus($target.find('h4 + p').text()),
       checkInDate: parseDate($target.find('li:nth-child(1)').text()),
       checkOutDate: parseDate($target.find('li:nth-child(2)').text()),
-      status: parseStatus($target.find('h4 + p').text()),
       home: {
         id: $target.find('h4 a').attr('href')?.replace('/homes/', '') ?? '',
         name: $target.find('h4 a').text(),

@@ -3,8 +3,8 @@ import { getCookie } from '../modules/address/authentication';
 import { Home } from '../modules/address/home/types';
 import { getReservations } from '../modules/address/reservation';
 import { Reservation } from '../modules/address/reservation/types';
-import { getAddressSecret, setAddressSecret } from '../modules/firestore';
 import { getHomes } from '../modules/firestore/cachedAddressHomes';
+import { getSecret, updateSecret } from '../modules/firestore/secret/address';
 
 export const addressApp = express();
 
@@ -41,11 +41,11 @@ addressApp.get<
 >('/address/users/:screenName/reservations', async (req, res) => {
   try {
     const { screenName } = req.params;
-    const secret = await getAddressSecret(screenName);
+    const secret = await getSecret(screenName);
     const cookie =
       secret.cookie ||
       (await getCookie(secret).then(async (cookie) => {
-        await setAddressSecret(screenName, { cookie });
+        await updateSecret(screenName, { cookie });
         return cookie;
       }));
 

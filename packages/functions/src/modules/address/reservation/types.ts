@@ -1,8 +1,8 @@
 export type Reservation = {
   id: string;
+  status: 'pending' | 'approved' | 'staying' | 'stayed' | 'canceled' | null;
   checkInDate: string;
   checkOutDate: string;
-  status: 'pending' | 'approved' | 'staying' | 'stayed' | 'canceled' | null;
   home: {
     id: string;
     name: string;
