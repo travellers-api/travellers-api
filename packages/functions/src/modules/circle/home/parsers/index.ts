@@ -1,17 +1,6 @@
 import * as cheerio from 'cheerio';
+import { parseHotelTitle } from '../../shared/hotel-title/parsers';
 import { Home } from '../types';
-
-const parseTitle = (title: string): Pick<Home, 'name' | 'city' | 'roomType' | 'sex'> => {
-  const name = title.replace(/^【.+】/, '').trim();
-  const matches = title.match(/^【(.+?)?\/(.+?)?(（(.+?)）)?】/);
-
-  return {
-    name,
-    city: matches?.[1]?.trim() ?? '',
-    roomType: matches?.[2]?.trim() ?? '',
-    sex: matches?.[4]?.trim() ?? null,
-  };
-};
 
 export const parseHomesPage = (html: string): Home[] => {
   const $ = cheerio.load(html);
@@ -28,7 +17,7 @@ export const parseHomesPage = (html: string): Home[] => {
           ?.replace(/^hotel_no_/, '') ?? ''
       );
       const id = $home.find('[id^="hotel_no_"]').attr('value') ?? '';
-      const { name, city, roomType, sex } = parseTitle($home.find('.title').text());
+      const { name, city, roomType } = parseHotelTitle($home.find('.title').text());
       const tags = $home
         .find('.info span')
         .get()
@@ -40,7 +29,6 @@ export const parseHomesPage = (html: string): Home[] => {
         name,
         city,
         roomType,
-        sex,
         tags,
       };
       return home;
