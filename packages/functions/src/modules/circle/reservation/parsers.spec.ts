@@ -101,6 +101,30 @@ reserve_cancel('28911154', '1', '0', '221146', '0');">
 </span>
 </td>
 </tr>
+<tr onclick="javascript:redirectOnce('2aeJwzsrA0NDAyNAQAB1QBmQ');" id="tr_28910211"  class="data_tr cancel" >
+<td class="day">2023/04/13～<br>2023/04/17</td>
+
+<td class="shop_name">【会員様専用】拠点予約サイト</td>
+
+<td class="name">
+      【岡山県岡山市 / 相部屋（男女共用）】KAMP
+  </td>
+
+<td>
+                </td>
+
+<td class="status last">
+<span class="fixed" id="span_status0_28910211">
+          キャンセル
+
+
+</span>
+
+  </td>
+
+<td class="edit last">
+  </td>
+</tr>
 
 </tbody>
 </table>`;
@@ -108,21 +132,21 @@ reserve_cancel('28911154', '1', '0', '221146', '0');">
 test('parseReservations', () => {
   expect(parseReservations(html)).toEqual([
     {
-      id: '28911238',
-      status: '予約確定',
-      startDate: '2023-04-10',
-      endDate: '2023-04-16',
+      id: '28911154',
+      status: 'approved',
+      checkInDate: '2023-04-01',
+      checkOutDate: '2023-04-05',
       hotel: {
-        name: 'Little Okawood',
-        city: '福岡県大川市',
-        roomType: '相部屋（男女共用）',
+        name: '日本宿屋168',
+        city: '大阪府豊中市',
+        roomType: '相部屋（男性専用）',
       },
     },
     {
       id: '28911159',
-      status: '予約確定',
-      startDate: '2023-04-05',
-      endDate: '2023-04-09',
+      status: 'approved',
+      checkInDate: '2023-04-05',
+      checkOutDate: '2023-04-09',
       hotel: {
         name: 'KAMP',
         city: '岡山県岡山市',
@@ -130,14 +154,25 @@ test('parseReservations', () => {
       },
     },
     {
-      id: '28911154',
-      status: '予約確定',
-      startDate: '2023-04-01',
-      endDate: '2023-04-05',
+      id: '28911238',
+      status: 'approved',
+      checkInDate: '2023-04-10',
+      checkOutDate: '2023-04-16',
       hotel: {
-        name: '日本宿屋168',
-        city: '大阪府豊中市',
-        roomType: '相部屋（男性専用）',
+        name: 'Little Okawood',
+        city: '福岡県大川市',
+        roomType: '相部屋（男女共用）',
+      },
+    },
+    {
+      id: '28910211',
+      status: 'canceled',
+      checkInDate: '2023-04-13',
+      checkOutDate: '2023-04-17',
+      hotel: {
+        name: 'KAMP',
+        city: '岡山県岡山市',
+        roomType: '相部屋（男女共用）',
       },
     },
   ]);
