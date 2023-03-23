@@ -1,10 +1,10 @@
 export const cookieStringToMap = (cookie: string): Map<string, string> => {
   const cookieMap = new Map();
   cookie
-    .split('; ')
+    .split(';')
     .filter(Boolean)
     .forEach((cookie) => {
-      const [key, value] = cookie.split('=');
+      const [key, value] = cookie.trim().split('=');
       key && value && cookieMap.set(key, value);
     });
   return cookieMap;
@@ -14,7 +14,7 @@ export const setCookieStringToMap = (setCookie: string, ignoreKeys: string[] = [
   const cookieMap = new Map();
   const matches = setCookie.match(/[^\s()<>@,;:\\"/[\]?={}]+=[^\s,;\\]+/g) || [];
   matches.forEach((cookie) => {
-    const [, key, value] = cookie.match('^(.+)=(.+)$') || [];
+    const [, key, value] = cookie.trim().match('^(.+)=(.+)$') || [];
     if (!key || !value) {
       return;
     }
