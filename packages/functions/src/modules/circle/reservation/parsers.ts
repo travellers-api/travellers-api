@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { parseHomeTitle } from '../shared/house-title/parsers';
+import { parseHomeTitle } from '../shared/home-title/parsers';
 import { Reservation } from './types';
 
 export const parseReservations = (html: string): Reservation[] => {
@@ -13,14 +13,14 @@ export const parseReservations = (html: string): Reservation[] => {
       const [checkInDate = '', checkOutDate = ''] = dateText.split('～').map((date) => date.replace(/\n/g, ''));
 
       const title = $element.find('.name').text().trim();
-      const house = parseHomeTitle(title);
+      const home = parseHomeTitle(title);
 
       const reservation: Reservation = {
         id,
         status: parseStatus($element.find('.status span').text().trim()),
         checkInDate,
         checkOutDate,
-        house,
+        home,
       };
 
       return reservation;

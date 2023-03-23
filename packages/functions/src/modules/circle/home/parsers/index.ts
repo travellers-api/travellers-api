@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { parseHomeTitle } from '../../shared/house-title/parsers';
+import { parseHomeTitle } from '../../shared/home-title/parsers';
 import { Home } from '../types';
 
 export const parseHomesPage = (html: string): Home[] => {
