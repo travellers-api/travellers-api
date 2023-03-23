@@ -1,9 +1,9 @@
-import { Home } from '../shared/house-title/types';
+import { Home } from '../shared/home-title/types';
 
 export type Reservation = {
   id: string;
   status: 'pending' | 'approved' | 'staying' | 'stayed' | 'canceled' | null;
   checkInDate: string;
   checkOutDate: string;
-  house: Home;
+  home: Home;
 };

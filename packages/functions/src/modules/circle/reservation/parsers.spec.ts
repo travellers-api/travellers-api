@@ -136,7 +136,7 @@ test('parseReservations', () => {
       status: 'approved',
       checkInDate: '2023-04-01',
       checkOutDate: '2023-04-05',
-      house: {
+      home: {
         name: '日本宿屋168',
         city: '大阪府豊中市',
         roomType: '相部屋（男性専用）',
@@ -147,7 +147,7 @@ test('parseReservations', () => {
       status: 'approved',
       checkInDate: '2023-04-05',
       checkOutDate: '2023-04-09',
-      house: {
+      home: {
         name: 'KAMP',
         city: '岡山県岡山市',
         roomType: '相部屋（男女共用）',
@@ -158,7 +158,7 @@ test('parseReservations', () => {
       status: 'approved',
       checkInDate: '2023-04-10',
       checkOutDate: '2023-04-16',
-      house: {
+      home: {
         name: 'Little Okawood',
         city: '福岡県大川市',
         roomType: '相部屋（男女共用）',
@@ -169,7 +169,7 @@ test('parseReservations', () => {
       status: 'canceled',
       checkInDate: '2023-04-13',
       checkOutDate: '2023-04-17',
-      house: {
+      home: {
         name: 'KAMP',
         city: '岡山県岡山市',
         roomType: '相部屋（男女共用）',
