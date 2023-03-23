@@ -1,10 +1,10 @@
 import * as express from 'express';
-import { getUserCookie } from '../modules/circle/authentication';
+import { checkValidityCookie, getUserCookie } from '../modules/circle/authentication';
 import { getReservations } from '../modules/circle/reservation';
 import { Reservation } from '../modules/circle/reservation/types';
 import { getHomes } from '../modules/firestore/cachedCircleHomes';
 import { CachedCircleHome } from '../modules/firestore/cachedCircleHomes/types';
-import { getSecret } from '../modules/firestore/secret/circle';
+import { getSecret, updateSecret } from '../modules/firestore/secret/circle';
 
 export const circleApp = express();
 
@@ -19,7 +19,16 @@ circleApp.get<
   try {
     const { screenName } = req.params;
     const secret = await getSecret(screenName);
-    const cookie = secret.cookie || (await getUserCookie({ email: secret.email, password: secret.password }));
+    const cookie = await checkValidityCookie(secret.cookie)
+      .then((isValid) => {
+        if (isValid) return secret.cookie;
+        throw new Error();
+      })
+      .catch(() => getUserCookie({ email: secret.email, password: secret.password }))
+      .then(async (cookie) => {
+        await updateSecret(screenName, { cookie });
+        return cookie;
+      });
 
     const reservations = await getReservations(cookie);
     res.json({ reservations });
