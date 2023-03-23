@@ -1,6 +1,6 @@
 import { useVirtual } from '@tanstack/react-virtual';
 import classNames from 'classnames';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { LabelText } from '../../components/address-calendar/LabelText';
 import { Home } from '../../lib/circle/calendar/types';
 
@@ -116,7 +116,6 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                       <div className="itesm-center flex gap-4">
                         <LabelText className="shrink-0">{home.city}</LabelText>
                         <LabelText className="shrink-0">{home.roomType}</LabelText>
-                        {home.sex && <LabelText className="shrink-0">{home.sex}</LabelText>}
                         {home.tags.map((tag, i) => (
                           <LabelText key={i} className="shrink-0">
                             {tag}
