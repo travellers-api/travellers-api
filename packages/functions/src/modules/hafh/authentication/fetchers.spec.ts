@@ -1,18 +1,17 @@
-import { verifyPassword } from './fetchers';
+import { checkValidityToken, getAccountInfo, verifyPassword } from './fetchers';
 
-describe('verifyPassword', () => {
+describe('一連', () => {
   test('ログインできる', async () => {
-    const json = await verifyPassword(process.env.HAFH_EMAIL || '', process.env.HAFH_PASSWORD || '');
-    expect(Object.keys(json)).toEqual([
-      'kind',
-      'localId',
-      'email',
-      'displayName',
-      'idToken',
-      'registered',
-      'profilePicture',
-      'refreshToken',
-      'expiresIn',
-    ]);
+    const verifyPasswordRes = await verifyPassword(process.env.HAFH_EMAIL || '', process.env.HAFH_PASSWORD || '');
+    const getAccountInfoRes = await getAccountInfo(verifyPasswordRes.idToken);
+    const isValid = await checkValidityToken(getAccountInfoRes.users[0].localId, verifyPasswordRes.idToken);
+    expect(isValid).toBe(true);
+  });
+});
+
+describe('checkValidityToken', () => {
+  test('適当なToken', async () => {
+    const isValid = await checkValidityToken('abcde12345', 'aiueo12345');
+    expect(isValid).toBe(false);
   });
 });
