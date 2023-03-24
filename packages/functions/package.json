@@ -7,8 +7,8 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc --watch",
+    "build": "rimraf lib && tsc",
+    "build:watch": "rimraf lib && tsc --watch",
     "serve": "yarn build && firebase emulators:start --only functions",
     "shell": "yarn build && firebase functions:shell",
     "start": "yarn shell",
