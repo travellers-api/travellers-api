@@ -3,7 +3,9 @@ import { QuerySnapshot } from 'firebase-admin/firestore';
 import { firestore } from '../../firebase';
 import { CachedCircleHome } from './types';
 
-const collection = firestore.collection('cachedCircleHomes');
+export const collectionId = 'cachedCircleHomes';
+
+const collection = firestore.collection(collectionId);
 
 export const setHome = async (id: string, data: CachedCircleHome): Promise<void> => {
   await collection.doc(id).set(data);

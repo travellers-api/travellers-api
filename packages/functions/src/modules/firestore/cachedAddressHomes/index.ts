@@ -1,9 +1,11 @@
 /* eslint-disable-next-line import/no-unresolved */
 import { QuerySnapshot } from 'firebase-admin/firestore';
-import { Home } from '../address/home/types';
-import { firestore } from '../firebase';
+import { Home } from '../../address/home/types';
+import { firestore } from '../../firebase';
 
-const collection = firestore.collection('cachedAddressHomes');
+export const collectionId = 'cachedAddressHomes';
+
+const collection = firestore.collection(collectionId);
 
 export const setHome = async (id: string, data: Home): Promise<void> => {
   await collection.doc(id).set(data);
