@@ -1,14 +1,16 @@
 import * as express from 'express';
+import * as functions from 'firebase-functions';
 import { checkValidityCookie, getCookie } from '../../modules/address/authentication';
 import { Home } from '../../modules/address/home/types';
 import { getReservations } from '../../modules/address/reservation';
 import { Reservation } from '../../modules/address/reservation/types';
 import { getHomes } from '../../modules/firestore/cachedAddressHomes';
 import { getSecret, updateSecret } from '../../modules/firestore/secret/address';
+import { defaultRegion } from '../../modules/functions/constants';
 
-export const addressApp = express();
+export const app = express();
 
-addressApp.get<
+app.get<
   undefined,
   {
     reservations: Reservation[];
@@ -31,7 +33,7 @@ addressApp.get<
   }
 });
 
-addressApp.get<
+app.get<
   {
     screenName: string;
   },
@@ -64,7 +66,7 @@ addressApp.get<
   }
 });
 
-addressApp.get<
+app.get<
   undefined,
   {
     homes: Omit<Home, 'address'>[];
@@ -78,3 +80,5 @@ addressApp.get<
     res.status(500).end();
   }
 });
+
+export const api = functions.region(defaultRegion).https.onRequest(app);
