@@ -7,7 +7,7 @@ type AddressReservation = {
   id: string;
   checkInDate: string;
   checkOutDate: string;
-  status: 'pending' | 'approved' | 'staying' | 'stayed' | 'canceled' | null;
+  status: 'pending' | 'approved' | 'staying' | 'stayed' | 'canceled' | 'rejected' | null;
   home: {
     id: string;
     name: string;
@@ -17,7 +17,7 @@ type AddressReservation = {
 
 type CircleReservation = {
   id: string;
-  status: 'pending' | 'approved' | 'staying' | 'stayed' | 'canceled' | null;
+  status: 'pending' | 'approved' | 'staying' | 'stayed' | 'canceled' | 'rejected' | null;
   checkInDate: string;
   checkOutDate: string;
   home: {
@@ -27,13 +27,28 @@ type CircleReservation = {
   };
 };
 
+type HafhReservation = {
+  id: string;
+  status: 'pending' | 'approved' | 'staying' | 'stayed' | 'canceled' | 'rejected' | null;
+  checkInDate: string;
+  checkOutDate: string;
+  home: {
+    name: string;
+    city: string;
+  };
+};
+
 export type Params = {
   screenName: string;
 };
 
 export type Props = {
   screenName: string;
-  reservations: ({ service: 'ADDress'; data: AddressReservation } | { service: 'circle'; data: CircleReservation })[];
+  reservations: (
+    | { service: 'ADDress'; data: AddressReservation }
+    | { service: 'circle'; data: CircleReservation }
+    | { service: 'HafH'; data: HafhReservation }
+  )[];
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = () => {
@@ -52,7 +67,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
     };
   }
 
-  const [address, circle] = await Promise.all([
+  const [address, circle, hafh] = await Promise.all([
     fetch(`https://api.traveller-api.amon.dev/address/users/${screenName}/reservations`).then(async (res) => {
       const { reservations } = (await res.json()) as { reservations: AddressReservation[] };
       return { ok: res.ok, reservations };
@@ -61,9 +76,13 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
       const { reservations } = (await res.json()) as { reservations: CircleReservation[] };
       return { ok: res.ok, reservations };
     }),
+    fetch(`https://api.traveller-api.amon.dev/hafh/users/${screenName}/reservations`).then(async (res) => {
+      const { reservations } = (await res.json()) as { reservations: HafhReservation[] };
+      return { ok: res.ok, reservations };
+    }),
   ]);
 
-  if (!address.ok && !circle.ok) {
+  if (!address.ok && !circle.ok && !hafh.ok) {
     return {
       notFound: true,
       revalidate: 0,
@@ -75,6 +94,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
     reservations: [
       ...address.reservations.map((data) => ({ service: 'ADDress' as const, data })),
       ...circle.reservations.map((data) => ({ service: 'circle' as const, data })),
+      ...hafh.reservations.map((data) => ({ service: 'HafH' as const, data })),
     ]
       .sort((a, z) => (a.data.checkInDate > z.data.checkInDate ? 1 : -1))
       .filter((reservation) => reservation.data.status === 'approved' || reservation.data.status === 'staying'),

@@ -3,6 +3,7 @@ import { addressApp } from './handlers/address';
 import { circleApp } from './handlers/circle';
 import { crawlAddressHomesHandler } from './handlers/crawlAddressHomes';
 import { crawlCircleHomesHandler } from './handlers/crawlCircleHomes';
+import { hafhApp } from './handlers/hafh';
 
 export const address = functions.region('asia-northeast1').https.onRequest(addressApp);
 export const crawlAddressHomes = functions
@@ -16,3 +17,5 @@ export const crawlCircleHomes = functions
   .runWith({ secrets: ['CIRCLE_AIKOTOBA'] })
   .pubsub.schedule('0 * * * *')
   .onRun(crawlCircleHomesHandler);
+
+export const hafh = functions.region('asia-northeast1').https.onRequest(hafhApp);
