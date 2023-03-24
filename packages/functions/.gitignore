@@ -1,3 +1,5 @@
+.env.test
+
 # Compiled JavaScript files
 lib/**/*.js
 lib/**/*.js.map

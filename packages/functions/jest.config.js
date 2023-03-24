@@ -4,5 +4,5 @@ module.exports = {
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
-  setupFiles: ['dotenv/config'],
+  setupFiles: ['<rootDir>/dotenv-config.js'],
 };
