@@ -41,12 +41,3 @@ export const getAccountInfo = async (idToken: string): Promise<GetAccountInfoRes
   const json = (await res.json()) as GetAccountInfoResponse;
   return json;
 };
-
-export const checkValidityToken = async (id: string, token: string): Promise<boolean> => {
-  const res = await fetch(`https://www.hafh.com/api/neighbors/${id}`, {
-    headers: {
-      authorization: `Bearer ${token}`,
-    },
-  });
-  return res.status === 200;
-};

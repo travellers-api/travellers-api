@@ -12,33 +12,31 @@ export type VerifyPasswordResponse = {
 
 export type GetAccountInfoResponse = {
   kind: 'identitytoolkit#GetAccountInfoResponse';
-  users: [
-    {
-      localId: string;
-      email: string;
-      photoUrl: string;
-      passwordHash: string;
-      emailVerified: true;
-      passwordUpdatedAt: number;
-      providerUserInfo: (
-        | {
-            providerId: 'phone';
-            rawId: string;
-            phoneNumber: string;
-          }
-        | {
-            providerId: 'password';
-            photoUrl: string;
-            federatedId: string;
-            email: string;
-            rawId: string;
-          }
-      )[];
-      validSince: string;
-      lastLoginAt: string;
-      createdAt: string;
-      phoneNumber: string;
-      lastRefreshAt: string;
-    }
-  ];
+  users: {
+    localId: string;
+    email: string;
+    photoUrl: string;
+    passwordHash: string;
+    emailVerified: true;
+    passwordUpdatedAt: number;
+    providerUserInfo: (
+      | {
+          providerId: 'phone';
+          rawId: string;
+          phoneNumber: string;
+        }
+      | {
+          providerId: 'password';
+          photoUrl: string;
+          federatedId: string;
+          email: string;
+          rawId: string;
+        }
+    )[];
+    validSince: string;
+    lastLoginAt: string;
+    createdAt: string;
+    phoneNumber: string;
+    lastRefreshAt: string;
+  }[];
 };
