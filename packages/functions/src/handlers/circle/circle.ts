@@ -1,10 +1,10 @@
 import * as express from 'express';
-import { checkValidityCookie, getUserCookie } from '../modules/circle/authentication';
-import { getReservations } from '../modules/circle/reservation';
-import { Reservation } from '../modules/circle/reservation/types';
-import { getHomes } from '../modules/firestore/cachedCircleHomes';
-import { CachedCircleHome } from '../modules/firestore/cachedCircleHomes/types';
-import { getSecret, updateSecret } from '../modules/firestore/secret/circle';
+import { checkValidityCookie, getUserCookie } from '../../modules/circle/authentication';
+import { getReservations } from '../../modules/circle/reservation';
+import { Reservation } from '../../modules/circle/reservation/types';
+import { getHomes } from '../../modules/firestore/cachedCircleHomes';
+import { CachedCircleHome } from '../../modules/firestore/cachedCircleHomes/types';
+import { getSecret, updateSecret } from '../../modules/firestore/secret/circle';
 
 export const circleApp = express();
 

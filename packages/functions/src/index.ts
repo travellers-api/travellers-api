@@ -1,9 +1,9 @@
 import * as functions from 'firebase-functions';
-import { addressApp } from './handlers/address';
-import { circleApp } from './handlers/circle';
-import { crawlAddressHomesHandler } from './handlers/crawlAddressHomes';
-import { crawlCircleHomesHandler } from './handlers/crawlCircleHomes';
-import { hafhApp } from './handlers/hafh';
+import { addressApp } from './handlers/address/address';
+import { crawlAddressHomesHandler } from './handlers/address/crawlAddressHomes';
+import { circleApp } from './handlers/circle/circle';
+import { crawlCircleHomesHandler } from './handlers/circle/crawlCircleHomes';
+import { hafhApp } from './handlers/hafh/hafh';
 import { defaultRegion } from './modules/functions/constants';
 
 export const address = functions.region(defaultRegion).https.onRequest(addressApp);

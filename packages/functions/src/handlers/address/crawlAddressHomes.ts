@@ -1,9 +1,9 @@
 /* eslint-disable-next-line import/no-unresolved */
 import { ScheduleBuilder } from 'firebase-functions/v1/pubsub';
-import { getCookie } from '../modules/address/authentication';
-import { getHome } from '../modules/address/home';
-import { deleteHome, setHome } from '../modules/firestore/cachedAddressHomes';
-import { getSecret, updateSecret } from '../modules/firestore/secret/address';
+import { getCookie } from '../../modules/address/authentication';
+import { getHome } from '../../modules/address/home';
+import { deleteHome, setHome } from '../../modules/firestore/cachedAddressHomes';
+import { getSecret, updateSecret } from '../../modules/firestore/secret/address';
 
 const MAX_COUNT = 480;
 

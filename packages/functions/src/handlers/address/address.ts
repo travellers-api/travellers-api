@@ -1,10 +1,10 @@
 import * as express from 'express';
-import { checkValidityCookie, getCookie } from '../modules/address/authentication';
-import { Home } from '../modules/address/home/types';
-import { getReservations } from '../modules/address/reservation';
-import { Reservation } from '../modules/address/reservation/types';
-import { getHomes } from '../modules/firestore/cachedAddressHomes';
-import { getSecret, updateSecret } from '../modules/firestore/secret/address';
+import { checkValidityCookie, getCookie } from '../../modules/address/authentication';
+import { Home } from '../../modules/address/home/types';
+import { getReservations } from '../../modules/address/reservation';
+import { Reservation } from '../../modules/address/reservation/types';
+import { getHomes } from '../../modules/firestore/cachedAddressHomes';
+import { getSecret, updateSecret } from '../../modules/firestore/secret/address';
 
 export const addressApp = express();
 

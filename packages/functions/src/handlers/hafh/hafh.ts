@@ -1,8 +1,8 @@
 import * as express from 'express';
-import { getSecret, updateSecret } from '../modules/firestore/secret/hafh';
-import { checkValidityToken, getIdAndToken } from '../modules/hafh/authentication';
-import { getReservations } from '../modules/hafh/reservation';
-import { Reservation } from '../modules/hafh/reservation/types';
+import { getSecret, updateSecret } from '../../modules/firestore/secret/hafh';
+import { checkValidityToken, getIdAndToken } from '../../modules/hafh/authentication';
+import { getReservations } from '../../modules/hafh/reservation';
+import { Reservation } from '../../modules/hafh/reservation/types';
 
 export const hafhApp = express();
 
