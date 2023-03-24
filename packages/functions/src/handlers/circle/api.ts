@@ -8,7 +8,7 @@ import { CachedCircleHome } from '../../modules/firestore/cachedCircleHomes/type
 import { getSecret, updateSecret } from '../../modules/firestore/secret/circle';
 import { defaultRegion } from '../../modules/functions/constants';
 
-export const app = express();
+const app = express();
 
 app.get<
   {

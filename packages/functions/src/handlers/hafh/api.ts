@@ -6,7 +6,7 @@ import { checkValidityToken, getIdAndToken } from '../../modules/hafh/authentica
 import { getReservations } from '../../modules/hafh/reservation';
 import { Reservation } from '../../modules/hafh/reservation/types';
 
-export const app = express();
+const app = express();
 
 app.get<
   {

@@ -8,7 +8,7 @@ import { getHomes } from '../../modules/firestore/cachedAddressHomes';
 import { getSecret, updateSecret } from '../../modules/firestore/secret/address';
 import { defaultRegion } from '../../modules/functions/constants';
 
-export const app = express();
+const app = express();
 
 app.get<
   undefined,
