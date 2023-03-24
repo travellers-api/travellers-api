@@ -1,5 +1,6 @@
 export type HafhSecret = {
   email: string;
   password: string;
-  cookie: string;
+  id: string;
+  token: string;
 };

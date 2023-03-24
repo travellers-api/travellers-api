@@ -12,6 +12,11 @@
           "source": "/circle/**",
           "function": "circle",
           "region": "asia-northeast1"
+        },
+        {
+          "source": "/hafh/**",
+          "function": "hafh",
+          "region": "asia-northeast1"
         }
       ]
     }

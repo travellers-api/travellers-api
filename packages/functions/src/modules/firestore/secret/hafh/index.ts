@@ -19,7 +19,7 @@ export const updateSecret = async (screenName: string, secret: Partial<HafhSecre
   const uid = screenNameDocumentSnapshot.get('uid');
 
   const dataObj: Partial<Record<`hafh.${keyof HafhSecret}`, string>> = {};
-  const keys: (keyof HafhSecret)[] = ['email', 'password', 'cookie'];
+  const keys: (keyof HafhSecret)[] = ['email', 'password', 'id', 'token'];
   keys.forEach((key) => {
     if (key in secret) {
       dataObj[`hafh.${key}`] = secret[key];
