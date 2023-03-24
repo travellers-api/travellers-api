@@ -4,18 +4,19 @@ import { circleApp } from './handlers/circle';
 import { crawlAddressHomesHandler } from './handlers/crawlAddressHomes';
 import { crawlCircleHomesHandler } from './handlers/crawlCircleHomes';
 import { hafhApp } from './handlers/hafh';
+import { defaultRegion } from './modules/functions/constants';
 
-export const address = functions.region('asia-northeast1').https.onRequest(addressApp);
+export const address = functions.region(defaultRegion).https.onRequest(addressApp);
 export const crawlAddressHomes = functions
-  .region('asia-northeast1')
+  .region(defaultRegion)
   .pubsub.schedule('* * * * *')
   .onRun(crawlAddressHomesHandler);
 
-export const circle = functions.region('asia-northeast1').https.onRequest(circleApp);
+export const circle = functions.region(defaultRegion).https.onRequest(circleApp);
 export const crawlCircleHomes = functions
-  .region('asia-northeast1')
+  .region(defaultRegion)
   .runWith({ secrets: ['CIRCLE_AIKOTOBA'] })
   .pubsub.schedule('0 * * * *')
   .onRun(crawlCircleHomesHandler);
 
-export const hafh = functions.region('asia-northeast1').https.onRequest(hafhApp);
+export const hafh = functions.region(defaultRegion).https.onRequest(hafhApp);
