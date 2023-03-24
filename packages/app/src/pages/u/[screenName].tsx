@@ -47,7 +47,7 @@ export type Props = {
   reservations: (
     | { service: 'ADDress'; data: AddressReservation }
     | { service: 'circle'; data: CircleReservation }
-    | { service: 'hafh'; data: HafhReservation }
+    | { service: 'HafH'; data: HafhReservation }
   )[];
 };
 
@@ -94,7 +94,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
     reservations: [
       ...address.reservations.map((data) => ({ service: 'ADDress' as const, data })),
       ...circle.reservations.map((data) => ({ service: 'circle' as const, data })),
-      ...hafh.reservations.map((data) => ({ service: 'hafh' as const, data })),
+      ...hafh.reservations.map((data) => ({ service: 'HafH' as const, data })),
     ]
       .sort((a, z) => (a.data.checkInDate > z.data.checkInDate ? 1 : -1))
       .filter((reservation) => reservation.data.status === 'approved' || reservation.data.status === 'staying'),
