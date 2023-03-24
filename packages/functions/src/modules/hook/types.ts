@@ -3,28 +3,28 @@ import { CachedCircleHome } from '../firestore/cachedCircleHomes/types';
 
 export type Hook =
   | {
-      type: 'address.home.create';
+      topic: 'address.home.create';
       data: {
         id: Home['id'];
         name: Home['name'];
       };
     }
   | {
-      type: 'address.home.delete';
+      topic: 'address.home.delete';
       data: {
         id: Home['id'];
         name: Home['name'];
       };
     }
   | {
-      type: 'circle.home.create';
+      topic: 'circle.home.create';
       data: {
         id: CachedCircleHome['id'];
         name: CachedCircleHome['name'];
       };
     }
   | {
-      type: 'circle.home.delete';
+      topic: 'circle.home.delete';
       data: {
         id: CachedCircleHome['id'];
         name: CachedCircleHome['name'];

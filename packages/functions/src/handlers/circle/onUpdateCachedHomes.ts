@@ -4,7 +4,7 @@ import { collectionId } from '../../modules/firestore/cachedCircleHomes';
 import { CachedCircleHome } from '../../modules/firestore/cachedCircleHomes/types';
 import { getWriteType } from '../../modules/firestore/write';
 import { defaultRegion } from '../../modules/functions/constants';
-import { publishHook } from '../../modules/hook';
+import { publishDispatchHook } from '../../modules/hook/dispatch-hook';
 
 export const onUpdateCachedHomes = functions
   .region(defaultRegion)
@@ -14,16 +14,16 @@ export const onUpdateCachedHomes = functions
 
     if (type === 'create') {
       const home = change.after.data() as CachedCircleHome;
-      await publishHook({
-        type: 'circle.home.create',
+      await publishDispatchHook({
+        topic: 'circle.home.create',
         data: pick(home, ['id', 'name']),
       });
       return;
     }
     if (type === 'delete') {
       const home = change.before.data() as CachedCircleHome;
-      await publishHook({
-        type: 'circle.home.delete',
+      await publishDispatchHook({
+        topic: 'circle.home.delete',
         data: pick(home, ['id', 'name']),
       });
       return;
