@@ -30,3 +30,10 @@ export type Hook =
         name: CachedCircleHome['name'];
       };
     };
+
+export type DispatchHookMessage = Hook;
+
+export type SendWebhookMessage = {
+  url: string;
+  hook: Hook;
+};
