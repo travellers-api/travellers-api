@@ -5,17 +5,17 @@
       "rewrites": [
         {
           "source": "/address/**",
-          "function": "address",
+          "function": "address-api",
           "region": "asia-northeast1"
         },
         {
           "source": "/circle/**",
-          "function": "circle",
+          "function": "circle-api",
           "region": "asia-northeast1"
         },
         {
           "source": "/hafh/**",
-          "function": "hafh",
+          "function": "hafh-api",
           "region": "asia-northeast1"
         }
       ]

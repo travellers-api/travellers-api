@@ -1,14 +1,16 @@
 import * as express from 'express';
-import { checkValidityCookie, getUserCookie } from '../modules/circle/authentication';
-import { getReservations } from '../modules/circle/reservation';
-import { Reservation } from '../modules/circle/reservation/types';
-import { getHomes } from '../modules/firestore/cachedCircleHomes';
-import { CachedCircleHome } from '../modules/firestore/cachedCircleHomes/types';
-import { getSecret, updateSecret } from '../modules/firestore/secret/circle';
+import * as functions from 'firebase-functions';
+import { checkValidityCookie, getUserCookie } from '../../modules/circle/authentication';
+import { getReservations } from '../../modules/circle/reservation';
+import { Reservation } from '../../modules/circle/reservation/types';
+import { getHomes } from '../../modules/firestore/cachedCircleHomes';
+import { CachedCircleHome } from '../../modules/firestore/cachedCircleHomes/types';
+import { getSecret, updateSecret } from '../../modules/firestore/secret/circle';
+import { defaultRegion } from '../../modules/functions/constants';
 
-export const circleApp = express();
+const app = express();
 
-circleApp.get<
+app.get<
   {
     screenName: string;
   },
@@ -41,7 +43,7 @@ circleApp.get<
   }
 });
 
-circleApp.get<
+app.get<
   undefined,
   {
     homes: CachedCircleHome[];
@@ -55,3 +57,5 @@ circleApp.get<
     res.status(500).end();
   }
 });
+
+export const api = functions.region(defaultRegion).https.onRequest(app);
