@@ -1,6 +1,6 @@
+import { Home } from '@traveller-api/address-fetcher/lib/core/home/types';
 import * as functions from 'firebase-functions';
 import { pick } from 'lodash';
-import { Home } from '../../modules/address/home/types';
 import { collectionId } from '../../modules/firestore/cachedAddressHomes';
 import { getWriteType } from '../../modules/firestore/write';
 import { defaultRegion } from '../../modules/functions/constants';

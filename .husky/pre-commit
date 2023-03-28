@@ -3,4 +3,5 @@
 
 yarn workspace @traveller-api/app lint-staged
 yarn workspace @traveller-api/functions lint-staged
+yarn workspace @traveller-api/address-fetcher lint-staged
 yarn workspace @traveller-api/circle-fetcher lint-staged

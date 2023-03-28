@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { userAgent } from '../../client/user-agent';
+import { userAgent } from '../../constants';
 import { fetchToken, fetchCookie } from './fetchers';
 
 export const getCookie = async ({ email, password }: { email: string; password: string }): Promise<string> => {

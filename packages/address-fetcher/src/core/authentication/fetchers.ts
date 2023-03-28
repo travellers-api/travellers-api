@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
-import { setCookieStringToMap } from '../../../utils/cookie';
-import { userAgent } from '../../client/user-agent';
+import { userAgent } from '../../constants';
+import { setCookieStringToMap } from '../../utils/cookie';
 import { parseToken } from './parsers';
 
 export const fetchToken = async (): Promise<{

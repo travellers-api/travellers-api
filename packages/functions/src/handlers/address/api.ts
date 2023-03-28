@@ -1,9 +1,9 @@
+import { checkValidityCookie, getCookie } from '@traveller-api/address-fetcher/lib/core/authentication';
+import { Home } from '@traveller-api/address-fetcher/lib/core/home/types';
+import { getReservations } from '@traveller-api/address-fetcher/lib/core/reservation';
+import { Reservation } from '@traveller-api/address-fetcher/lib/core/reservation/types';
 import * as express from 'express';
 import * as functions from 'firebase-functions';
-import { checkValidityCookie, getCookie } from '../../modules/address/authentication';
-import { Home } from '../../modules/address/home/types';
-import { getReservations } from '../../modules/address/reservation';
-import { Reservation } from '../../modules/address/reservation/types';
 import { getHomes } from '../../modules/firestore/cachedAddressHomes';
 import { getSecret, updateSecret } from '../../modules/firestore/secret/address';
 import { defaultRegion } from '../../modules/functions/constants';
