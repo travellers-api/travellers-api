@@ -1,6 +1,6 @@
+import { getCookie } from '@traveller-api/address-fetcher/lib/core/authentication';
+import { getHome } from '@traveller-api/address-fetcher/lib/core/home';
 import * as functions from 'firebase-functions';
-import { getCookie } from '../../modules/address/authentication';
-import { getHome } from '../../modules/address/home';
 import { deleteHome, setHome } from '../../modules/firestore/cachedAddressHomes';
 import { getSecret, updateSecret } from '../../modules/firestore/secret/address';
 import { defaultRegion } from '../../modules/functions/constants';

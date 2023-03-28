@@ -1,4 +1,4 @@
-import { Home } from '../address/home/types';
+import { Home } from '@traveller-api/address-fetcher/lib/core/home/types';
 import { CachedCircleHome } from '../firestore/cachedCircleHomes/types';
 
 export type Hook =

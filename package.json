@@ -7,10 +7,14 @@
     "packages/**"
   ],
   "scripts": {
+    "build": "npx lerna run build",
+    "postbuild": "yarn bootstrap",
+    "bootstrap": "npx lerna bootstrap",
     "prepare": "husky install"
   },
   "devDependencies": {
     "husky": "^8.0.2",
+    "lerna": "^6.6.1",
     "lint-staged": "^13.0.3",
     "ts-node": "^10.9.1"
   }

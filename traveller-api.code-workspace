@@ -8,6 +8,15 @@
     },
     {
       "path": "packages/functions"
+    },
+    {
+      "path": "packages/address-fetcher"
+    },
+    {
+      "path": "packages/circle-fetcher"
+    },
+    {
+      "path": "packages/hafh-fetcher"
     }
   ],
   "settings": {
