@@ -1,10 +1,10 @@
+import { checkValidityToken, getIdAndToken } from '@traveller-api/hafh-fetcher/lib/core/authentication';
+import { getReservations } from '@traveller-api/hafh-fetcher/lib/core/reservation';
+import { Reservation } from '@traveller-api/hafh-fetcher/lib/core/reservation/types';
 import * as express from 'express';
 import * as functions from 'firebase-functions';
 import { getSecret, updateSecret } from '../../modules/firestore/secret/hafh';
 import { defaultRegion } from '../../modules/functions/constants';
-import { checkValidityToken, getIdAndToken } from '../../modules/hafh/authentication';
-import { getReservations } from '../../modules/hafh/reservation';
-import { Reservation } from '../../modules/hafh/reservation/types';
 
 const app = express();
 

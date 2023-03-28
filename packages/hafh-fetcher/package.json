@@ -1,5 +1,5 @@
 {
-  "name": "@traveller-api/functions",
+  "name": "@traveller-api/hafh-fetcher",
   "version": "0.0.0",
   "private": true,
   "engines": {
@@ -9,30 +9,17 @@
   "scripts": {
     "build": "rimraf lib && tsc",
     "build:watch": "rimraf lib && tsc --watch",
-    "serve": "yarn build && firebase emulators:start --only functions",
-    "shell": "yarn build && firebase functions:shell",
     "start": "yarn shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log",
     "lint": "eslint --ext .js,.ts .",
     "format": "prettier --write .",
     "test": "jest"
   },
   "dependencies": {
-    "@google-cloud/pubsub": "^3.4.1",
-    "@traveller-api/address-fetcher": "*",
-    "@traveller-api/circle-fetcher": "*",
-    "@traveller-api/hafh-fetcher": "*",
     "cheerio": "^1.0.0-rc.12",
-    "dayjs": "^1.11.6",
-    "firebase-admin": "^11.3.0",
-    "firebase-functions": "^4.1.0",
-    "lodash": "^4.17.21",
     "node-fetch": "2"
   },
   "devDependencies": {
     "@types/jest": "^29.2.3",
-    "@types/lodash": "^4.14.191",
     "@types/node-fetch": "^2.6.2",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
@@ -40,7 +27,6 @@
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
-    "firebase-functions-test": "^3.0.0",
     "jest": "^29.3.1",
     "prettier": "^2.7.1",
     "rimraf": "^4.4.1",

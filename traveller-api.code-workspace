@@ -14,6 +14,9 @@
     },
     {
       "path": "packages/circle-fetcher"
+    },
+    {
+      "path": "packages/hafh-fetcher"
     }
   ],
   "settings": {

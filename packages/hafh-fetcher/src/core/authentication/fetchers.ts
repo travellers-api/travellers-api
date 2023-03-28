@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { userAgent } from '../../client/user-agent';
+import { userAgent } from '../../constants';
 import { GetAccountInfoResponse, VerifyPasswordResponse } from './types';
 
 const key = 'AIzaSyCSllyHGPz2FNhRXnfDSpJ8M_NQAthIb-g';
