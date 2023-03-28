@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { userAgent } from '../../client/user-agent';
+import { userAgent } from '../../constants';
 import { parseHomeReservationStatusesPage } from './parsers';
 import { HomeReservationStatus } from './types';
 

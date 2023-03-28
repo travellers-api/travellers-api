@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@google-cloud/pubsub": "^3.4.1",
+    "@traveller-api/circle-fetcher": "*",
     "cheerio": "^1.0.0-rc.12",
     "dayjs": "^1.11.6",
     "firebase-admin": "^11.3.0",

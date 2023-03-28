@@ -1,8 +1,8 @@
+import { checkValidityCookie, getUserCookie } from '@traveller-api/circle-fetcher/lib/core/authentication';
+import { getReservations } from '@traveller-api/circle-fetcher/lib/core/reservation';
+import { Reservation } from '@traveller-api/circle-fetcher/lib/core/reservation/types';
 import * as express from 'express';
 import * as functions from 'firebase-functions';
-import { checkValidityCookie, getUserCookie } from '../../modules/circle/authentication';
-import { getReservations } from '../../modules/circle/reservation';
-import { Reservation } from '../../modules/circle/reservation/types';
 import { getHomes } from '../../modules/firestore/cachedCircleHomes';
 import { CachedCircleHome } from '../../modules/firestore/cachedCircleHomes/types';
 import { getSecret, updateSecret } from '../../modules/firestore/secret/circle';

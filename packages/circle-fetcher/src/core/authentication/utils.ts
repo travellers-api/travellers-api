@@ -1,4 +1,4 @@
-import { cookieStringToMap, setCookieStringToMap } from '../../../utils/cookie';
+import { cookieStringToMap, setCookieStringToMap } from '../../utils/cookie';
 import { ignoreCookieKeys } from './constants';
 
 export const mergeCookie = (setCookie: string | null, cookie = ''): string => {

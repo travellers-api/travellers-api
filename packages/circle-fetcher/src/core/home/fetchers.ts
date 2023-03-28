@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { userAgent } from '../../client/user-agent';
+import { userAgent } from '../../constants';
 import { parseHomesPage } from './parsers';
 
 export const fetchHomes = async (cookie: string): Promise<any> => {

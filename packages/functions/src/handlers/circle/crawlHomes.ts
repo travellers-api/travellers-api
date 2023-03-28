@@ -1,8 +1,8 @@
+import { getAikotobaCookie } from '@traveller-api/circle-fetcher/lib/core/authentication';
+import { getHomes } from '@traveller-api/circle-fetcher/lib/core/home';
+import { getHomeReservationStatuses } from '@traveller-api/circle-fetcher/lib/core/home-reservation-status';
 import * as dayjs from 'dayjs';
 import * as functions from 'firebase-functions';
-import { getAikotobaCookie } from '../../modules/circle/authentication';
-import { getHomes } from '../../modules/circle/home';
-import { getHomeReservationStatuses } from '../../modules/circle/home-reservation-status';
 import { setHome } from '../../modules/firestore/cachedCircleHomes';
 import { CachedCircleHome } from '../../modules/firestore/cachedCircleHomes/types';
 import { defaultRegion } from '../../modules/functions/constants';

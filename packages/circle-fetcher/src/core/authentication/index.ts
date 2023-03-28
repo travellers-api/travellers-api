@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { userAgent } from '../../client/user-agent';
+import { userAgent } from '../../constants';
 import { fetchAikotobaCookie, fetchUserCookie } from './fetchers';
 
 export const getAikotobaCookie = async (aikotoba: string): Promise<string> => {
