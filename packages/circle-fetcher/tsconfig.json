@@ -1,15 +1,7 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUncheckedIndexedAccess": true,
-    "outDir": "lib",
-    "sourceMap": true,
-    "strict": true,
-    "target": "es2017"
+    "outDir": "lib"
   },
-  "compileOnSave": true,
-  "include": ["src"],
-  "exclude": ["**/*.spec.ts"]
+  "include": ["src"]
 }

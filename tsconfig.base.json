@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "strict": true,
+    "sourceMap": false,
+    "declaration": true,
+    "outDir": "lib",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
