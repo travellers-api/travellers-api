@@ -7,6 +7,9 @@
     "packages/**"
   ],
   "scripts": {
+    "build": "npx lerna run build",
+    "postbuild": "yarn bootstrap",
+    "bootstrap": "npx lerna bootstrap",
     "prepare": "husky install"
   },
   "devDependencies": {
