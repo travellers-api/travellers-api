@@ -24,7 +24,7 @@
     "@traveller-api/circle-fetcher": "*",
     "@traveller-api/hafh-fetcher": "*",
     "cheerio": "^1.0.0-rc.12",
-    "dayjs": "^1.11.6",
+    "dayjs": "^1.11.7",
     "firebase-admin": "^11.3.0",
     "firebase-functions": "^4.1.0",
     "lodash": "^4.17.21",
