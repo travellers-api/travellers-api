@@ -3,16 +3,13 @@ import { Reservation } from './types';
 /**
  * 予約を日付順に並び替え
  */
-export const sortReservations = (reservations: Reservation[]): Reservation[] => {
-  return reservations
-    .slice()
-    .sort((a, z) => Number(a.checkInDate.replace(/-/g, '')) - Number(z.checkInDate.replace(/-/g, '')));
-};
+export const sortByCheckInDate = <T extends { checkInDate: string }>(a: T, z: T): number =>
+  Number(a.checkInDate.replace(/-/g, '')) - Number(z.checkInDate.replace(/-/g, ''));
 
 /**
  * 連続する予約を連結
  */
-export const concatReservations = (reservations: Reservation[]): Reservation[] => {
+export const mergeReservations = (reservations: Reservation[]): Reservation[] => {
   const items: Reservation[] = [];
 
   reservations.forEach((current) => {
