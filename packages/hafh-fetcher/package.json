@@ -18,7 +18,8 @@
     "start": "yarn shell",
     "lint": "eslint --ext .js,.ts .",
     "format": "prettier --write .",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "yarn build"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
