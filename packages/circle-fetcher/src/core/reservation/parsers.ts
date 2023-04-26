@@ -5,6 +5,10 @@ import { Reservation } from './types';
 export const parseReservations = (html: string): Reservation[] => {
   const $ = cheerio.load(html);
 
+  if ($('.attention.center').text().trim() === '該当データがありません。') {
+    return [];
+  }
+
   const reservations: Reservation[] = $('#main_tbody tr')
     .map((index, element) => {
       const $element = $(element);
