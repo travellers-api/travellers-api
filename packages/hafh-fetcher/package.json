@@ -1,7 +1,6 @@
 {
   "name": "@traveller-api/hafh-fetcher",
   "version": "0.0.0",
-  "private": true,
   "engines": {
     "node": "16"
   },
