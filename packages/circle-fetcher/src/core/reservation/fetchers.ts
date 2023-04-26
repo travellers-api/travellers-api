@@ -3,8 +3,12 @@ import { userAgent } from '../../constants';
 import { parseReservations } from './parsers';
 import { Reservation } from './types';
 
-export const fetchReservations = async (cookie: string): Promise<Reservation[]> => {
-  const url = 'https://reserva.be/mypage/reservehistory';
+export const fetchReservations = async (
+  cookie: string,
+  tab: 'reserving' | 'canceled' | 'done' = 'reserving'
+): Promise<Reservation[]> => {
+  const url = new URL('https://reserva.be/mypage/reservehistory');
+  url.searchParams.append('tab', tab);
   const res = await fetch(url, {
     headers: {
       cookie,
