@@ -1,6 +1,6 @@
 {
   "name": "@traveller-api/hafh-fetcher",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "engines": {
     "node": "16"
   },
@@ -8,6 +8,9 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
+  "files": [
+    "lib"
+  ],
   "main": "lib/index.js",
   "scripts": {
     "build": "rimraf lib && tsc",
@@ -15,7 +18,8 @@
     "start": "yarn shell",
     "lint": "eslint --ext .js,.ts .",
     "format": "prettier --write .",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "yarn build"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
