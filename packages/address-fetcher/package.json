@@ -1,9 +1,12 @@
 {
   "name": "@traveller-api/address-fetcher",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0-alpha.1.0",
   "engines": {
     "node": "16"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "main": "lib/index.js",
   "scripts": {
