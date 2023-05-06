@@ -37,11 +37,11 @@ type HafhReservation = {
   };
 };
 
-export type Params = {
+type Params = {
   screenName: string;
 };
 
-export type Props = {
+type Props = {
   screenName: string;
   reservations: (
     | { service: 'ADDress'; data: AddressReservation }
@@ -50,7 +50,7 @@ export type Props = {
   )[];
 };
 
-export const getData = async (screenName: string): Promise<Props> => {
+const getData = async (screenName: string): Promise<Props> => {
   const [address, circle, hafh] = await Promise.all([
     fetch(`https://api.traveller-api.amon.dev/address/users/${screenName}/reservations`, {
       next: { revalidate: 60 * 60 },

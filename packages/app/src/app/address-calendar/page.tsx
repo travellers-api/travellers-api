@@ -10,7 +10,7 @@ import { excludeClosedRooms } from '../../lib/address/calendar/utils';
 import { prefectures } from '../../lib/prefecture/constants';
 import { queryToArray } from '../../utils/router';
 
-export type Props = {
+type Props = {
   homes: Home[];
   dates: {
     date: string;
@@ -24,7 +24,7 @@ export type Props = {
   };
 };
 
-export const getData = async (searchParams?: { [key: string]: string | string[] | null }): Promise<Props> => {
+const getData = async (searchParams?: { [key: string]: string | string[] | null }): Promise<Props> => {
   const homes = await fetchCalendar({
     next: { revalidate: 60 },
   }).catch(() => null);

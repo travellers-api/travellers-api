@@ -7,7 +7,7 @@ import { fetchCalendar } from '../../lib/circle/calendar/fetchers';
 import { Home } from '../../lib/circle/calendar/types';
 import { prefectures } from '../../lib/prefecture/constants';
 
-export type Props = {
+type Props = {
   homes: Home[];
   dates: {
     date: string;
@@ -15,7 +15,7 @@ export type Props = {
   }[];
 };
 
-export const getData = async (): Promise<Props> => {
+const getData = async (): Promise<Props> => {
   const homes = await fetchCalendar({
     next: { revalidate: 60 * 30 },
   }).catch(() => null);
