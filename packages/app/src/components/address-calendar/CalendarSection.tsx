@@ -1,3 +1,5 @@
+'use client';
+
 import { useVirtual } from '@tanstack/react-virtual';
 import classNames from 'classnames';
 import React, { useCallback, useRef, useState } from 'react';

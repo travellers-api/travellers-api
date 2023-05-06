@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
-import Head from 'next/head';
-import { useMemo } from 'react';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 type AddressReservation = {
   id: string;
@@ -38,11 +37,11 @@ type HafhReservation = {
   };
 };
 
-export type Params = {
+type Params = {
   screenName: string;
 };
 
-export type Props = {
+type Props = {
   screenName: string;
   reservations: (
     | { service: 'ADDress'; data: AddressReservation }
@@ -51,42 +50,36 @@ export type Props = {
   )[];
 };
 
-export const getStaticPaths: GetStaticPaths<Params> = () => {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  };
-};
-
-export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) => {
-  const screenName = params?.screenName ?? '';
-  if (!screenName) {
-    return {
-      notFound: true,
-      revalidate: 0,
-    };
-  }
-
+const getData = async (screenName: string): Promise<Props> => {
   const [address, circle, hafh] = await Promise.all([
-    fetch(`https://api.traveller-api.amon.dev/address/users/${screenName}/reservations`).then(async (res) => {
-      const { reservations } = (await res.json()) as { reservations: AddressReservation[] };
+    fetch(`https://api.traveller-api.amon.dev/address/users/${screenName}/reservations`, {
+      next: { revalidate: 60 * 60 },
+    }).then(async (res) => {
+      const { reservations } = res.ok
+        ? ((await res.json()) as { reservations: AddressReservation[] })
+        : { reservations: [] };
       return { ok: res.ok, reservations };
     }),
-    fetch(`https://api.traveller-api.amon.dev/circle/users/${screenName}/reservations`).then(async (res) => {
-      const { reservations } = (await res.json()) as { reservations: CircleReservation[] };
+    fetch(`https://api.traveller-api.amon.dev/circle/users/${screenName}/reservations`, {
+      next: { revalidate: 60 * 60 },
+    }).then(async (res) => {
+      const { reservations } = res.ok
+        ? ((await res.json()) as { reservations: CircleReservation[] })
+        : { reservations: [] };
       return { ok: res.ok, reservations };
     }),
-    fetch(`https://api.traveller-api.amon.dev/hafh/users/${screenName}/reservations`).then(async (res) => {
-      const { reservations } = (await res.json()) as { reservations: HafhReservation[] };
+    fetch(`https://api.traveller-api.amon.dev/hafh/users/${screenName}/reservations`, {
+      next: { revalidate: 60 * 60 },
+    }).then(async (res) => {
+      const { reservations } = res.ok
+        ? ((await res.json()) as { reservations: HafhReservation[] })
+        : { reservations: [] };
       return { ok: res.ok, reservations };
     }),
   ]);
 
   if (!address.ok && !circle.ok && !hafh.ok) {
-    return {
-      notFound: true,
-      revalidate: 0,
-    };
+    notFound();
   }
 
   const props: Props = {
@@ -100,20 +93,14 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
       .filter((reservation) => reservation.data.status === 'approved' || reservation.data.status === 'staying'),
   };
 
-  return {
-    props,
-    revalidate: 60 * 60,
-  };
+  return props;
 };
 
-const Page: NextPage<Props> = ({ screenName, reservations }) => {
-  const title = useMemo(() => `${screenName}の滞在予定`, [screenName]);
+export default async function Page({ params }: { params: Params }) {
+  const { screenName, reservations } = await getData(params.screenName);
 
   return (
     <div className="pb-80">
-      <Head>
-        <title>{title}</title>
-      </Head>
       <header className="mx-auto mb-20 flex max-w-480 flex-col gap-10 px-20 py-20">
         <h1 className="text-center font-sans text-xl font-bold tracking-wide opacity-80">{screenName}の滞在予定</h1>
         <div className="text-center font-sans text-sm tracking-wide opacity-80 [&_a]:underline">
@@ -156,6 +143,10 @@ const Page: NextPage<Props> = ({ screenName, reservations }) => {
       </section>
     </div>
   );
-};
+}
 
-export default Page;
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  return {
+    title: `${params.screenName}の滞在予定`,
+  };
+}

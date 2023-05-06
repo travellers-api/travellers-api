@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
-import { GetServerSideProps, NextPage } from 'next';
-import Head from 'next/head';
+import { Metadata } from 'next';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { CalendarSection } from '../../components/circle-calendar/CalendarSection';
 import { fetchCalendar } from '../../lib/circle/calendar/fetchers';
 import { Home } from '../../lib/circle/calendar/types';
 import { prefectures } from '../../lib/prefecture/constants';
 
-export type Props = {
+type Props = {
   homes: Home[];
   dates: {
     date: string;
@@ -15,13 +15,12 @@ export type Props = {
   }[];
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) => {
-  const homes = await fetchCalendar().catch(() => null);
+const getData = async (): Promise<Props> => {
+  const homes = await fetchCalendar({
+    next: { revalidate: 60 * 30 },
+  }).catch(() => null);
   if (!homes) {
-    return {
-      notFound: true,
-      revalidate: 0,
-    };
+    notFound();
   }
 
   const now = dayjs();
@@ -34,48 +33,45 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
   });
 
   return {
-    props: {
-      homes: homes
-        .map((home) => {
-          const firstIndex = home.calendar?.findIndex((cal) => cal.date === now.format('YYYY/MM/DD')) ?? -1;
-          if (firstIndex >= 0) {
-            home.availables =
-              home.calendar
-                ?.slice(firstIndex, firstIndex + dates.length)
-                .map((cal) => (cal.vacancy === true ? 'Y' : cal.vacancy === false ? 'N' : 'O'))
-                .join('') ?? '';
-          } else {
-            home.availables = '';
-          }
+    homes: homes
+      .map((home) => {
+        const firstIndex = home.calendar?.findIndex((cal) => cal.date === now.format('YYYY/MM/DD')) ?? -1;
+        if (firstIndex >= 0) {
+          home.availables =
+            home.calendar
+              ?.slice(firstIndex, firstIndex + dates.length)
+              .map((cal) => (cal.vacancy === true ? 'Y' : cal.vacancy === false ? 'N' : 'O'))
+              .join('') ?? '';
+        } else {
+          home.availables = '';
+        }
 
-          home.calendar = null;
-          return home;
-        })
-        .sort((a, z) => {
-          const aPrefecture = prefectures.find((prefecture) => a.city.startsWith(prefecture.name))?.code ?? 0;
-          const zPrefecture = prefectures.find((prefecture) => z.city.startsWith(prefecture.name))?.code ?? 0;
+        home.calendar = null;
+        return home;
+      })
+      .sort((a, z) => {
+        const aPrefecture = prefectures.find((prefecture) => a.city.startsWith(prefecture.name))?.code ?? 0;
+        const zPrefecture = prefectures.find((prefecture) => z.city.startsWith(prefecture.name))?.code ?? 0;
 
-          if (aPrefecture !== zPrefecture) {
-            return aPrefecture - zPrefecture;
-          }
+        if (aPrefecture !== zPrefecture) {
+          return aPrefecture - zPrefecture;
+        }
 
-          return a.name > z.name ? 1 : -1;
-        }),
-      dates,
-    },
+        return a.name > z.name ? 1 : -1;
+      }),
+    dates,
   };
 };
 
-const Page: NextPage<Props> = ({ homes, dates }) => {
-  const title = 'circle予約状況カレンダー (非公式)';
+export default async function Page() {
+  const { homes, dates } = await getData();
 
   return (
     <div className="pb-80">
-      <Head>
-        <title>{title}</title>
-      </Head>
       <header className="mx-auto mb-20 flex flex-col gap-10 px-20 py-20">
-        <h1 className="text-center font-sans text-xl font-bold tracking-wide opacity-80">{title}</h1>
+        <h1 className="text-center font-sans text-xl font-bold tracking-wide opacity-80">
+          circle予約状況カレンダー (非公式)
+        </h1>
         <div className="text-center font-sans text-sm leading-6 tracking-wide opacity-80">
           <ul className="flex flex-wrap justify-center gap-x-8">
             <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
@@ -99,6 +95,8 @@ const Page: NextPage<Props> = ({ homes, dates }) => {
       <CalendarSection homes={homes} dates={dates} />
     </div>
   );
-};
+}
 
-export default Page;
+export const metadata: Metadata = {
+  title: 'circle予約状況カレンダー (非公式)',
+};
