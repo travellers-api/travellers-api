@@ -141,7 +141,7 @@ const Page: NextPage<Props> = ({ screenName, reservations }) => {
                   </p>
                 </div>
                 <div className="grid grid-cols-1 content-start gap-8 border-l-2 pl-20">
-                  <p className="font-sans text-3xl font-bold opacity-80 line-clamp-1">{reservation.data.home.name}</p>
+                  <p className="line-clamp-1 font-sans text-3xl font-bold opacity-80">{reservation.data.home.name}</p>
                   <div className="flex gap-8">
                     <p className="font-sans text-xs font-bold text-black/50">{reservation.service}</p>
                     {reservation.service === 'circle' && (
