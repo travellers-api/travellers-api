@@ -1,6 +1,9 @@
+'use client';
+
 import classNames from 'classnames';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { queryToArray } from '../../utils/router';
 
 export type CalendarFilterProps = {
@@ -15,34 +18,8 @@ export type CalendarFilterProps = {
 
 export const CalendarFilter: React.FC<CalendarFilterProps> = ({ className, filters }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const filterRef = useRef<HTMLDetailsElement>(null);
-
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback(
-    (e) => {
-      e.preventDefault();
-      filterRef.current?.removeAttribute('open');
-
-      router.replace({
-        pathname: '/address-calendar',
-        query: {
-          ...router.query,
-          prefecture: Array.from(
-            e.currentTarget.querySelectorAll<HTMLOptionElement>('[name="prefecture"] option:checked')
-          ).map((elm) => elm.value),
-          homeType: Array.from(
-            e.currentTarget.querySelectorAll<HTMLOptionElement>('[name="homeType"] option:checked')
-          ).map((elm) => elm.value),
-          roomType: Array.from(
-            e.currentTarget.querySelectorAll<HTMLOptionElement>('[name="roomType"] option:checked')
-          ).map((elm) => elm.value),
-          sex: Array.from(e.currentTarget.querySelectorAll<HTMLOptionElement>('[name="sex"] option:checked')).map(
-            (elm) => elm.value
-          ),
-        },
-      });
-    },
-    [router]
-  );
 
   const [isShownSelectText, setIsShownSelectText] = useState(false);
   useEffect(() => {
@@ -54,7 +31,32 @@ export const CalendarFilter: React.FC<CalendarFilterProps> = ({ className, filte
       <details className="w-full rounded-xl border px-20 py-10 md:w-max" ref={filterRef}>
         <summary>フィルタ</summary>
         <div className="mt-20">
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              filterRef.current?.removeAttribute('open');
+
+              router.replace(
+                formatUrl({
+                  pathname: '/address-calendar',
+                  query: {
+                    prefecture: Array.from(
+                      e.currentTarget.querySelectorAll<HTMLOptionElement>('[name="prefecture"] option:checked')
+                    ).map((elm) => elm.value),
+                    homeType: Array.from(
+                      e.currentTarget.querySelectorAll<HTMLOptionElement>('[name="homeType"] option:checked')
+                    ).map((elm) => elm.value),
+                    roomType: Array.from(
+                      e.currentTarget.querySelectorAll<HTMLOptionElement>('[name="roomType"] option:checked')
+                    ).map((elm) => elm.value),
+                    sex: Array.from(
+                      e.currentTarget.querySelectorAll<HTMLOptionElement>('[name="sex"] option:checked')
+                    ).map((elm) => elm.value),
+                  },
+                })
+              );
+            }}
+          >
             <div className="flex flex-col gap-20">
               <div className="flex flex-col items-start gap-10">
                 <button className="rounded border px-12 py-4 text-sm" type="submit">
@@ -66,25 +68,25 @@ export const CalendarFilter: React.FC<CalendarFilterProps> = ({ className, filte
                 <Filter
                   id="prefecture"
                   title="都道府県"
-                  defaultValue={queryToArray(router.query?.prefecture) ?? []}
+                  defaultValue={queryToArray(searchParams.getAll('prefecture')) ?? []}
                   values={filters.prefecture}
                 />
                 <Filter
                   id="homeType"
                   title="拠点種別"
-                  defaultValue={queryToArray(router.query?.homeType) ?? []}
+                  defaultValue={queryToArray(searchParams.getAll('homeType')) ?? []}
                   values={filters.homeType}
                 />
                 <Filter
                   id="roomType"
                   title="部屋種別"
-                  defaultValue={queryToArray(router.query?.roomType) ?? []}
+                  defaultValue={queryToArray(searchParams.getAll('roomType')) ?? []}
                   values={filters.roomType}
                 />
                 <Filter
                   id="sex"
                   title="性別"
-                  defaultValue={queryToArray(router.query?.sex) ?? []}
+                  defaultValue={queryToArray(searchParams.getAll('sex')) ?? []}
                   values={filters.sex}
                 />
               </div>

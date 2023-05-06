@@ -1,10 +1,18 @@
-import { Html, Head, Main, NextScript } from 'next/document';
+import { Noto_Sans_JP } from 'next/font/google';
 import Script from 'next/script';
+import '../styles/globals.scss';
 
-export default function Document() {
+/* eslint-disable-next-line new-cap */
+const notoSansJp = Noto_Sans_JP({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Html>
-      <Head>
+    <html lang="ja-JP">
+      <head>
         <Script
           id="firebase"
           strategy="beforeInteractive"
@@ -32,12 +40,9 @@ measurementId: "G-HBD8XE2F2C"
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);`,
           }}
-        ></Script>
-      </Head>
-      <body>
-        <Main />
-        <NextScript />
-      </body>
-    </Html>
+        />
+      </head>
+      <body className={notoSansJp.variable}>{children}</body>
+    </html>
   );
 }
