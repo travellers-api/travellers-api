@@ -20,7 +20,7 @@ export default {
       480: '480px',
     },
     fontFamily: {
-      sans: ['--font-serif', 'sans-serif'],
+      sans: ['var(--font-sans)', 'sans-serif'],
     },
   },
   plugins: [],
