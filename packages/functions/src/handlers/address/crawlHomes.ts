@@ -26,8 +26,16 @@ export const crawlHomes = functions
 
     await Promise.all(
       targetIds.map(async (id) => {
-        const home = await getHome(id, cookie).catch(() => null);
-        home ? await setHome(id, home) : await deleteHome(id);
+        const home = await getHome(id, cookie).catch((e: Error) => e);
+        if (home instanceof Error && home.message === 'not found') {
+          await deleteHome(id);
+          return;
+        }
+        if (home instanceof Error) {
+          console.error(home.message);
+          return;
+        }
+        await setHome(id, home);
       })
     );
   });
