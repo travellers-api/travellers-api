@@ -1,8 +1,9 @@
 import fetch from 'node-fetch';
 import { userAgent } from '../../constants';
 import { parseHomePage } from './parsers';
+import { Home } from './types';
 
-export const fetchHome = async (id: string, cookie: string): Promise<any> => {
+export const fetchHome = async (id: string, cookie: string): Promise<Home> => {
   const res = await fetch(`https://address.love/homes/${encodeURIComponent(id)}`, {
     headers: {
       cookie,
