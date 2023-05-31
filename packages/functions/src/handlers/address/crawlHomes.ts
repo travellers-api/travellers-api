@@ -16,7 +16,8 @@ export const crawlHomes = functions
     const baseId = count * minutes + 1;
     const targetIds = [...new Array(count)].map((_, i) => (baseId + i).toString());
 
-    await Promise.all([getHomes(targetIds), getHomesRooms(targetIds)]);
+    await getHomes(targetIds);
+    await getHomesRooms(targetIds);
   });
 
 const getCookieByUid = async (uid: string) => {
