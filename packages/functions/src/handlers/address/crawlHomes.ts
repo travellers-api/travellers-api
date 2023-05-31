@@ -16,11 +16,11 @@ export const crawlHomes = functions
     const baseId = count * minutes + 1;
     const targetIds = [...new Array(count)].map((_, i) => (baseId + i).toString());
 
-    const secret = await getSecret('amon');
+    const secret = await getSecret('bot');
     const cookie =
       secret.cookie ||
       (await getCookie(secret).then(async (cookie) => {
-        await updateSecret('amon', { cookie });
+        await updateSecret('bot', { cookie });
         return cookie;
       }));
 
