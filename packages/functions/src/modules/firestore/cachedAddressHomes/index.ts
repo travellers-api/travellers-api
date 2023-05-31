@@ -11,6 +11,10 @@ export const setHome = async (id: string, data: Home): Promise<void> => {
   await collection.doc(id).set(data);
 };
 
+export const setHomePartial = async (id: string, data: Partial<Home>): Promise<void> => {
+  await collection.doc(id).set(data, { merge: true });
+};
+
 export const deleteHome = async (id: string): Promise<void> => {
   await collection.doc(id).delete();
 };
