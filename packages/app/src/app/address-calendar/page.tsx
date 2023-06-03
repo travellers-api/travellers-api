@@ -174,7 +174,7 @@ export default async function Page({ searchParams }: { searchParams?: { [key: st
         <div className="text-center font-sans text-sm leading-6 tracking-wide opacity-80">
           <ul className="flex flex-wrap justify-center gap-x-8">
             <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
-              <a className="underline" href="https://address.home/" target="_blank" rel="noopener noreferrer">
+              <a className="underline" href="https://address.love/" target="_blank" rel="noopener noreferrer">
                 ADDress公式サイト
               </a>
             </li>
