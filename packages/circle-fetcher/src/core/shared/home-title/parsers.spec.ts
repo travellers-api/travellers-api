@@ -16,4 +16,12 @@ describe('parseHomeTitle', () => {
       roomType: '個室',
     });
   });
+
+  test('※がある', () => {
+    expect(parseHomeTitle('※期間限定！7/10まで※【長野県松本市 / 個室】B&Bテンガロンハット＆ヤムヤムツリー')).toEqual({
+      name: 'B&Bテンガロンハット＆ヤムヤムツリー',
+      city: '長野県松本市',
+      roomType: '個室',
+    });
+  });
 });
