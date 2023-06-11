@@ -24,7 +24,7 @@ const getData = async (context: PageContext): Promise<AddressCalendarForPage> =>
   const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : 'http://localhost:3000';
-  const url = new URL(`${baseUrl}/address-calendar/calendar/api`);
+  const url = new URL(`${baseUrl}/address-calendar/api/calendar`);
 
   const prefecture = searchParamToArray(context.searchParams?.prefecture);
   prefecture.forEach((v) => url.searchParams.append('prefecture', v));
