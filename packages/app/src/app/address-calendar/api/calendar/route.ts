@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { NextResponse } from 'next/server';
 import { fetchCalendar } from '../../../../lib/address/calendar/fetchers';
-import { Home } from '../../../../lib/address/calendar/types';
+import { Home, Room } from '../../../../lib/address/calendar/types';
 import { excludeClosedRooms } from '../../../../lib/address/calendar/utils';
 import { prefectures } from '../../../../lib/prefecture/constants';
 
@@ -101,11 +101,17 @@ export async function GET(request: Request) {
                 .join('')
             : null;
 
-          return {
+          const returnRoom: Room = {
             ...room,
-            reservedDates: [],
+            calendar: calendar
+              ? {
+                  ...calendar,
+                  reservedDates: [],
+                }
+              : null,
             availables,
           };
+          return returnRoom;
         });
 
         // 不要フィールド削除
