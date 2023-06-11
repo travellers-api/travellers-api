@@ -1,9 +1,6 @@
 {
   "name": "@traveller-api/hafh-fetcher",
   "version": "0.1.1",
-  "engines": {
-    "node": "16"
-  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
