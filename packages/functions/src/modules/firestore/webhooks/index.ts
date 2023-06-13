@@ -7,7 +7,10 @@ export const collectionId = 'webhooks';
 
 const collection = firestore.collection(collectionId);
 
-export const getWebhooks = async (topic: Hook['topic']): Promise<string[]> => {
+export const getWebhooks = async (topic: Hook['topic']): Promise<Pick<Webhook, 'url' | 'headers'>[]> => {
   const querySnapshot = (await collection.where('topics', 'array-contains', topic).get()) as QuerySnapshot<Webhook>;
-  return querySnapshot.docs.map((snapshot) => snapshot.get('url'));
+  return querySnapshot.docs.map((snapshot) => {
+    const { topics, ...data } = snapshot.data();
+    return data;
+  });
 };

@@ -5,12 +5,12 @@ const pubsub = new PubSub();
 
 export const topicName = 'send-webhook';
 
-export const publishSendWebhooks = async (hook: Hook, urls: string[]) => {
+export const publishSendWebhooks = async (hook: Hook, requests: SendWebhookMessage['request'][]) => {
   const topic = pubsub.topic(topicName);
 
   await Promise.all(
-    urls.map(async (url) => {
-      const json: SendWebhookMessage = { url, hook };
+    requests.map(async (request) => {
+      const json: SendWebhookMessage = { hook, request };
       await topic.publishMessage({ json });
     })
   );

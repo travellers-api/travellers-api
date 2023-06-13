@@ -10,8 +10,7 @@ export async function POST(request: Request) {
 }
 
 async function handler(request: Request) {
-  const url = new URL(request.url);
-  const key = url.searchParams.get('key');
+  const key = request.headers.get('X-REVALIDATE-KEY');
 
   if (key !== process.env.REVALIDATE_KEY) {
     return NextResponse.json({ revalidated: false }, { status: 401 });
