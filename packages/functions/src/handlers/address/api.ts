@@ -1,10 +1,11 @@
 import { checkValidityCookie, getCookie } from '@traveller-api/address-fetcher/lib/core/authentication';
-import { Home } from '@traveller-api/address-fetcher/lib/core/home/types';
 import { getReservations } from '@traveller-api/address-fetcher/lib/core/reservation';
 import { Reservation } from '@traveller-api/address-fetcher/lib/core/reservation/types';
 import * as express from 'express';
 import * as functions from 'firebase-functions';
 import { getHomes } from '../../modules/firestore/cachedAddressHomes';
+import { getAddressCalendarCache } from '../../modules/firestore/caches';
+import { AddressCalendar } from '../../modules/firestore/caches/types';
 import { getSecret, updateSecret } from '../../modules/firestore/secret/address';
 import { defaultRegion } from '../../modules/functions/constants';
 
@@ -66,16 +67,15 @@ app.get<
   }
 });
 
-app.get<
-  undefined,
-  {
-    homes: Omit<Home, 'address'>[];
-  }
->('/address/calendar', async (req, res) => {
+app.get<undefined, AddressCalendar>('/address/calendar', async (req, res) => {
   try {
-    const homes = await getHomes();
-    res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=60, must-revalidate');
-    res.json({ homes: homes.map(({ data: { address, ...data } }) => data) });
+    const json = await getAddressCalendarCache().catch(async () => {
+      const homes = await getHomes();
+      const json = { homes: homes.map(({ data: { address, ...data } }) => data) };
+      return json;
+    });
+    res.setHeader('Cache-Control', 'public, max-age=60, must-revalidate');
+    res.json(json);
   } catch (e) {
     res.status(500).end();
   }
