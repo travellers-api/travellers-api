@@ -4,10 +4,10 @@ import { setAddressCalendarCache } from '../../modules/firestore/caches';
 import { defaultRegion } from '../../modules/functions/constants';
 import { publishDispatchHook } from '../../modules/hook/dispatch-hook';
 
-// 毎時59分に生成
+// 毎時0分に生成
 export const generateCalendarCache = functions
   .region(defaultRegion)
-  .pubsub.schedule('59 * * * *')
+  .pubsub.schedule('0 * * * *')
   .onRun(async () => {
     const homes = await getHomes();
     const json = { homes: homes.map(({ data: { address, ...data } }) => data) };
