@@ -29,7 +29,7 @@ export const crawlRecentlyReservations = functions
     rooms.forEach((room) => {
       const roomId = room.id.toString();
       const days = room.calendar?.calStartDate
-        ? Math.ceil(dayjs.tz(room.calendar.calStartDate, 'Asia/Tokyo').diff(today, 'days', true))
+        ? Math.ceil(dayjs.tz(room.calendar.calStartDate, 'Asia/Tokyo').diff(today, 'days', true) * -1)
         : 3;
 
       Array.from({ length: days }, (_, i) => i).forEach((day) => {
