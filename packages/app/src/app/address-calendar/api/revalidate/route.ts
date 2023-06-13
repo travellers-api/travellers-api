@@ -2,11 +2,11 @@ import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
-  handler(request);
+  return handler(request);
 }
 
 export async function POST(request: Request) {
-  handler(request);
+  return handler(request);
 }
 
 async function handler(request: Request) {
