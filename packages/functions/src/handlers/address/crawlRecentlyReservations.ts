@@ -33,8 +33,8 @@ export const crawlRecentlyReservations = functions
         : 3;
 
       Array.from({ length: days }, (_, i) => i).forEach((day) => {
-        const checkInDate = today.add(day).format('YYYY-MM-DD');
-        const checkOutDate = today.add(day + 1).format('YYYY-MM-DD');
+        const checkInDate = today.add(day, 'days').format('YYYY-MM-DD');
+        const checkOutDate = today.add(day + 1, 'days').format('YYYY-MM-DD');
         requests.push({ roomId, checkInDate, checkOutDate });
       });
     });
