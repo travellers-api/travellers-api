@@ -7,25 +7,28 @@ import { deleteHome, setHomePartial } from '../../modules/firestore/cachedAddres
 import { getRecentlyReservation } from '../../modules/firestore/cachedAddressRecentlyReservations';
 import { defaultRegion } from '../../modules/functions/constants';
 
+// 1分あたり8拠点, 1時間あたり480拠点クロール
 export const crawlHomes = functions
   .region(defaultRegion)
   .pubsub.schedule('* * * * *')
   .onRun(async (context) => {
-    const minutes = new Date(context.timestamp).getMinutes();
-    const count = Math.floor(ADDRESS_HOME_MAX_COUNT / 60);
-    const baseId = count * minutes + 1;
-    const targetIds = [...new Array(count)].map((_, i) => (baseId + i).toString());
+    const loopMinutes = 60;
+    const today = dayjs(context.timestamp).tz('Asia/Tokyo');
+    const minutesOfDay = today.hour() * 60 + today.minute();
+    const baseId = (minutesOfDay % loopMinutes) + 1;
+    const count = ADDRESS_HOME_MAX_COUNT / loopMinutes;
+    const homeIds = [...new Array(count)].map((_, i) => baseId + i);
 
-    await getHomes(targetIds);
-    await getHomesRooms(targetIds);
+    await getHomes(homeIds.map((id) => id.toString()));
+    await getHomesRooms(homeIds.map((id) => id.toString()));
   });
 
-const getHomes = async (targetIds: string[]) => {
+const getHomes = async (homeIds: string[]) => {
   // 住所は、本会員のみ取得可能
   const cookie = await getCookieByUid('amon');
 
   await Promise.all(
-    targetIds.map(async (id) => {
+    homeIds.map(async (id) => {
       const home = await getHome(id, cookie).catch((e: Error) => e);
       if (home instanceof Error && home.message === 'not found') {
         await deleteHome(id);
@@ -42,12 +45,12 @@ const getHomes = async (targetIds: string[]) => {
   );
 };
 
-const getHomesRooms = async (targetIds: string[]) => {
+const getHomesRooms = async (homeIds: string[]) => {
   // 性別専用部屋を含む予約状況は、メール会員のみ取得可能
   const cookie = await getCookieByUid('bot');
 
   await Promise.all(
-    targetIds.map(async (id) => {
+    homeIds.map(async (id) => {
       const home = await getHome(id, cookie).catch((e: Error) => e);
       if (home instanceof Error) {
         return;
