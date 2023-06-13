@@ -10,6 +10,7 @@
     "prettier"
   ],
   "rules": {
+    "no-restricted-imports": ["error", { "paths": ["dayjs"] }],
     "import/order": ["error", { "alphabetize": { "order": "asc" } }]
   }
 }
