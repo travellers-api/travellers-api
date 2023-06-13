@@ -1,8 +1,8 @@
 import { getAikotobaCookie } from '@traveller-api/circle-fetcher/lib/core/authentication';
 import { getHomes } from '@traveller-api/circle-fetcher/lib/core/home';
 import { getHomeReservationStatuses } from '@traveller-api/circle-fetcher/lib/core/home-reservation-status';
-import * as dayjs from 'dayjs';
 import * as functions from 'firebase-functions';
+import { dayjs } from '../../lib/dayjs';
 import { setHome } from '../../modules/firestore/cachedCircleHomes';
 import { CachedCircleHome } from '../../modules/firestore/cachedCircleHomes/types';
 import { defaultRegion } from '../../modules/functions/constants';
@@ -12,7 +12,7 @@ export const crawlHomes = functions
   .runWith({ secrets: ['CIRCLE_AIKOTOBA'] })
   .pubsub.schedule('0 * * * *')
   .onRun(async (context) => {
-    const day = dayjs(context.timestamp);
+    const day = dayjs(context.timestamp).tz('Asia/Tokyo');
 
     const aikotoba = process.env.CIRCLE_AIKOTOBA ?? '';
     const cookie = await getAikotobaCookie(aikotoba);

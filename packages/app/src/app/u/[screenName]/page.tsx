@@ -1,6 +1,6 @@
-import dayjs from 'dayjs';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { dayjs } from '../../../lib/dayjs';
 
 type AddressReservation = {
   id: string;
@@ -118,12 +118,12 @@ export default async function Page({ params }: { params: Params }) {
                 <div className="font-sans text-xs font-bold text-black/50">
                   <p>
                     <time dateTime={reservation.data.checkInDate}>
-                      {dayjs(reservation.data.checkInDate).format('MM.DD ddd')}-
+                      {dayjs.tz(reservation.data.checkInDate, 'Asia/Tokyo').format('MM.DD ddd')}-
                     </time>
                   </p>
                   <p>
                     <time dateTime={reservation.data.checkOutDate}>
-                      {dayjs(reservation.data.checkOutDate).format('MM.DD ddd')}
+                      {dayjs.tz(reservation.data.checkOutDate, 'Asia/Tokyo').format('MM.DD ddd')}
                     </time>
                   </p>
                 </div>

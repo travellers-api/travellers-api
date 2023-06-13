@@ -1,16 +1,11 @@
 import { getHome } from '@traveller-api/address-fetcher/lib/core/home';
-import * as dayjs from 'dayjs';
-import * as timezone from 'dayjs/plugin/timezone';
-import * as utc from 'dayjs/plugin/utc';
 import * as functions from 'firebase-functions';
 import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
+import { dayjs } from '../../lib/dayjs';
 import { getCookieByUid } from '../../modules/address';
 import { deleteHome, setHomePartial } from '../../modules/firestore/cachedAddressHomes';
 import { getRecentlyReservation } from '../../modules/firestore/cachedAddressRecentlyReservations';
 import { defaultRegion } from '../../modules/functions/constants';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 export const crawlHomes = functions
   .region(defaultRegion)

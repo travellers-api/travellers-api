@@ -1,10 +1,10 @@
-import dayjs from 'dayjs';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CalendarSection } from '../../components/circle-calendar/CalendarSection';
 import { fetchCalendar } from '../../lib/circle/calendar/fetchers';
 import { Home } from '../../lib/circle/calendar/types';
+import { dayjs } from '../../lib/dayjs';
 import { prefectures } from '../../lib/prefecture/constants';
 
 type Props = {
@@ -23,9 +23,9 @@ const getData = async (): Promise<Props> => {
     notFound();
   }
 
-  const now = dayjs();
+  const today = dayjs().tz('Asia/Tokyo');
   const dates = [...Array(60)].map((_, i) => {
-    const dayjsObj = now.add(i, 'days');
+    const dayjsObj = today.add(i, 'days');
     return {
       date: dayjsObj.format('YYYY/MM/DD'),
       day: Number(dayjsObj.format('d')) as 0 | 1 | 2 | 3 | 4 | 5 | 6,
@@ -35,7 +35,7 @@ const getData = async (): Promise<Props> => {
   return {
     homes: homes
       .map((home) => {
-        const firstIndex = home.calendar?.findIndex((cal) => cal.date === now.format('YYYY/MM/DD')) ?? -1;
+        const firstIndex = home.calendar?.findIndex((cal) => cal.date === today.format('YYYY/MM/DD')) ?? -1;
         if (firstIndex >= 0) {
           home.availables =
             home.calendar

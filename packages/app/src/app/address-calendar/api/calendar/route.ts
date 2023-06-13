@@ -1,8 +1,8 @@
-import dayjs from 'dayjs';
 import { NextResponse } from 'next/server';
 import { fetchCalendar } from '../../../../lib/address/calendar/fetchers';
 import { Home, Room } from '../../../../lib/address/calendar/types';
 import { excludeClosedRooms } from '../../../../lib/address/calendar/utils';
+import { dayjs } from '../../../../lib/dayjs';
 import { prefectures } from '../../../../lib/prefecture/constants';
 
 export type AddressCalendarForPage = {
@@ -23,9 +23,9 @@ export async function GET(request: Request) {
   const homes = await fetchCalendar({ next: { revalidate: 60 } }).catch(() => null);
   if (!homes) return NextResponse.json({ error: 'Not Found' }, { status: 404 });
 
-  const now = dayjs();
+  const today = dayjs().tz('Asia/Tokyo');
   const dates = [...Array(60)].map((_, i) => {
-    const dayjsObj = now.add(i, 'days');
+    const dayjsObj = today.add(i, 'days');
     return {
       date: dayjsObj.format('YYYY/MM/DD'),
       day: Number(dayjsObj.format('d')) as 0 | 1 | 2 | 3 | 4 | 5 | 6,
