@@ -1,0 +1,49 @@
+import { getHome } from '@traveller-api/address-fetcher/lib/core/home';
+import { getPreReservation } from '@traveller-api/address-fetcher/lib/core/pre-reservation';
+import * as dayjs from 'dayjs';
+import * as timezone from 'dayjs/plugin/timezone';
+import * as utc from 'dayjs/plugin/utc';
+import * as functions from 'firebase-functions';
+import { getCookieByUid } from '../../modules/address';
+import { updateRoom } from '../../modules/firestore/cachedAddressRooms';
+import { defaultRegion } from '../../modules/functions/constants';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+const MAX_COUNT = 480;
+
+export const crawlRecentlyReservations = functions
+  .region(defaultRegion)
+  .pubsub.schedule('* * * * *')
+  .onRun(async (context) => {
+    const today = dayjs(context.timestamp).tz('Asia/Tokyo');
+    const cookie = await getCookieByUid('amon');
+
+    const minutesOfDay = (today.toDate().getTime() / (1000 * 60)) % (60 * 24);
+    const homeId = minutesOfDay % MAX_COUNT;
+
+    const { rooms } = await getHome(cookie, homeId.toString());
+    const requests: { roomId: string; checkInDate: string; checkOutDate: string }[] = [];
+
+    rooms.forEach((room) => {
+      const roomId = room.id.toString();
+      const days = room.calendar?.calStartDate
+        ? Math.ceil(dayjs.tz(room.calendar.calStartDate, 'Asia/Tokyo').diff(today, 'days', true))
+        : 3;
+
+      Array.from({ length: days }, (_, i) => i).forEach((day) => {
+        const checkInDate = today.add(day).format('YYYY-MM-DD');
+        const checkOutDate = today.add(day + 1).format('YYYY-MM-DD');
+        requests.push({ roomId, checkInDate, checkOutDate });
+      });
+    });
+
+    await Promise.all(
+      requests.map(async (request) => {
+        const { errors } = await getPreReservation(cookie, request.roomId, request.checkInDate, request.checkOutDate);
+        const reserved = errors.includes('選択した期間は既に予約されています。他の日程を選択ください。');
+        await updateRoom(request.roomId, { [request.checkInDate]: { reserved } });
+      })
+    );
+  });
