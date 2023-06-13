@@ -12,18 +12,19 @@ export const onDispatchHookMessage = functions
   .pubsub.topic(dispatchHookTopicName)
   .onPublish(async (message) => {
     const hook = message.json as DispatchHookMessage;
-    const urls = await getWebhooks(hook.topic);
-    await publishSendWebhooks(hook, urls);
+    const requests = await getWebhooks(hook.topic);
+    await publishSendWebhooks(hook, requests);
   });
 
 export const onSendWebhookMessage = functions
   .region(defaultRegion)
   .pubsub.topic(sendWebhookTopicName)
   .onPublish(async (message) => {
-    const { url, hook } = message.json as SendWebhookMessage;
-    await fetch(url, {
+    const { hook, request } = message.json as SendWebhookMessage;
+    await fetch(request.url, {
       method: 'POST',
       headers: {
+        ...request.headers,
         'Content-Type': 'application/json',
         'User-Agent': userAgent,
       },

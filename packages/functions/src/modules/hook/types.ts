@@ -37,6 +37,9 @@ export type Hook =
 export type DispatchHookMessage = Hook;
 
 export type SendWebhookMessage = {
-  url: string;
   hook: Hook;
+  request: {
+    url: string;
+    headers?: Record<string, string>;
+  };
 };
