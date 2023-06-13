@@ -3,9 +3,9 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const revalidateKey = url.searchParams.get('revalidate-key');
+  const key = url.searchParams.get('key');
 
-  if (revalidateKey !== process.env.REVALIDATE_KEY) {
+  if (key !== process.env.REVALIDATE_KEY) {
     return NextResponse.json({ revalidated: false }, { status: 401 });
   }
 
