@@ -35,7 +35,7 @@ const getData = async (context: PageContext): Promise<AddressCalendarForPage> =>
   const sex = searchParamToArray(context.searchParams?.sex);
   sex.forEach((v) => url.searchParams.append('sex', v));
 
-  const res = await fetch(url, { next: { revalidate: 60 } }).catch(() => null);
+  const res = await fetch(url, { cache: 'force-cache' }).catch(() => null);
   if (!res) notFound();
   const json = await res.json();
   return json;
