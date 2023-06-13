@@ -20,7 +20,7 @@ export const crawlRecentlyReservations = functions
     const today = dayjs(context.timestamp).tz('Asia/Tokyo');
     const cookie = await getCookieByUid('amon');
 
-    const minutesOfDay = (today.toDate().getTime() / (1000 * 60)) % (60 * 24);
+    const minutesOfDay = today.hour() * 60 + today.minute();
     const homeId = minutesOfDay % MAX_COUNT;
 
     const { rooms } = await getHome(cookie, homeId.toString());
