@@ -1,4 +1,4 @@
-export type CachedAddressRoom = {
+export type CachedAddressRecentlyReservation = {
   [key: string]: {
     reserved: boolean;
   };

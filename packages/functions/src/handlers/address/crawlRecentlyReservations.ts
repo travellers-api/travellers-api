@@ -5,7 +5,7 @@ import * as timezone from 'dayjs/plugin/timezone';
 import * as utc from 'dayjs/plugin/utc';
 import * as functions from 'firebase-functions';
 import { getCookieByUid } from '../../modules/address';
-import { updateRoom } from '../../modules/firestore/cachedAddressRooms';
+import { updateRecentlyReservations } from '../../modules/firestore/cachedAddressRecentlyReservations';
 import { defaultRegion } from '../../modules/functions/constants';
 
 dayjs.extend(utc);
@@ -43,7 +43,7 @@ export const crawlRecentlyReservations = functions
       requests.map(async (request) => {
         const { errors } = await getPreReservation(cookie, request.roomId, request.checkInDate, request.checkOutDate);
         const reserved = errors.includes('選択した期間は既に予約されています。他の日程を選択ください。');
-        await updateRoom(request.roomId, { [request.checkInDate]: { reserved } });
+        await updateRecentlyReservations(request.roomId, { [request.checkInDate]: { reserved } });
       })
     );
   });
