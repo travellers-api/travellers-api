@@ -39,11 +39,9 @@ export const crawlRecentlyReservations = functions
       });
     });
 
-    await Promise.all(
-      requests.map(async (request) => {
-        const { errors } = await getPreReservation(cookie, request.roomId, request.checkInDate, request.checkOutDate);
-        const reserved = errors.includes('選択した期間は既に予約されています。他の日程を選択ください。');
-        await updateRecentlyReservations(request.roomId, { [request.checkInDate]: { reserved } });
-      })
-    );
+    for await (const request of requests) {
+      const { errors } = await getPreReservation(cookie, request.roomId, request.checkInDate, request.checkOutDate);
+      const reserved = errors.includes('選択した期間は既に予約されています。他の日程を選択ください。');
+      await updateRecentlyReservations(request.roomId, { [request.checkInDate]: { reserved } });
+    }
   });
