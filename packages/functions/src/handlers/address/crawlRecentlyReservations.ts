@@ -23,7 +23,7 @@ export const crawlRecentlyReservations = functions
     const minutesOfDay = today.hour() * 60 + today.minute();
     const homeId = minutesOfDay % MAX_COUNT;
 
-    const { rooms } = await getHome(cookie, homeId.toString());
+    const { rooms } = await getHome(homeId.toString(), cookie);
     const requests: { roomId: string; checkInDate: string; checkOutDate: string }[] = [];
 
     rooms.forEach((room) => {
