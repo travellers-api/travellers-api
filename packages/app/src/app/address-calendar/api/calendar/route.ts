@@ -74,45 +74,48 @@ export async function GET(request: Request) {
           home.rooms = home.rooms.filter((room) => sexQuery.some((q) => [q, null].includes(room.sex)));
         }
 
-        home.rooms = home.rooms.map((room) => {
-          const calendar = room.calendar;
-          const availables = calendar
-            ? dates
-                .map((date) => {
-                  const isUnavailable = calendar.reservedDates.includes(date.date);
-                  if (isUnavailable) {
-                    return 'N';
+        home.rooms = home.rooms
+          .map((room) => {
+            const calendar = room.calendar;
+            const availables = calendar
+              ? dates
+                  .map((date) => {
+                    const isUnavailable = calendar.reservedDates.includes(date.date);
+                    if (isUnavailable) {
+                      return 'N';
+                    }
+
+                    const isOutOfTerm =
+                      date.date < (calendar.calStartDate || '0000/01/01') ||
+                      date.date > (calendar.calEndDate || '9999/12/31');
+                    if (isOutOfTerm) {
+                      return 'O';
+                    }
+
+                    const isHoliday = calendar.holidays.includes(date.day);
+                    if (isHoliday) {
+                      return 'H';
+                    }
+
+                    return 'Y';
+                  })
+                  .join('')
+              : null;
+
+            const returnRoom: Room = {
+              ...room,
+              calendar: calendar
+                ? {
+                    ...calendar,
+                    reservedDates: [],
                   }
-
-                  const isOutOfTerm =
-                    date.date < (calendar.calStartDate || '0000/01/01') ||
-                    date.date > (calendar.calEndDate || '9999/12/31');
-                  if (isOutOfTerm) {
-                    return 'O';
-                  }
-
-                  const isHoliday = calendar.holidays.includes(date.day);
-                  if (isHoliday) {
-                    return 'H';
-                  }
-
-                  return 'Y';
-                })
-                .join('')
-            : null;
-
-          const returnRoom: Room = {
-            ...room,
-            calendar: calendar
-              ? {
-                  ...calendar,
-                  reservedDates: [],
-                }
-              : null,
-            availables,
-          };
-          return returnRoom;
-        });
+                : null,
+              availables,
+            };
+            return returnRoom;
+          })
+          .slice()
+          .sort((a, z) => a.name.localeCompare(z.name, 'ja'));
 
         // 不要フィールド削除
         home.thumbnail = '';
