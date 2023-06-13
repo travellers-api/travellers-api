@@ -4,14 +4,13 @@ import * as dayjs from 'dayjs';
 import * as timezone from 'dayjs/plugin/timezone';
 import * as utc from 'dayjs/plugin/utc';
 import * as functions from 'firebase-functions';
+import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
 import { getCookieByUid } from '../../modules/address';
 import { updateRecentlyReservations } from '../../modules/firestore/cachedAddressRecentlyReservations';
 import { defaultRegion } from '../../modules/functions/constants';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-const MAX_COUNT = 480;
 
 export const crawlRecentlyReservations = functions
   .region(defaultRegion)
@@ -21,7 +20,7 @@ export const crawlRecentlyReservations = functions
     const cookie = await getCookieByUid('amon');
 
     const minutesOfDay = today.hour() * 60 + today.minute();
-    const homeId = minutesOfDay % MAX_COUNT;
+    const homeId = minutesOfDay % ADDRESS_HOME_MAX_COUNT;
 
     const home = await getHome(homeId.toString(), cookie).catch(() => null);
     if (!home) return;

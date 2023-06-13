@@ -1,17 +1,16 @@
 import { getHome } from '@traveller-api/address-fetcher/lib/core/home';
 import * as functions from 'firebase-functions';
+import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
 import { getCookieByUid } from '../../modules/address';
 import { deleteHome, setHomePartial } from '../../modules/firestore/cachedAddressHomes';
 import { defaultRegion } from '../../modules/functions/constants';
-
-const MAX_COUNT = 480;
 
 export const crawlHomes = functions
   .region(defaultRegion)
   .pubsub.schedule('* * * * *')
   .onRun(async (context) => {
     const minutes = new Date(context.timestamp).getMinutes();
-    const count = Math.floor(MAX_COUNT / 60);
+    const count = Math.floor(ADDRESS_HOME_MAX_COUNT / 60);
     const baseId = count * minutes + 1;
     const targetIds = [...new Array(count)].map((_, i) => (baseId + i).toString());
 
