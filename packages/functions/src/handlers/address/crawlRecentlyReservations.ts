@@ -24,8 +24,8 @@ export const crawlRecentlyReservations = functions
 
     const home = await getHome(homeId.toString(), cookie).catch(() => null);
     if (!home) return;
-    const requests: { roomId: string; checkInDate: string; checkOutDate: string }[] = [];
 
+    const requests: { roomId: string; checkInDate: string; checkOutDate: string }[] = [];
     home.rooms.forEach((room) => {
       const roomId = room.id.toString();
       const days = room.calendar?.calStartDate
@@ -39,9 +39,20 @@ export const crawlRecentlyReservations = functions
       });
     });
 
-    for await (const request of requests) {
-      const { errors } = await getPreReservation(cookie, request.roomId, request.checkInDate, request.checkOutDate);
+    const saves: { [roomId: string]: { data: { [checkInDate: string]: { reserved: boolean } } } } = {};
+    for await (const { roomId, checkInDate, checkOutDate } of requests) {
+      const { errors } = await getPreReservation(cookie, roomId, checkInDate, checkOutDate);
       const reserved = errors.includes('選択した期間は既に予約されています。他の日程を選択ください。');
-      await updateRecentlyReservations(request.roomId, { [request.checkInDate]: { reserved } });
+
+      saves[roomId] = {
+        ...saves[roomId],
+        data: {
+          ...saves[roomId]?.data,
+          [checkInDate]: { reserved },
+        },
+      };
     }
+    Object.entries(saves).map(async ([roomId, { data }]) => {
+      await updateRecentlyReservations(roomId, data);
+    });
   });
