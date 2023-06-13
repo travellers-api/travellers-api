@@ -23,10 +23,11 @@ export const crawlRecentlyReservations = functions
     const minutesOfDay = today.hour() * 60 + today.minute();
     const homeId = minutesOfDay % MAX_COUNT;
 
-    const { rooms } = await getHome(homeId.toString(), cookie);
+    const home = await getHome(homeId.toString(), cookie).catch(() => null);
+    if (!home) return;
     const requests: { roomId: string; checkInDate: string; checkOutDate: string }[] = [];
 
-    rooms.forEach((room) => {
+    home.rooms.forEach((room) => {
       const roomId = room.id.toString();
       const days = room.calendar?.calStartDate
         ? Math.ceil(dayjs.tz(room.calendar.calStartDate, 'Asia/Tokyo').diff(today, 'days', true) * -1)
