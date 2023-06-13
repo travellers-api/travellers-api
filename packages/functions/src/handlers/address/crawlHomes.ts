@@ -1,9 +1,16 @@
 import { getHome } from '@traveller-api/address-fetcher/lib/core/home';
+import * as dayjs from 'dayjs';
+import * as timezone from 'dayjs/plugin/timezone';
+import * as utc from 'dayjs/plugin/utc';
 import * as functions from 'firebase-functions';
 import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
 import { getCookieByUid } from '../../modules/address';
 import { deleteHome, setHomePartial } from '../../modules/firestore/cachedAddressHomes';
+import { getRecentlyReservation } from '../../modules/firestore/cachedAddressRecentlyReservations';
 import { defaultRegion } from '../../modules/functions/constants';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const crawlHomes = functions
   .region(defaultRegion)
@@ -52,6 +59,30 @@ const getHomesRooms = async (targetIds: string[]) => {
       }
 
       const { rooms } = home;
+
+      // 直近の予約状況をマージ
+      const recentlyReservations = await Promise.all(
+        rooms.map(({ id }) => {
+          return getRecentlyReservation(id.toString())
+            .then((data) => ({ id, data }))
+            .catch(() => null);
+        })
+      );
+
+      const today = dayjs().tz('Asia/Tokyo').format('YYYY-MM-DD');
+
+      rooms.forEach((room) => {
+        if (!room.calendar) return;
+
+        const recentlyReservation = recentlyReservations.find((r) => r?.id === room.id);
+        if (!recentlyReservation) return;
+
+        const recentlyReservedDays = Object.entries(recentlyReservation.data)
+          .filter(([checkInDate, { reserved }]) => checkInDate >= today && reserved)
+          .map(([checkInDate]) => checkInDate.replace(/-/g, '/'));
+        room.calendar.reservedDates = [...recentlyReservedDays, ...room.calendar.reservedDates];
+      });
+
       await setHomePartial(id, { rooms });
     })
   );
