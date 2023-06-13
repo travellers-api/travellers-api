@@ -20,6 +20,12 @@
   "ignorePatterns": ["/lib/**/*"],
   "plugins": ["@typescript-eslint", "import"],
   "rules": {
-    "import/order": ["error", { "alphabetize": { "order": "asc" } }]
+    "import/order": ["error", { "alphabetize": { "order": "asc" } }],
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": ["^firebase-admin/.+"]
+      }
+    ]
   }
 }

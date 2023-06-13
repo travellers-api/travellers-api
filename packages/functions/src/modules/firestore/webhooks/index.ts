@@ -1,4 +1,3 @@
-/* eslint-disable-next-line import/no-unresolved */
 import { QuerySnapshot } from 'firebase-admin/firestore';
 import { firestore } from '../../firebase';
 import { Hook } from '../../hook/types';

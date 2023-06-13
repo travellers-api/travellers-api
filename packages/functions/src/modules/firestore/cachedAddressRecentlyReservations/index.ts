@@ -1,4 +1,3 @@
-/* eslint-disable-next-line import/no-unresolved */
 import { DocumentSnapshot } from 'firebase-admin/firestore';
 import { firestore } from '../../firebase';
 import { CachedAddressRecentlyReservation } from './types';

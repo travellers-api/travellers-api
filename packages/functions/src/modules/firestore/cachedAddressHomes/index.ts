@@ -1,5 +1,4 @@
 import { Home } from '@traveller-api/address-fetcher/lib/core/home/types';
-/* eslint-disable-next-line import/no-unresolved */
 import { QuerySnapshot } from 'firebase-admin/firestore';
 import { firestore } from '../../firebase';
 
