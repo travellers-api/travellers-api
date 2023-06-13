@@ -1,8 +1,7 @@
-import { getCookie } from '@traveller-api/address-fetcher/lib/core/authentication';
 import { getHome } from '@traveller-api/address-fetcher/lib/core/home';
 import * as functions from 'firebase-functions';
+import { getCookieByUid } from '../../modules/address';
 import { deleteHome, setHomePartial } from '../../modules/firestore/cachedAddressHomes';
-import { getSecret, updateSecret } from '../../modules/firestore/secret/address';
 import { defaultRegion } from '../../modules/functions/constants';
 
 const MAX_COUNT = 480;
@@ -19,17 +18,6 @@ export const crawlHomes = functions
     await getHomes(targetIds);
     await getHomesRooms(targetIds);
   });
-
-const getCookieByUid = async (uid: string) => {
-  const secret = await getSecret(uid);
-  const cookie =
-    secret.cookie ||
-    (await getCookie(secret).then(async (cookie) => {
-      await updateSecret(uid, { cookie });
-      return cookie;
-    }));
-  return cookie;
-};
 
 const getHomes = async (targetIds: string[]) => {
   // 住所は、本会員のみ取得可能
