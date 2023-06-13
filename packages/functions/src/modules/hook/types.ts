@@ -29,6 +29,9 @@ export type Hook =
         id: CachedCircleHome['id'];
         name: CachedCircleHome['name'];
       };
+    }
+  | {
+      topic: 'system.address.calendar.update';
     };
 
 export type DispatchHookMessage = Hook;
