@@ -19,6 +19,8 @@ export const crawlHomes = functions
     const count = ADDRESS_HOME_MAX_COUNT / loopMinutes;
     const homeIds = [...new Array(count)].map((_, i) => baseId + i);
 
+    console.log(JSON.stringify({ homeIds }));
+
     await getHomes(homeIds.map((id) => id.toString()));
     await getHomesRooms(homeIds.map((id) => id.toString()));
   });

@@ -19,6 +19,8 @@ export const crawlRecentlyReservations = functions
     const count = ADDRESS_HOME_MAX_COUNT / loopMinutes;
     const homeIds = [...new Array(count)].map((_, i) => baseId + i);
 
+    console.log(JSON.stringify({ homeIds }));
+
     const cookie = await getCookieByUid('amon');
     await Promise.all(homeIds.map((homeId) => getRecentlyReservations(cookie, today, homeId)));
   });
