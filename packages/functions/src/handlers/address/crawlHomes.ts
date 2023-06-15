@@ -2,7 +2,7 @@ import { getHome } from '@traveller-api/address-fetcher/lib/core/home';
 import * as functions from 'firebase-functions';
 import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
 import { dayjs } from '../../lib/dayjs';
-import { getCookieByUid } from '../../modules/address';
+import { generateHomeIds, getCookieByUid } from '../../modules/address';
 import { deleteHome, setHomePartial } from '../../modules/firestore/cachedAddressHomes';
 import { getRecentlyReservation } from '../../modules/firestore/cachedAddressRecentlyReservations';
 import { defaultRegion } from '../../modules/functions/constants';
@@ -13,11 +13,8 @@ export const crawlHomes = functions
   .pubsub.schedule('* * * * *')
   .onRun(async (context) => {
     const loopMinutes = 60;
-    const today = dayjs(context.timestamp).tz('Asia/Tokyo');
-    const minutesOfDay = today.hour() * 60 + today.minute();
-    const baseId = (minutesOfDay % loopMinutes) + 1;
-    const count = ADDRESS_HOME_MAX_COUNT / loopMinutes;
-    const homeIds = [...new Array(count)].map((_, i) => baseId + i);
+    const now = dayjs(context.timestamp).tz('Asia/Tokyo');
+    const homeIds = generateHomeIds(now, ADDRESS_HOME_MAX_COUNT, loopMinutes);
 
     console.log(JSON.stringify({ homeIds }));
 
