@@ -3,7 +3,7 @@ import { getPreReservation } from '@traveller-api/address-fetcher/lib/core/pre-r
 import * as functions from 'firebase-functions';
 import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
 import { dayjs } from '../../lib/dayjs';
-import { getCookieByUid } from '../../modules/address';
+import { generateHomeIds, getCookieByUid } from '../../modules/address';
 import { updateRecentlyReservations } from '../../modules/firestore/cachedAddressRecentlyReservations';
 import { defaultRegion } from '../../modules/functions/constants';
 
@@ -13,16 +13,13 @@ export const crawlRecentlyReservations = functions
   .pubsub.schedule('* * * * *')
   .onRun(async (context) => {
     const loopMinutes = 240;
-    const today = dayjs(context.timestamp).tz('Asia/Tokyo');
-    const minutesOfDay = today.hour() * 60 + today.minute();
-    const baseId = (minutesOfDay % loopMinutes) + 1;
-    const count = ADDRESS_HOME_MAX_COUNT / loopMinutes;
-    const homeIds = [...new Array(count)].map((_, i) => baseId + i);
+    const now = dayjs(context.timestamp).tz('Asia/Tokyo');
+    const homeIds = generateHomeIds(now, ADDRESS_HOME_MAX_COUNT, loopMinutes);
 
     console.log(JSON.stringify({ homeIds }));
 
     const cookie = await getCookieByUid('amon');
-    await Promise.all(homeIds.map((homeId) => getRecentlyReservations(cookie, today, homeId)));
+    await Promise.all(homeIds.map((homeId) => getRecentlyReservations(cookie, now, homeId)));
   });
 
 const getRecentlyReservations = async (cookie: string, today: dayjs.Dayjs, homeId: number) => {
