@@ -4,6 +4,7 @@ import * as functions from 'firebase-functions';
 import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
 import { dayjs } from '../../lib/dayjs';
 import { generateHomeIds, getCookieByUid } from '../../modules/address';
+import { addDays, getDiffDays } from '../../modules/date';
 import { updateRecentlyReservations } from '../../modules/firestore/cachedAddressRecentlyReservations';
 import { defaultRegion } from '../../modules/functions/constants';
 
@@ -14,28 +15,27 @@ export const crawlRecentlyReservations = functions
   .onRun(async (context) => {
     const loopMinutes = 240;
     const now = dayjs(context.timestamp).tz('Asia/Tokyo');
+    const today = now.format('YYYY-MM-DD');
     const homeIds = generateHomeIds(now, ADDRESS_HOME_MAX_COUNT, loopMinutes);
 
     console.log(JSON.stringify({ homeIds }));
 
     const cookie = await getCookieByUid('amon');
-    await Promise.all(homeIds.map((homeId) => getRecentlyReservations(cookie, now, homeId)));
+    await Promise.all(homeIds.map((homeId) => getRecentlyReservations(cookie, today, homeId)));
   });
 
-const getRecentlyReservations = async (cookie: string, today: dayjs.Dayjs, homeId: number) => {
+const getRecentlyReservations = async (cookie: string, today: string, homeId: number) => {
   const home = await getHome(homeId.toString(), cookie).catch(() => null);
   if (!home) return;
 
   const requests: { roomId: string; checkInDate: string; checkOutDate: string }[] = [];
   home.rooms.forEach((room) => {
     const roomId = room.id.toString();
-    const days = room.calendar?.calStartDate
-      ? Math.ceil(dayjs.tz(room.calendar.calStartDate, 'Asia/Tokyo').diff(today, 'days', true))
-      : 3;
+    const days = room.calendar?.calStartDate ? getDiffDays(room.calendar.calStartDate, today) + 1 : 4;
 
-    Array.from({ length: days }, (_, i) => i).forEach((day) => {
-      const checkInDate = today.add(day, 'days').format('YYYY-MM-DD');
-      const checkOutDate = today.add(day + 1, 'days').format('YYYY-MM-DD');
+    Array.from({ length: days }, (_, i) => i).forEach((days) => {
+      const checkInDate = addDays(today, days);
+      const checkOutDate = addDays(today, days + 1);
       requests.push({ roomId, checkInDate, checkOutDate });
     });
   });
