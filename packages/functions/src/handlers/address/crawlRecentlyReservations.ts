@@ -31,7 +31,7 @@ const getRecentlyReservations = async (cookie: string, today: string, homeId: nu
   const requests: { roomId: string; checkInDate: string; checkOutDate: string }[] = [];
   home.rooms.forEach((room) => {
     const roomId = room.id.toString();
-    const days = room.calendar?.calStartDate ? getDiffDays(room.calendar.calStartDate, today) : 3;
+    const days = room.calendar?.calStartDate ? getDiffDays(room.calendar.calStartDate, today) + 1 : 4;
 
     Array.from({ length: days }, (_, i) => i).forEach((days) => {
       const checkInDate = addDays(today, days);
