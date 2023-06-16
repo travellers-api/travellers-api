@@ -1,5 +1,5 @@
 import { Home } from '@traveller-api/address-fetcher/lib/core/home/types';
-import { QuerySnapshot } from 'firebase-admin/firestore';
+import { DocumentSnapshot, QuerySnapshot } from 'firebase-admin/firestore';
 import { firestore } from '../../firebase';
 
 export const collectionId = 'cachedAddressHomes';
@@ -24,4 +24,11 @@ export const getHomes = async (): Promise<{ id: string; data: Home }[]> => {
     id: snapshot.id,
     data: snapshot.data(),
   }));
+};
+
+export const getHome = async (id: string): Promise<Home | null> => {
+  const snapshot = (await collection.doc(id).get()) as DocumentSnapshot<Home>;
+  const data = snapshot.data();
+  if (!data) return null;
+  return data as Home;
 };

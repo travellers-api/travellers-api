@@ -1,10 +1,10 @@
-import { getHome } from '@traveller-api/address-fetcher/lib/core/home';
 import { getPreReservation } from '@traveller-api/address-fetcher/lib/core/pre-reservation';
 import * as functions from 'firebase-functions';
 import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
 import { dayjs } from '../../lib/dayjs';
 import { generateHomeIds, getCookieByUid } from '../../modules/address';
 import { addDays, getDiffDays } from '../../modules/date';
+import { getHome } from '../../modules/firestore/cachedAddressHomes';
 import { updateRecentlyReservations } from '../../modules/firestore/cachedAddressRecentlyReservations';
 import { defaultRegion } from '../../modules/functions/constants';
 
@@ -25,7 +25,7 @@ export const crawlRecentlyReservations = functions
   });
 
 const getRecentlyReservations = async (cookie: string, today: string, homeId: number) => {
-  const home = await getHome(homeId.toString(), cookie).catch(() => null);
+  const home = await getHome(homeId.toString());
   if (!home) return;
 
   const requests: { roomId: string; checkInDate: string; checkOutDate: string }[] = [];
