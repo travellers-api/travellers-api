@@ -1,6 +1,6 @@
 import { getHome } from '@traveller-api/address-fetcher/lib/core/home';
 import * as functions from 'firebase-functions';
-import pLimit from 'p-limit';
+import * as pLimit from 'p-limit';
 import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
 import { dayjs } from '../../lib/dayjs';
 import { generateHomeIds, getCookieByUid } from '../../modules/address';

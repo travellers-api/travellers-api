@@ -2,7 +2,7 @@ import { getAikotobaCookie } from '@traveller-api/circle-fetcher/lib/core/authen
 import { getHomes } from '@traveller-api/circle-fetcher/lib/core/home';
 import { getHomeReservationStatuses } from '@traveller-api/circle-fetcher/lib/core/home-reservation-status';
 import * as functions from 'firebase-functions';
-import pLimit from 'p-limit';
+import * as pLimit from 'p-limit';
 import { dayjs } from '../../lib/dayjs';
 import { addMonths } from '../../modules/date';
 import { setHome } from '../../modules/firestore/cachedCircleHomes';
