@@ -2,11 +2,14 @@ import { getAikotobaCookie } from '@traveller-api/circle-fetcher/lib/core/authen
 import { getHomes } from '@traveller-api/circle-fetcher/lib/core/home';
 import { getHomeReservationStatuses } from '@traveller-api/circle-fetcher/lib/core/home-reservation-status';
 import * as functions from 'firebase-functions';
+import pLimit from 'p-limit';
 import { dayjs } from '../../lib/dayjs';
 import { addMonths } from '../../modules/date';
 import { setHome } from '../../modules/firestore/cachedCircleHomes';
 import { CachedCircleHome } from '../../modules/firestore/cachedCircleHomes/types';
 import { defaultRegion } from '../../modules/functions/constants';
+
+const limit = pLimit(1);
 
 export const crawlHomes = functions
   .region(defaultRegion)
@@ -21,14 +24,18 @@ export const crawlHomes = functions
 
     await Promise.all(
       homes.map(async (home) => {
-        const statuses0 = await getHomeReservationStatuses(home.hotelNumber, addMonths(date, 0), cookie);
-        const statuses1 = await getHomeReservationStatuses(home.hotelNumber, addMonths(date, 1), cookie);
-        const statuses2 = await getHomeReservationStatuses(home.hotelNumber, addMonths(date, 2), cookie);
-        const statuses3 = await getHomeReservationStatuses(home.hotelNumber, addMonths(date, 3), cookie);
+        const statusesList = await Promise.all(
+          [0, 1, 2, 3].map(async (i) => {
+            const statuses = await limit(() =>
+              getHomeReservationStatuses(home.hotelNumber, addMonths(date, i), cookie)
+            );
+            return statuses;
+          })
+        );
 
         const savingHome: CachedCircleHome = {
           ...home,
-          calendar: [...statuses0, ...statuses1, ...statuses2, ...statuses3],
+          calendar: statusesList.flat(),
         };
         await setHome(home.id, savingHome);
       })

@@ -1,11 +1,14 @@
 import { getHome } from '@traveller-api/address-fetcher/lib/core/home';
 import * as functions from 'firebase-functions';
+import pLimit from 'p-limit';
 import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
 import { dayjs } from '../../lib/dayjs';
 import { generateHomeIds, getCookieByUid } from '../../modules/address';
 import { deleteHome, setHomePartial } from '../../modules/firestore/cachedAddressHomes';
 import { getRecentlyReservation } from '../../modules/firestore/cachedAddressRecentlyReservations';
 import { defaultRegion } from '../../modules/functions/constants';
+
+const limit = pLimit(1);
 
 // 1分あたり8拠点, 1時間あたり480拠点クロール
 export const crawlHomes = functions
@@ -28,7 +31,7 @@ const getHomes = async (homeIds: string[]) => {
 
   await Promise.all(
     homeIds.map(async (id) => {
-      const home = await getHome(id, cookie).catch((e: Error) => e);
+      const home = await limit(() => getHome(id, cookie)).catch((e: Error) => e);
       if (home instanceof Error && home.message === 'not found') {
         await deleteHome(id);
         return;
@@ -50,7 +53,7 @@ const getHomesRooms = async (homeIds: string[]) => {
 
   await Promise.all(
     homeIds.map(async (id) => {
-      const home = await getHome(id, cookie).catch((e: Error) => e);
+      const home = await limit(() => getHome(id, cookie)).catch((e: Error) => e);
       if (home instanceof Error) {
         return;
       }
