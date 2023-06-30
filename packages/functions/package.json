@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@google-cloud/pubsub": "^3.7.1",
-    "@traveller-api/address-fetcher": "0.2.0",
+    "@traveller-api/address-fetcher": "0.3.0",
     "@traveller-api/circle-fetcher": "0.1.5",
     "@traveller-api/hafh-fetcher": "0.1.2",
     "cheerio": "^1.0.0-rc.12",
