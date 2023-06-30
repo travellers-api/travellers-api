@@ -18,8 +18,7 @@ export const fetchHome = async (id: string, cookie: string): Promise<Home> => {
   }
 
   const html = await res.text();
-
-  const home = await parseHomePage(html);
+  const home = parseHomePage(html);
 
   await Promise.all(
     home.rooms.map(async (room) => {
