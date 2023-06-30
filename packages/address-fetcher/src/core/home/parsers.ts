@@ -1,9 +1,9 @@
 import * as cheerio from 'cheerio';
-import { Home, Room } from '../types';
+import { Home, Room } from './types';
 
 const fields: {
   name: keyof Home;
-  parse: ($: cheerio.CheerioAPI) => any | Promise<any>;
+  parse: ($: cheerio.CheerioAPI) => any;
 }[] = [
   {
     name: 'id',
@@ -93,14 +93,13 @@ const fields: {
   {
     name: 'rooms',
     parse: ($) => {
-      return $('#room-all .room')
+      return $('#room-calendar .room-item')
         .get()
         .map((elm): Room => {
-          const type = $(elm).find('ul li img[src*="Icon-door"] + p').text().trim().replace(/（.+$/, '');
-
+          const type = $(elm).find('.room-item-info li img[src*="Icon-door"] + p').text().trim().replace(/（.+$/, '');
           const id = Number($(elm).find('button').attr('data-bs-room-id') ?? '');
           const name = $(elm).find('h3').text();
-          const thumbnail = $(elm).find('.card__image').attr('src') ?? '';
+          const thumbnail = $(elm).find('.room-item-image img').attr('src') ?? '';
           const capacity = Number(
             $(elm)
               .find('ul li img[src*="Icon-door"] + p')
@@ -109,25 +108,18 @@ const fields: {
               .replace(/^.+（定員/, '')
               .replace(/名）$/, '')
           );
-          const sex = type.startsWith('男性専用') ? 'male' : type.startsWith('女性専用') ? 'female' : null;
+          const sexLabel = $(elm).find('.room-item-info li img[src*="Icon-door"] + p + p').text().trim();
+          const sex = sexLabel === '男性専用' ? 'male' : sexLabel === '女性専用' ? 'female' : null;
 
           const room: Home['rooms'][0] = {
             id,
             name,
             thumbnail,
-            type: type.replace(/^[男女]性専用/, '') as Room['type'],
+            type: type as Room['type'],
             capacity,
             sex,
             // あとから合成
-            calendar: {
-              reservedDates: [],
-              calStartDate: '',
-              calEndDate: '',
-              reservablePeriod: '',
-              holidays: [],
-              minDays: -1,
-              availableWeeks: -1,
-            },
+            calendar: null,
           };
 
           return room;
@@ -136,14 +128,11 @@ const fields: {
   },
 ];
 
-export const parseHomePage = async (html: string): Promise<Home> => {
+export const parseHomePage = (html: string): Home => {
   const $ = cheerio.load(html);
-
   const obj: Partial<Home> = {};
-  await Promise.all(
-    fields.map(async (field) => {
-      obj[field.name] = await field.parse($);
-    })
-  );
+  fields.map((field) => {
+    obj[field.name] = field.parse($);
+  });
   return obj as Home;
 };
