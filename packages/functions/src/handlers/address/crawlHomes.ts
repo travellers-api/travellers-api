@@ -4,7 +4,7 @@ import * as pLimit from 'p-limit';
 import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
 import { dayjs } from '../../lib/dayjs';
 import { generateHomeIds, getCookieByUid } from '../../modules/address';
-import { deleteHome, setHomePartial } from '../../modules/firestore/cachedAddressHomes';
+import { deleteHome, setHome } from '../../modules/firestore/cachedAddressHomes';
 import { getRecentlyReservation } from '../../modules/firestore/cachedAddressRecentlyReservations';
 import { defaultRegion } from '../../modules/functions/constants';
 
@@ -22,11 +22,9 @@ export const crawlHomes = functions
     console.log(JSON.stringify({ homeIds }));
 
     await getHomes(homeIds.map((id) => id.toString()));
-    await getHomesRooms(homeIds.map((id) => id.toString()));
   });
 
 const getHomes = async (homeIds: string[]) => {
-  // 住所は、本会員のみ取得可能
   const cookie = await getCookieByUid('amon');
 
   await Promise.all(
@@ -41,28 +39,9 @@ const getHomes = async (homeIds: string[]) => {
         return;
       }
 
-      const { rooms, ...homeWithoutRooms } = home;
-      await setHomePartial(id, homeWithoutRooms);
-    })
-  );
-};
-
-const getHomesRooms = async (homeIds: string[]) => {
-  // 性別専用部屋を含む予約状況は、メール会員のみ取得可能
-  const cookie = await getCookieByUid('bot');
-
-  await Promise.all(
-    homeIds.map(async (id) => {
-      const home = await limit(() => getHome(id, cookie)).catch((e: Error) => e);
-      if (home instanceof Error) {
-        return;
-      }
-
-      const { rooms } = home;
-
       // 直近の予約状況をマージ
       const recentlyReservations = await Promise.all(
-        rooms.map(({ id }) => {
+        home.rooms.map(({ id }) => {
           return getRecentlyReservation(id.toString())
             .then((data) => ({ id, data }))
             .catch(() => null);
@@ -71,7 +50,7 @@ const getHomesRooms = async (homeIds: string[]) => {
 
       const today = dayjs().tz('Asia/Tokyo').format('YYYY-MM-DD');
 
-      rooms.forEach((room) => {
+      home.rooms.forEach((room) => {
         if (!room.calendar) return;
 
         const recentlyReservation = recentlyReservations.find((r) => r?.id === room.id);
@@ -83,7 +62,7 @@ const getHomesRooms = async (homeIds: string[]) => {
         room.calendar.reservedDates = [...recentlyReservedDays, ...room.calendar.reservedDates];
       });
 
-      await setHomePartial(id, { rooms });
+      await setHome(id, home);
     })
   );
 };
