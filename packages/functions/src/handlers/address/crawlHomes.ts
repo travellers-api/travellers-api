@@ -1,4 +1,4 @@
-import { getHome } from '@traveller-api/address-fetcher/lib/core/home';
+import { getHome } from '@travellers-api/address-fetcher/lib/core/home';
 import * as functions from 'firebase-functions';
 import * as pLimit from 'p-limit';
 import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';

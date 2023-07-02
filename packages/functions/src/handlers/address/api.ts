@@ -1,6 +1,6 @@
-import { checkValidityCookie, getCookie } from '@traveller-api/address-fetcher/lib/core/authentication';
-import { getReservations } from '@traveller-api/address-fetcher/lib/core/reservation';
-import { Reservation } from '@traveller-api/address-fetcher/lib/core/reservation/types';
+import { checkValidityCookie, getCookie } from '@travellers-api/address-fetcher/lib/core/authentication';
+import { getReservations } from '@travellers-api/address-fetcher/lib/core/reservation';
+import { Reservation } from '@travellers-api/address-fetcher/lib/core/reservation/types';
 import * as express from 'express';
 import * as functions from 'firebase-functions';
 import { getHomes } from '../../modules/firestore/cachedAddressHomes';

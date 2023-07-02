@@ -1,4 +1,4 @@
-import { getPreReservation } from '@traveller-api/address-fetcher/lib/core/pre-reservation';
+import { getPreReservation } from '@travellers-api/address-fetcher/lib/core/pre-reservation';
 import * as functions from 'firebase-functions';
 import * as pLimit from 'p-limit';
 import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
