@@ -10,9 +10,6 @@
       "path": "packages/functions"
     },
     {
-      "path": "packages/address-fetcher"
-    },
-    {
       "path": "packages/circle-fetcher"
     },
     {
