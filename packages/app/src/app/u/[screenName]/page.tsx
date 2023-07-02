@@ -52,7 +52,7 @@ type Props = {
 
 const getData = async (screenName: string): Promise<Props> => {
   const [address, circle, hafh] = await Promise.all([
-    fetch(`https://api.traveller-api.amon.dev/address/users/${screenName}/reservations`, {
+    fetch(`https://api.travellers-api.amon.dev/address/users/${screenName}/reservations`, {
       next: { revalidate: 60 * 60 },
     }).then(async (res) => {
       const { reservations } = res.ok
@@ -60,7 +60,7 @@ const getData = async (screenName: string): Promise<Props> => {
         : { reservations: [] };
       return { ok: res.ok, reservations };
     }),
-    fetch(`https://api.traveller-api.amon.dev/circle/users/${screenName}/reservations`, {
+    fetch(`https://api.travellers-api.amon.dev/circle/users/${screenName}/reservations`, {
       next: { revalidate: 60 * 60 },
     }).then(async (res) => {
       const { reservations } = res.ok
@@ -68,7 +68,7 @@ const getData = async (screenName: string): Promise<Props> => {
         : { reservations: [] };
       return { ok: res.ok, reservations };
     }),
-    fetch(`https://api.traveller-api.amon.dev/hafh/users/${screenName}/reservations`, {
+    fetch(`https://api.travellers-api.amon.dev/hafh/users/${screenName}/reservations`, {
       next: { revalidate: 60 * 60 },
     }).then(async (res) => {
       const { reservations } = res.ok

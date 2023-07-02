@@ -1,7 +1,7 @@
 import { Home } from './types';
 
 export const fetchCalendar = async (fetchInit?: RequestInit): Promise<Home[]> => {
-  const res = await fetch(`https://api.traveller-api.amon.dev/circle/calendar`, fetchInit);
+  const res = await fetch(`https://api.travellers-api.amon.dev/circle/calendar`, fetchInit);
 
   if (!res.ok) {
     throw new Error(res.statusText);
