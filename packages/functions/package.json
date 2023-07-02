@@ -20,9 +20,9 @@
   },
   "dependencies": {
     "@google-cloud/pubsub": "^3.7.1",
-    "@traveller-api/address-fetcher": "0.3.0",
     "@traveller-api/circle-fetcher": "0.1.5",
     "@traveller-api/hafh-fetcher": "0.1.2",
+    "@travellers-api/address-fetcher": "^0.3.0",
     "cheerio": "^1.0.0-rc.12",
     "dayjs": "^1.11.8",
     "firebase-admin": "^11.9.0",

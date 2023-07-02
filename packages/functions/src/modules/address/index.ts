@@ -1,4 +1,4 @@
-import { getCookie } from '@traveller-api/address-fetcher/lib/core/authentication';
+import { getCookie } from '@travellers-api/address-fetcher/lib/core/authentication';
 import { dayjs } from '../../lib/dayjs';
 import { getSecret, updateSecret } from '../firestore/secret/address';
 
