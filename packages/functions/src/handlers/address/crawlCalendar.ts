@@ -30,7 +30,7 @@ export const crawlCalendar = functions
   });
 
 const single = async (cookie: string, homeId: number) => {
-  const exists = existsHome(homeId);
+  const exists = await existsHome(homeId);
   if (!exists) return;
 
   const res = await limit(() => getRoomsFromHomeId(homeId, cookie)).catch((e: Error) => e);
