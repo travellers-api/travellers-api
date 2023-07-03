@@ -14,7 +14,7 @@ import { defaultRegion } from '../../modules/functions/constants';
 
 const limit = pLimit(1);
 
-// 各拠点ごとに1日に24回、予約状況を取得
+// 各拠点ごとに1時間に1回、予約状況を取得
 export const crawlCalendar = functions
   .region(defaultRegion)
   .pubsub.schedule('* * * * *')
