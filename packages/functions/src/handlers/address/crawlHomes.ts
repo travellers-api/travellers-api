@@ -9,12 +9,12 @@ import { defaultRegion } from '../../modules/functions/constants';
 
 const limit = pLimit(1);
 
-// 1分あたり2拠点, 4時間あたり480拠点クロール
+// 1分あたり8拠点, 1時間あたり480拠点クロール
 export const crawlHomes = functions
   .region(defaultRegion)
   .pubsub.schedule('* * * * *')
   .onRun(async (context) => {
-    const loopMinutes = 240;
+    const loopMinutes = 60;
     const now = dayjs(context.timestamp).tz('Asia/Tokyo');
     const homeIds = generateHomeIds(now, ADDRESS_HOME_MAX_COUNT, loopMinutes);
 
