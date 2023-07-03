@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn workspace @traveller-api/app lint-staged
-yarn workspace @traveller-api/functions lint-staged
-yarn workspace @traveller-api/circle-fetcher lint-staged
+yarn workspace @travellers-api/app lint-staged
+yarn workspace @travellers-api/functions lint-staged

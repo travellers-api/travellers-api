@@ -1,1 +1,1 @@
-export const userAgent = 'traveller-api/0.0.0';
+export const userAgent = 'travellers-api/0.0.0';
