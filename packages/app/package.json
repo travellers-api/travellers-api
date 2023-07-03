@@ -1,5 +1,5 @@
 {
-  "name": "@traveller-api/app",
+  "name": "@travellers-api/app",
   "version": "0.0.0",
   "private": true,
   "scripts": {
