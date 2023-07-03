@@ -1,45 +1,34 @@
-import { getHome } from '@travellers-api/address-fetcher/lib/core/home';
+import { getNewestHomes } from '@travellers-api/address-fetcher/lib/core/newest-homes';
 import * as functions from 'firebase-functions';
 import * as pLimit from 'p-limit';
-import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
+import { ADDRESS_HOME_MAX_LIST_COUNT } from '../../constants/address';
 import { dayjs } from '../../lib/dayjs';
-import { generateHomeIds, getCookieByUid } from '../../modules/address';
-import { deleteHome, setHomeBase } from '../../modules/firestore/cachedAddressHomes';
+import { generateNumbers, getCookieByUid } from '../../modules/address';
+import { setHomeBase } from '../../modules/firestore/cachedAddressHomes';
 import { defaultRegion } from '../../modules/functions/constants';
 
 const limit = pLimit(1);
 
-// 1分あたり8拠点, 1時間あたり480拠点クロール
+// 拠点リスト(30件)ごとに15分に1回、拠点の基本情報を取得
 export const crawlHomes = functions
   .region(defaultRegion)
   .pubsub.schedule('* * * * *')
   .onRun(async (context) => {
-    const loopMinutes = 60;
+    const loopMinutes = 30;
     const now = dayjs(context.timestamp).tz('Asia/Tokyo');
-    const homeIds = generateHomeIds(now, ADDRESS_HOME_MAX_COUNT, loopMinutes);
+    const pageIds = generateNumbers(now, ADDRESS_HOME_MAX_LIST_COUNT, loopMinutes);
 
-    console.log(JSON.stringify({ homeIds }));
+    console.log(JSON.stringify({ groupIds: pageIds }));
 
-    await getHomes(homeIds);
+    const cookie = await getCookieByUid('amon');
+    await Promise.all(pageIds.map((id) => single(id, cookie)));
   });
 
-const getHomes = async (homeIds: number[]) => {
-  const cookie = await getCookieByUid('amon');
-
-  await Promise.all(
-    homeIds.map(async (id) => {
-      const home = await limit(() => getHome(id, cookie)).catch((e: Error) => e);
-      if (home instanceof Error && home.message === 'not found') {
-        await deleteHome(id);
-        return;
-      }
-      if (home instanceof Error) {
-        console.error(home.message);
-        return;
-      }
-
-      const { rooms, ...homeWithoutRooms } = home;
-      await setHomeBase(id, homeWithoutRooms);
-    })
-  );
+const single = async (pageId: number, cookie: string) => {
+  const homes = await limit(() => getNewestHomes(cookie, pageId)).catch((e: Error) => e);
+  if (homes instanceof Error) {
+    console.error(homes.message);
+    return;
+  }
+  await Promise.all(homes.map((home) => setHomeBase(home.id, home)));
 };
