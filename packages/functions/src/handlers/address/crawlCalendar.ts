@@ -4,7 +4,7 @@ import { RoomCalendar } from '@travellers-api/address-fetcher/lib/core/home/room
 import { Room } from '@travellers-api/address-fetcher/lib/core/home/room/types';
 import * as functions from 'firebase-functions';
 import * as pLimit from 'p-limit';
-import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
+import { ADDRESS_HOME_MAX_ID } from '../../constants/address';
 import { dayjs } from '../../lib/dayjs';
 import { generateHomeIds, getCookieByUid } from '../../modules/address';
 import { existsHome, setHomeRooms } from '../../modules/firestore/cachedAddressHomes';
@@ -21,7 +21,7 @@ export const crawlCalendar = functions
   .onRun(async (context) => {
     const loopMinutes = 60;
     const now = dayjs(context.timestamp).tz('Asia/Tokyo');
-    const homeIds = generateHomeIds(now, ADDRESS_HOME_MAX_COUNT, loopMinutes);
+    const homeIds = generateHomeIds(now, ADDRESS_HOME_MAX_ID, loopMinutes);
 
     console.log(JSON.stringify({ homeIds }));
 

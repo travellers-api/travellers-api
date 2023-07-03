@@ -1,1 +1,1 @@
-export const ADDRESS_HOME_MAX_COUNT = 480;
+export const ADDRESS_HOME_MAX_ID = 480;
