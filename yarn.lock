@@ -1345,6 +1345,23 @@
     dayjs "^1.11.8"
     node-fetch "2"
 
+"@travellers-api/circle-fetcher@0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@travellers-api/circle-fetcher/-/circle-fetcher-0.1.5.tgz#cde9ff8d66f988fb95bc44095f501be9588d8913"
+  integrity sha512-BrvC3ZXr77etP90t7gjQ4lAdKtkx8V3jE6aih6p1nuI7uK48nyguSPKyNo2QTQuJNGZiPlEM2E8OhNK5yR9UjQ==
+  dependencies:
+    cheerio "^1.0.0-rc.12"
+    dayjs "^1.11.8"
+    node-fetch "2"
+
+"@travellers-api/hafh-fetcher@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@travellers-api/hafh-fetcher/-/hafh-fetcher-0.1.2.tgz#6e22bdc52fed221a8568c16905516e22058994c8"
+  integrity sha512-RKrrX6Brulv3a47YuivU2rlr37q/D7Oj9G1GsrLkeZvFWM2lJM15l8cabUvv3nEPlBjFzT1gcOtaFaUXbrB2Ng==
+  dependencies:
+    cheerio "^1.0.0-rc.12"
+    node-fetch "2"
+
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.9.tgz#df4907fc07a886922637b15e02d4cebc4c0021b2"

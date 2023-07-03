@@ -32,8 +32,8 @@
         "firebase-debug.*.log"
       ],
       "predeploy": [
-        "yarn workspace @traveller-api/functions lint",
-        "yarn workspace @traveller-api/functions build"
+        "yarn workspace @travellers-api/functions lint",
+        "yarn workspace @travellers-api/functions build"
       ]
     }
   ],
