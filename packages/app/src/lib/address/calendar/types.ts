@@ -6,13 +6,7 @@ export type Home = {
   prefecture: string;
   homeType: string;
   reservationLimit: '予約制限あり' | '予約制限なし';
-  address: {
-    postalCode: string;
-    text: string;
-    lat: number;
-    lng: number;
-  };
-  rooms: Room[];
+  rooms?: Room[];
 };
 
 export type Room = {

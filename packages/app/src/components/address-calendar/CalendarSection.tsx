@@ -51,7 +51,7 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
 
   const estimateSize = useCallback(
     (i: number) => {
-      return homes[i]!.rooms.length * 31 + 10;
+      return (homes[i]!.rooms?.length ?? 1) * 31 + 10;
     },
     [homes]
   );
@@ -162,73 +162,69 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                       )}
                     </div>
                     <ul>
-                      {home.rooms.map((room, i) => {
-                        // 女性専用部屋は ID が 0 になるので index も利用
-                        const key = `${room.id}_${i}`;
-                        return (
-                          <li key={key} className="border-b last:border-b-0">
-                            <div className="grid grid-cols-[var(--room-width)_1fr] gap-4 py-5">
-                              <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-4 text-sm">
-                                {isShownRoomLabel && (
-                                  <div className="flex gap-4 self-center">
-                                    {room.sex && (
-                                      <LabelText className="shrink-0">{room.sex === 'male' ? '男' : '女'}</LabelText>
-                                    )}
-                                    <LabelText className="shrink-0">
-                                      {shortenRoomType(simplifyRoomType(room.type))}
-                                    </LabelText>
-                                    {room.calendar && room.calendar.availableWeeks !== 12 ? (
-                                      <LabelText className="shrink-0">{room.calendar.availableWeeks}週</LabelText>
-                                    ) : null}
-                                  </div>
-                                )}
-                                <p className="self-center overflow-hidden whitespace-nowrap">
-                                  {simplifyRoomName(room.name)}
-                                </p>
-                              </div>
-                              {room.calendar && room.availables ? (
-                                <div className="self-center text-xs">
-                                  <ul className="grid grid-cols-[repeat(var(--dates-count),24px)] self-center">
-                                    {room.availables.split('').map((available, i) => (
-                                      <li key={i}>
-                                        <div
-                                          className={classNames(
-                                            'border-l text-center',
-                                            available === 'N'
-                                              ? 'bg-black/40'
-                                              : available === 'O'
-                                              ? 'bg-black/20'
-                                              : available === 'H'
-                                              ? 'bg-black/20'
-                                              : available === 'Y'
-                                              ? ''
-                                              : null
-                                          )}
-                                        >
-                                          <span>&nbsp;</span>
-                                          <span className="sr-only">
-                                            {available === 'N'
-                                              ? '予約済み・予約不可'
-                                              : available === 'O'
-                                              ? '予約期間外'
-                                              : available === 'H'
-                                              ? '拠点休日'
-                                              : available === 'Y'
-                                              ? '予約可能'
-                                              : null}
-                                          </span>
-                                        </div>
-                                      </li>
-                                    ))}
-                                  </ul>
+                      {home.rooms?.map((room) => (
+                        <li key={room.id} className="border-b last:border-b-0">
+                          <div className="grid grid-cols-[var(--room-width)_1fr] gap-4 py-5">
+                            <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-4 text-sm">
+                              {isShownRoomLabel && (
+                                <div className="flex gap-4 self-center">
+                                  {room.sex && (
+                                    <LabelText className="shrink-0">{room.sex === 'male' ? '男' : '女'}</LabelText>
+                                  )}
+                                  <LabelText className="shrink-0">
+                                    {shortenRoomType(simplifyRoomType(room.type))}
+                                  </LabelText>
+                                  {room.calendar && room.calendar.availableWeeks !== 12 ? (
+                                    <LabelText className="shrink-0">{room.calendar.availableWeeks}週</LabelText>
+                                  ) : null}
                                 </div>
-                              ) : (
-                                <div className="self-center text-xs">取得不可</div>
                               )}
+                              <p className="self-center overflow-hidden whitespace-nowrap">
+                                {simplifyRoomName(room.name)}
+                              </p>
                             </div>
-                          </li>
-                        );
-                      })}
+                            {room.calendar && room.availables ? (
+                              <div className="self-center text-xs">
+                                <ul className="grid grid-cols-[repeat(var(--dates-count),24px)] self-center">
+                                  {room.availables.split('').map((available, i) => (
+                                    <li key={i}>
+                                      <div
+                                        className={classNames(
+                                          'border-l text-center',
+                                          available === 'N'
+                                            ? 'bg-black/40'
+                                            : available === 'O'
+                                            ? 'bg-black/20'
+                                            : available === 'H'
+                                            ? 'bg-black/20'
+                                            : available === 'Y'
+                                            ? ''
+                                            : null
+                                        )}
+                                      >
+                                        <span>&nbsp;</span>
+                                        <span className="sr-only">
+                                          {available === 'N'
+                                            ? '予約済み・予約不可'
+                                            : available === 'O'
+                                            ? '予約期間外'
+                                            : available === 'H'
+                                            ? '拠点休日'
+                                            : available === 'Y'
+                                            ? '予約可能'
+                                            : null}
+                                        </span>
+                                      </div>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ) : (
+                              <div className="self-center text-xs">取得不可</div>
+                            )}
+                          </div>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </li>
