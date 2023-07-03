@@ -1,11 +1,11 @@
 import { getAikotobaCookie } from '@traveller-api/circle-fetcher/lib/core/authentication';
-import { getHomes } from '@traveller-api/circle-fetcher/lib/core/home';
+import { getHomes as getHomesFromReserva } from '@traveller-api/circle-fetcher/lib/core/home';
 import { getHomeReservationStatuses } from '@traveller-api/circle-fetcher/lib/core/home-reservation-status';
 import * as functions from 'firebase-functions';
 import * as pLimit from 'p-limit';
 import { dayjs } from '../../lib/dayjs';
 import { addMonths } from '../../modules/date';
-import { setHome } from '../../modules/firestore/cachedCircleHomes';
+import { deleteHome, getHomes as getHomesFromFirestore, setHome } from '../../modules/firestore/cachedCircleHomes';
 import { CachedCircleHome } from '../../modules/firestore/cachedCircleHomes/types';
 import { defaultRegion } from '../../modules/functions/constants';
 
@@ -20,10 +20,10 @@ export const crawlHomes = functions
 
     const aikotoba = process.env.CIRCLE_AIKOTOBA ?? '';
     const cookie = await getAikotobaCookie(aikotoba);
-    const homes = await getHomes(cookie);
+    const homesFromReserva = await getHomesFromReserva(cookie);
 
     await Promise.all(
-      homes.map(async (home) => {
+      homesFromReserva.map(async (home) => {
         const statusesList = await Promise.all(
           [0, 1, 2, 3].map(async (i) => {
             const statuses = await limit(() =>
@@ -38,6 +38,16 @@ export const crawlHomes = functions
           calendar: statusesList.flat(),
         };
         await setHome(home.id, savingHome);
+      })
+    );
+
+    const homesFromFirestore = await getHomesFromFirestore();
+    await Promise.all(
+      homesFromFirestore.map(async (home) => {
+        const exists = homesFromReserva.some((homeFromReserva) => homeFromReserva.id === home.id);
+        if (!exists) {
+          await deleteHome(home.id);
+        }
       })
     );
   });
