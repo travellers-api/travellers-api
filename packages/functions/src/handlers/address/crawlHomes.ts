@@ -21,10 +21,10 @@ export const crawlHomes = functions
 
     console.log(JSON.stringify({ homeIds }));
 
-    await getHomes(homeIds.map((id) => id.toString()));
+    await getHomes(homeIds);
   });
 
-const getHomes = async (homeIds: string[]) => {
+const getHomes = async (homeIds: number[]) => {
   const cookie = await getCookieByUid('amon');
 
   await Promise.all(

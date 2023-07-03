@@ -28,7 +28,7 @@ export const crawlRecentlyReservations = functions
   });
 
 const getRecentlyReservations = async (cookie: string, today: string, homeId: number) => {
-  const home = await getHome(homeId.toString());
+  const home = await getHome(homeId);
   if (!home) return;
 
   const requests: { roomId: string; checkInDate: string; checkOutDate: string }[] = [];
