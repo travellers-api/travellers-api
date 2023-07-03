@@ -51,7 +51,7 @@ export async function GET(request: Request) {
       roomType: (() => {
         const values = new Set<string>();
         homes.forEach((home) => {
-          home.rooms.forEach((room) => {
+          home.rooms?.forEach((room) => {
             values.add(room.type);
           });
         });
@@ -67,15 +67,15 @@ export async function GET(request: Request) {
         home.rooms = excludeClosedRooms(home.rooms);
 
         if (roomTypeQuery.length) {
-          home.rooms = home.rooms.filter((room) => roomTypeQuery.includes(room.type));
+          home.rooms = home.rooms?.filter((room) => roomTypeQuery.includes(room.type));
         }
 
         if (sexQuery.length) {
-          home.rooms = home.rooms.filter((room) => sexQuery.some((q) => [q, null].includes(room.sex)));
+          home.rooms = home.rooms?.filter((room) => sexQuery.some((q) => [q, null].includes(room.sex)));
         }
 
         home.rooms = home.rooms
-          .map((room) => {
+          ?.map((room) => {
             const calendar = room.calendar;
             const availables = calendar
               ? dates
@@ -119,7 +119,7 @@ export async function GET(request: Request) {
 
         // 不要フィールド削除
         home.thumbnail = '';
-        home.rooms.forEach((room) => {
+        home.rooms?.forEach((room) => {
           room.thumbnail = '';
         });
 
@@ -136,7 +136,7 @@ export async function GET(request: Request) {
           if (!match) return false;
         }
 
-        if (home.rooms.length === 0) {
+        if (home.rooms?.length === 0) {
           return false;
         }
 
