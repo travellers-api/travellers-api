@@ -13,10 +13,10 @@ export const getCookieByUid = async (uid: string) => {
   return cookie;
 };
 
-export const generateHomeIds = (now: dayjs.Dayjs, maxCount: number, loopMinutes: number): number[] => {
+export const generateNumbers = (now: dayjs.Dayjs, maxCount: number, loopMinutes: number): number[] => {
   const minutesOfDay = now.hour() * 60 + now.minute();
   const count = Math.ceil(maxCount / loopMinutes);
   const baseId = (minutesOfDay % loopMinutes) * count + 1;
-  const homeIds = [...new Array(count)].map((_, i) => baseId + i).filter((id) => id <= maxCount);
-  return homeIds;
+  const numbers = [...new Array(count)].map((_, i) => baseId + i).filter((id) => id <= maxCount);
+  return numbers;
 };

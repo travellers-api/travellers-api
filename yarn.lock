@@ -1336,10 +1336,10 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
-"@travellers-api/address-fetcher@^0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@travellers-api/address-fetcher/-/address-fetcher-0.5.3.tgz#3567d26a0c7c971d69c9567e8433a10a06fec71b"
-  integrity sha512-57GNHC44obAahNiCMfvGRrFtDqEZpxQVdV+E3Ago8rMdCeU3vD/obrzkbbt2XeyIHWF/uYbABQMjCHJ5K5gzmw==
+"@travellers-api/address-fetcher@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@travellers-api/address-fetcher/-/address-fetcher-0.6.0.tgz#3d6cf6152ae5d4fa949cca6d865ddbdec3c0eb23"
+  integrity sha512-JEJvAgy4Kyyo6vv6sgMNfcwZRMWZDD3NqjluJvp4TXiTmnoJm7wtZD030JhpXnmcMXKyVAuLi0h8KmTCJ2Ivjw==
   dependencies:
     cheerio "^1.0.0-rc.12"
     dayjs "^1.11.8"

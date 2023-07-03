@@ -1,12 +1,16 @@
 import { CollectionReference } from 'firebase-admin/firestore';
 import { firestore } from '../../firebase';
-import { CachedAddressHome } from './types';
+import { CachedAddressHome, CachedAddressHomeBase } from './types';
 
 export const collectionId = 'cachedAddressHomes';
 
 const collection = firestore.collection(collectionId) as CollectionReference<CachedAddressHome>;
 
-export const setHomeBase = async (id: number, data: Omit<CachedAddressHome, 'rooms'>): Promise<void> => {
+export const setHomeBase = async (id: number, data: CachedAddressHomeBase): Promise<void> => {
+  await collection.doc(id.toString()).set(data, { merge: true });
+};
+
+export const setHomeAddress = async (id: number, data: Pick<CachedAddressHome, 'address'>): Promise<void> => {
   await collection.doc(id.toString()).set(data, { merge: true });
 };
 

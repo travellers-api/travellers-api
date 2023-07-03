@@ -1,10 +1,16 @@
-import { Home } from '@travellers-api/address-fetcher/lib/core/home/types';
+import { Home, Room } from '@travellers-api/address-fetcher/lib/core/home/types';
 
-export type CachedAddressHome = Omit<Home, 'rooms'> & {
-  rooms?: CachedAddressHomeRoom[];
-};
+export type CachedAddressHomeBase = Pick<
+  Home,
+  'id' | 'url' | 'name' | 'thumbnail' | 'prefecture' | 'homeType' | 'reservationLimit'
+>;
 
-export type CachedAddressHomeRoom = Home['rooms'][0] & {
+export type CachedAddressHome = CachedAddressHomeBase &
+  Partial<Pick<Home, 'address'>> & {
+    rooms?: CachedAddressHomeRoom[];
+  };
+
+export type CachedAddressHomeRoom = Room & {
   calendar: {
     reservedDates: string[];
     calStartDate: string;

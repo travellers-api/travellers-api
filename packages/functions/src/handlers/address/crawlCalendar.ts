@@ -4,9 +4,9 @@ import { RoomCalendar } from '@travellers-api/address-fetcher/lib/core/home/room
 import { Room } from '@travellers-api/address-fetcher/lib/core/home/room/types';
 import * as functions from 'firebase-functions';
 import * as pLimit from 'p-limit';
-import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
+import { ADDRESS_HOME_MAX_ID } from '../../constants/address';
 import { dayjs } from '../../lib/dayjs';
-import { generateHomeIds, getCookieByUid } from '../../modules/address';
+import { generateNumbers, getCookieByUid } from '../../modules/address';
 import { existsHome, setHomeRooms } from '../../modules/firestore/cachedAddressHomes';
 import { CachedAddressHomeRoom } from '../../modules/firestore/cachedAddressHomes/types';
 import { getRecentlyReservation } from '../../modules/firestore/cachedAddressRecentlyReservations';
@@ -14,14 +14,14 @@ import { defaultRegion } from '../../modules/functions/constants';
 
 const limit = pLimit(1);
 
-// 1分あたり8拠点, 1時間あたり480拠点クロール
+// 各拠点ごとに1時間に1回、予約状況を取得
 export const crawlCalendar = functions
   .region(defaultRegion)
   .pubsub.schedule('* * * * *')
   .onRun(async (context) => {
     const loopMinutes = 60;
     const now = dayjs(context.timestamp).tz('Asia/Tokyo');
-    const homeIds = generateHomeIds(now, ADDRESS_HOME_MAX_COUNT, loopMinutes);
+    const homeIds = generateNumbers(now, ADDRESS_HOME_MAX_ID, loopMinutes);
 
     console.log(JSON.stringify({ homeIds }));
 
