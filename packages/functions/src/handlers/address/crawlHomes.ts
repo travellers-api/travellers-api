@@ -42,7 +42,7 @@ const getHomes = async (homeIds: number[]) => {
       // 直近の予約状況をマージ
       const recentlyReservations = await Promise.all(
         home.rooms.map(({ id }) => {
-          return getRecentlyReservation(id.toString())
+          return getRecentlyReservation(id)
             .then((data) => ({ id, data }))
             .catch(() => null);
         })

@@ -60,6 +60,6 @@ const getRecentlyReservations = async (cookie: string, today: string, homeId: nu
   );
 
   Object.entries(saves).map(async ([roomId, { data }]) => {
-    await updateRecentlyReservations(roomId, data);
+    await updateRecentlyReservations(Number(roomId), data);
   });
 };
