@@ -6,11 +6,11 @@ export const collectionId = 'cachedAddressHomes';
 
 const collection = firestore.collection(collectionId) as CollectionReference<CachedAddressHome>;
 
-export const setHome = async (id: number, data: CachedAddressHome): Promise<void> => {
-  await collection.doc(id.toString()).set(data);
+export const setHomeBase = async (id: number, data: Omit<CachedAddressHome, 'rooms'>): Promise<void> => {
+  await collection.doc(id.toString()).set(data, { merge: true });
 };
 
-export const setHomePartial = async (id: number, data: Partial<CachedAddressHome>): Promise<void> => {
+export const setHomeRooms = async (id: number, data: Pick<CachedAddressHome, 'rooms'>): Promise<void> => {
   await collection.doc(id.toString()).set(data, { merge: true });
 };
 
