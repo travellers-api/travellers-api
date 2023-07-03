@@ -1,6 +1,6 @@
-import { getAikotobaCookie } from '@traveller-api/circle-fetcher/lib/core/authentication';
-import { getHomes } from '@traveller-api/circle-fetcher/lib/core/home';
-import { getHomeReservationStatuses } from '@traveller-api/circle-fetcher/lib/core/home-reservation-status';
+import { getAikotobaCookie } from '@travellers-api/circle-fetcher/lib/core/authentication';
+import { getHomes } from '@travellers-api/circle-fetcher/lib/core/home';
+import { getHomeReservationStatuses } from '@travellers-api/circle-fetcher/lib/core/home-reservation-status';
 import * as functions from 'firebase-functions';
 import * as pLimit from 'p-limit';
 import { dayjs } from '../../lib/dayjs';
