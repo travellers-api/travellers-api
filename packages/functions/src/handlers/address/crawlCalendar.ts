@@ -7,7 +7,7 @@ import * as pLimit from 'p-limit';
 import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
 import { dayjs } from '../../lib/dayjs';
 import { generateHomeIds, getCookieByUid } from '../../modules/address';
-import { setHomeRooms } from '../../modules/firestore/cachedAddressHomes';
+import { existsHome, setHomeRooms } from '../../modules/firestore/cachedAddressHomes';
 import { CachedAddressHomeRoom } from '../../modules/firestore/cachedAddressHomes/types';
 import { getRecentlyReservation } from '../../modules/firestore/cachedAddressRecentlyReservations';
 import { defaultRegion } from '../../modules/functions/constants';
@@ -30,6 +30,9 @@ export const crawlCalendar = functions
   });
 
 const single = async (cookie: string, homeId: number) => {
+  const exists = existsHome(homeId);
+  if (!exists) return;
+
   const res = await limit(() => getRoomsFromHomeId(homeId, cookie)).catch((e: Error) => e);
   if (res instanceof Error) {
     console.error(res.message);

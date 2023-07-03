@@ -32,3 +32,8 @@ export const getHome = async (id: number): Promise<CachedAddressHome | null> => 
   if (!data) return null;
   return data;
 };
+
+export const existsHome = async (id: number): Promise<boolean> => {
+  const snapshot = await collection.doc(id.toString()).get();
+  return snapshot.exists;
+};
