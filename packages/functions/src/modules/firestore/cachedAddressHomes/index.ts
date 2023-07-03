@@ -1,34 +1,39 @@
-import { Home } from '@travellers-api/address-fetcher/lib/core/home/types';
-import { DocumentSnapshot, QuerySnapshot } from 'firebase-admin/firestore';
+import { CollectionReference } from 'firebase-admin/firestore';
 import { firestore } from '../../firebase';
+import { CachedAddressHome } from './types';
 
 export const collectionId = 'cachedAddressHomes';
 
-const collection = firestore.collection(collectionId);
+const collection = firestore.collection(collectionId) as CollectionReference<CachedAddressHome>;
 
-export const setHome = async (id: string, data: Home): Promise<void> => {
-  await collection.doc(id).set(data);
+export const setHomeBase = async (id: number, data: Omit<CachedAddressHome, 'rooms'>): Promise<void> => {
+  await collection.doc(id.toString()).set(data, { merge: true });
 };
 
-export const setHomePartial = async (id: string, data: Partial<Home>): Promise<void> => {
-  await collection.doc(id).set(data, { merge: true });
+export const setHomeRooms = async (id: number, data: Pick<CachedAddressHome, 'rooms'>): Promise<void> => {
+  await collection.doc(id.toString()).set(data, { merge: true });
 };
 
-export const deleteHome = async (id: string): Promise<void> => {
-  await collection.doc(id).delete();
+export const deleteHome = async (id: number): Promise<void> => {
+  await collection.doc(id.toString()).delete();
 };
 
-export const getHomes = async (): Promise<{ id: string; data: Home }[]> => {
-  const querySnapshot = (await collection.get()) as QuerySnapshot<Home>;
+export const getHomes = async (): Promise<{ id: number; data: CachedAddressHome }[]> => {
+  const querySnapshot = await collection.get();
   return querySnapshot.docs.map((snapshot) => ({
-    id: snapshot.id,
+    id: Number(snapshot.id),
     data: snapshot.data(),
   }));
 };
 
-export const getHome = async (id: string): Promise<Home | null> => {
-  const snapshot = (await collection.doc(id).get()) as DocumentSnapshot<Home>;
+export const getHome = async (id: number): Promise<CachedAddressHome | null> => {
+  const snapshot = await collection.doc(id.toString()).get();
   const data = snapshot.data();
   if (!data) return null;
-  return data as Home;
+  return data;
+};
+
+export const existsHome = async (id: number): Promise<boolean> => {
+  const snapshot = await collection.doc(id.toString()).get();
+  return snapshot.exists;
 };

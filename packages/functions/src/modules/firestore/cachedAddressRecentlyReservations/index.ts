@@ -6,11 +6,11 @@ export const collectionId = 'cachedAddressRecentlyReservations';
 
 const collection = firestore.collection(collectionId);
 
-export const updateRecentlyReservations = async (id: string, data: CachedAddressRecentlyReservation): Promise<void> => {
-  await collection.doc(id).set(data, { merge: true });
+export const updateRecentlyReservations = async (id: number, data: CachedAddressRecentlyReservation): Promise<void> => {
+  await collection.doc(id.toString()).set(data, { merge: true });
 };
 
-export const getRecentlyReservation = async (id: string): Promise<CachedAddressRecentlyReservation> => {
-  const snapshot = (await collection.doc(id).get()) as DocumentSnapshot<CachedAddressRecentlyReservation>;
+export const getRecentlyReservation = async (id: number): Promise<CachedAddressRecentlyReservation> => {
+  const snapshot = (await collection.doc(id.toString()).get()) as DocumentSnapshot<CachedAddressRecentlyReservation>;
   return snapshot.data() || {};
 };

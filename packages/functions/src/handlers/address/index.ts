@@ -1,5 +1,6 @@
 export { api } from './api';
 export { crawlHomes } from './crawlHomes';
-export { onUpdateCachedHomes } from './onUpdateCachedHomes';
+export { crawlCalendar } from './crawlCalendar';
 export { crawlRecentlyReservations } from './crawlRecentlyReservations';
+export { onUpdateCachedHomes } from './onUpdateCachedHomes';
 export { generateCalendarCache } from './generateCalendarCache';

@@ -28,11 +28,11 @@ export const crawlRecentlyReservations = functions
   });
 
 const getRecentlyReservations = async (cookie: string, today: string, homeId: number) => {
-  const home = await getHome(homeId.toString());
+  const home = await getHome(homeId);
   if (!home) return;
 
   const requests: { roomId: string; checkInDate: string; checkOutDate: string }[] = [];
-  home.rooms.forEach((room) => {
+  home.rooms?.forEach((room) => {
     const roomId = room.id.toString();
     const days = room.calendar?.calStartDate ? getDiffDays(room.calendar.calStartDate, today) + 1 : 4;
 
@@ -60,6 +60,6 @@ const getRecentlyReservations = async (cookie: string, today: string, homeId: nu
   );
 
   Object.entries(saves).map(async ([roomId, { data }]) => {
-    await updateRecentlyReservations(roomId, data);
+    await updateRecentlyReservations(Number(roomId), data);
   });
 };
