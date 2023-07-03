@@ -17,3 +17,7 @@ export const getHomes = async (): Promise<{ id: string; data: CachedCircleHome }
     data: snapshot.data(),
   }));
 };
+
+export const deleteHome = async (id: string): Promise<void> => {
+  await collection.doc(id).delete();
+};
