@@ -7,7 +7,7 @@ import * as pLimit from 'p-limit';
 import { ADDRESS_HOME_MAX_COUNT } from '../../constants/address';
 import { dayjs } from '../../lib/dayjs';
 import { generateHomeIds, getCookieByUid } from '../../modules/address';
-import { existsHome, setHomeRooms } from '../../modules/firestore/cachedAddressHomes';
+import { existsHome, updateHomeRooms } from '../../modules/firestore/cachedAddressHomes';
 import { CachedAddressHomeRoom } from '../../modules/firestore/cachedAddressHomes/types';
 import { getRecentlyReservation } from '../../modules/firestore/cachedAddressRecentlyReservations';
 import { defaultRegion } from '../../modules/functions/constants';
@@ -79,7 +79,7 @@ const single = async (cookie: string, homeId: number) => {
     })
   );
 
-  await setHomeRooms(homeId, { rooms });
+  await updateHomeRooms(homeId, { rooms });
 };
 
 const convertRoom = (room: Room): CachedAddressHomeRoom => {

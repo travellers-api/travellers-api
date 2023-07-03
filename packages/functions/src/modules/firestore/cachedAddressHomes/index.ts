@@ -10,8 +10,8 @@ export const setHomeBase = async (id: number, data: Omit<CachedAddressHome, 'roo
   await collection.doc(id.toString()).set(data, { merge: true });
 };
 
-export const setHomeRooms = async (id: number, data: Pick<CachedAddressHome, 'rooms'>): Promise<void> => {
-  await collection.doc(id.toString()).set(data, { merge: true });
+export const updateHomeRooms = async (id: number, data: Pick<CachedAddressHome, 'rooms'>): Promise<void> => {
+  await collection.doc(id.toString()).update(data);
 };
 
 export const deleteHome = async (id: number): Promise<void> => {
