@@ -60,8 +60,10 @@ export async function GET(request: Request) {
         return Array.from(values).map((value) => value);
       })(),
       sex: [
-        { name: '男性', value: 'male' },
-        { name: '女性', value: 'female' },
+        { name: 'すべて', value: '' },
+        { name: '男性が宿泊可能', value: 'male' },
+        { name: '女性が宿泊可能', value: 'female' },
+        { name: '誰でも宿泊可能', value: 'anyone' },
       ],
       capacity: ['1', '2', '3', '4', '5', '6'],
     },
@@ -73,8 +75,20 @@ export async function GET(request: Request) {
           home.rooms = home.rooms?.filter((room) => roomTypeQuery.includes(room.type));
         }
 
-        if (sexQuery.length) {
-          home.rooms = home.rooms?.filter((room) => sexQuery.some((q) => [q, null].includes(room.sex)));
+        const sex = sexQuery.at(0);
+        if (sex) {
+          home.rooms = home.rooms?.filter((room) => {
+            if (sex === 'anyone') {
+              return room.sex === null;
+            }
+            if (sex === 'male') {
+              return room.sex !== 'female';
+            }
+            if (sex === 'female') {
+              return room.sex !== 'male';
+            }
+            return true;
+          });
         }
 
         home.rooms = home.rooms

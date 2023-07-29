@@ -95,7 +95,6 @@ export const CalendarFilter: React.FC<CalendarFilterProps> = ({ className, filte
                   title="性別"
                   defaultValue={queryToArray(searchParams.getAll('sex')) ?? []}
                   values={filters.sex}
-                  multiple
                 />
                 <Filter
                   id="capacity"
@@ -128,7 +127,7 @@ const Filter: React.FC<{
         id={id}
         name={id}
         className="h-max rounded border px-8 py-4"
-        defaultValue={defaultValue}
+        defaultValue={multiple ? defaultValue : defaultValue.at(0)}
         multiple={multiple}
         size={Math.min(values.length, 10)}
       >
