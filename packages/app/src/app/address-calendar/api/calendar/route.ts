@@ -60,6 +60,7 @@ export async function GET(request: Request) {
         return Array.from(values).map((value) => value);
       })(),
       sex: [
+        { name: 'すべて', value: '' },
         { name: '男性が宿泊可能', value: 'male' },
         { name: '女性が宿泊可能', value: 'female' },
         { name: '誰でも宿泊可能', value: 'anyone' },
