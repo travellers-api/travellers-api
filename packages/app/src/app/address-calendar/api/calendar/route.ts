@@ -16,6 +16,7 @@ export type AddressCalendarForPage = {
     homeType: string[];
     roomType: string[];
     sex: { name: string; value: string }[];
+    capacity: string[];
   };
 };
 
@@ -37,6 +38,7 @@ export async function GET(request: Request) {
   const homeTypeQuery = searchParams.getAll('homeType');
   const roomTypeQuery = searchParams.getAll('roomType');
   const sexQuery = searchParams.getAll('sex');
+  const capacityQuery = searchParams.getAll('capacity');
 
   const json: AddressCalendarForPage = {
     filters: {
@@ -61,6 +63,7 @@ export async function GET(request: Request) {
         { name: '男性', value: 'male' },
         { name: '女性', value: 'female' },
       ],
+      capacity: ['1', '2', '3', '4', '5', '6'],
     },
     homes: homes
       .map((home) => {
@@ -75,7 +78,14 @@ export async function GET(request: Request) {
         }
 
         home.rooms = home.rooms
-          ?.map((room) => {
+          ?.filter((room) => {
+            if (capacityQuery.at(0)) {
+              return room.capacity >= Number(capacityQuery.at(0));
+            }
+
+            return true;
+          })
+          .map((room) => {
             const calendar = room.calendar;
             const availables = calendar
               ? dates

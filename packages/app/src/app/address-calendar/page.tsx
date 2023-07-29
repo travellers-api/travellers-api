@@ -11,6 +11,7 @@ type PageContext = {
     homeType?: string | string[];
     roomType?: string | string[];
     sex?: string | string[];
+    capacity?: string | string[];
   };
 };
 
@@ -34,6 +35,8 @@ const getData = async (context: PageContext): Promise<AddressCalendarForPage> =>
   roomType.forEach((v) => url.searchParams.append('roomType', v));
   const sex = searchParamToArray(context.searchParams?.sex);
   sex.forEach((v) => url.searchParams.append('sex', v));
+  const capacity = searchParamToArray(context.searchParams?.capacity);
+  capacity.forEach((v) => url.searchParams.append('capacity', v));
 
   const res = await fetch(url, { cache: 'force-cache' }).catch(() => null);
   if (!res) notFound();

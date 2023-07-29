@@ -13,6 +13,7 @@ export type CalendarFilterProps = {
     homeType: string[];
     roomType: string[];
     sex: { name: string; value: string }[];
+    capacity: string[];
   };
 };
 
@@ -52,6 +53,9 @@ export const CalendarFilter: React.FC<CalendarFilterProps> = ({ className, filte
                     sex: Array.from(
                       e.currentTarget.querySelectorAll<HTMLOptionElement>('[name="sex"] option:checked')
                     ).map((elm) => elm.value),
+                    capacity: Array.from(
+                      e.currentTarget.querySelectorAll<HTMLOptionElement>('[name="capacity"] option:checked')
+                    ).map((elm) => elm.value),
                   },
                 })
               );
@@ -70,24 +74,34 @@ export const CalendarFilter: React.FC<CalendarFilterProps> = ({ className, filte
                   title="都道府県"
                   defaultValue={queryToArray(searchParams.getAll('prefecture')) ?? []}
                   values={filters.prefecture}
+                  multiple
                 />
                 <Filter
                   id="homeType"
                   title="拠点種別"
                   defaultValue={queryToArray(searchParams.getAll('homeType')) ?? []}
                   values={filters.homeType}
+                  multiple
                 />
                 <Filter
                   id="roomType"
                   title="部屋種別"
                   defaultValue={queryToArray(searchParams.getAll('roomType')) ?? []}
                   values={filters.roomType}
+                  multiple
                 />
                 <Filter
                   id="sex"
                   title="性別"
                   defaultValue={queryToArray(searchParams.getAll('sex')) ?? []}
                   values={filters.sex}
+                  multiple
+                />
+                <Filter
+                  id="capacity"
+                  title="利用人数"
+                  defaultValue={queryToArray(searchParams.getAll('capacity')) ?? []}
+                  values={filters.capacity}
                 />
               </div>
             </div>
@@ -103,7 +117,8 @@ const Filter: React.FC<{
   title: string;
   defaultValue: string[];
   values: ({ name: string; value: string } | string)[];
-}> = ({ id, title, defaultValue, values }) => {
+  multiple?: boolean;
+}> = ({ id, title, defaultValue, values, multiple }) => {
   return (
     <div className="flex flex-col gap-4 text-sm">
       <label className="font-bold" htmlFor={id}>
@@ -114,7 +129,7 @@ const Filter: React.FC<{
         name={id}
         className="h-max rounded border px-8 py-4"
         defaultValue={defaultValue}
-        multiple
+        multiple={multiple}
         size={Math.min(values.length, 10)}
       >
         {values.map((value) =>
