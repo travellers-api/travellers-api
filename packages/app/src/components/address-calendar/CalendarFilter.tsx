@@ -70,25 +70,34 @@ export const CalendarFilter: React.FC<Props> = ({ className, filters }) => {
               </div>
               <div className="flex flex-col gap-20 md:flex-row">
                 <Filter
+                  name="prefecture"
                   title="都道府県"
                   multiple
                   defaultValue={queryToArray(searchParams.getAll('prefecture')) ?? []}
                   values={filters.prefecture}
                 />
                 <Filter
+                  name="homeType"
                   title="拠点種別"
                   multiple
                   defaultValue={queryToArray(searchParams.getAll('homeType')) ?? []}
                   values={filters.homeType}
                 />
                 <Filter
+                  name="roomType"
                   title="部屋種別"
                   multiple
                   defaultValue={queryToArray(searchParams.getAll('roomType')) ?? []}
                   values={filters.roomType}
                 />
-                <Filter title="性別" defaultValue={searchParams.get('sex') ?? undefined} values={filters.sex} />
                 <Filter
+                  name="sex"
+                  title="性別"
+                  defaultValue={searchParams.get('sex') ?? undefined}
+                  values={filters.sex}
+                />
+                <Filter
+                  name="capacity"
                   title="利用人数"
                   defaultValue={searchParams.get('capacity') ?? undefined}
                   values={filters.capacity}
@@ -104,6 +113,7 @@ export const CalendarFilter: React.FC<Props> = ({ className, filters }) => {
 
 const Filter: React.FC<
   {
+    name: string;
     title: string;
     values: { name: string; value: string; group?: string }[];
   } & (
@@ -116,7 +126,7 @@ const Filter: React.FC<
         defaultValue: string[];
       }
   )
-> = ({ title, multiple = false, defaultValue, values }) => {
+> = ({ name, title, multiple = false, defaultValue, values }) => {
   const id = useId();
 
   return (
@@ -126,7 +136,7 @@ const Filter: React.FC<
       </label>
       <select
         id={id}
-        name={id}
+        name={name}
         className="h-max rounded border px-8 py-4"
         defaultValue={defaultValue}
         multiple={multiple}
