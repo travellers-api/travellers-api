@@ -142,17 +142,11 @@ const Filter: React.FC<
         multiple={multiple}
         size={Math.min(values.length, 10)}
       >
-        {values.map((value) =>
-          typeof value === 'string' ? (
-            <option key={value} value={value}>
-              {value}
-            </option>
-          ) : (
-            <option key={value.value} value={value.value}>
-              {value.name}
-            </option>
-          )
-        )}
+        {values.map((value) => (
+          <option key={value.value} value={value.value}>
+            {value.name}
+          </option>
+        ))}
       </select>
     </div>
   );
