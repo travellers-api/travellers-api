@@ -3,7 +3,7 @@
 import classNames from 'classnames';
 import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { queryToArray } from '../../utils/router';
 
 type Props = {
@@ -70,34 +70,25 @@ export const CalendarFilter: React.FC<Props> = ({ className, filters }) => {
               </div>
               <div className="flex flex-col gap-20 md:flex-row">
                 <Filter
-                  id="prefecture"
                   title="都道府県"
                   multiple
                   defaultValue={queryToArray(searchParams.getAll('prefecture')) ?? []}
                   values={filters.prefecture}
                 />
                 <Filter
-                  id="homeType"
                   title="拠点種別"
                   multiple
                   defaultValue={queryToArray(searchParams.getAll('homeType')) ?? []}
                   values={filters.homeType}
                 />
                 <Filter
-                  id="roomType"
                   title="部屋種別"
                   multiple
                   defaultValue={queryToArray(searchParams.getAll('roomType')) ?? []}
                   values={filters.roomType}
                 />
+                <Filter title="性別" defaultValue={searchParams.get('sex') ?? undefined} values={filters.sex} />
                 <Filter
-                  id="sex"
-                  title="性別"
-                  defaultValue={searchParams.get('sex') ?? undefined}
-                  values={filters.sex}
-                />
-                <Filter
-                  id="capacity"
                   title="利用人数"
                   defaultValue={searchParams.get('capacity') ?? undefined}
                   values={filters.capacity}
@@ -113,7 +104,6 @@ export const CalendarFilter: React.FC<Props> = ({ className, filters }) => {
 
 const Filter: React.FC<
   {
-    id: string;
     title: string;
     values: { name: string; value: string; group?: string }[];
   } & (
@@ -126,7 +116,9 @@ const Filter: React.FC<
         defaultValue: string[];
       }
   )
-> = ({ id, title, multiple = false, defaultValue, values }) => {
+> = ({ title, multiple = false, defaultValue, values }) => {
+  const id = useId();
+
   return (
     <div className="flex flex-col gap-4 text-sm">
       <label className="font-bold" htmlFor={id}>

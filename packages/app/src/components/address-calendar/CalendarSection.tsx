@@ -2,7 +2,7 @@
 
 import { useVirtual } from '@tanstack/react-virtual';
 import classNames from 'classnames';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useId, useRef, useState } from 'react';
 import { LabelText } from '../../components/address-calendar/LabelText';
 import { Home } from '../../lib/address/calendar/types';
 import {
@@ -49,6 +49,9 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
   const [isShownRoomLabel, setIsShownRoomLabel] = useState(true);
   const parentRef = useRef<HTMLDivElement>(null);
 
+  const homeLabelId = useId();
+  const roomLabelId = useId();
+
   const estimateSize = useCallback(
     (i: number) => {
       return (homes[i]!.rooms?.length ?? 1) * 31 + 10;
@@ -80,7 +83,7 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
               <p>拠点</p>
               <p className="flex">
                 <input
-                  id="isShownHomeLabel"
+                  id={homeLabelId}
                   name="isShownHomeLabel"
                   type="checkbox"
                   checked={isShownHomeLabel}
@@ -88,7 +91,7 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                     setIsShownHomeLabel(e.currentTarget.checked);
                   }}
                 />
-                <label htmlFor="isShownHomeLabel" className="pl-5">
+                <label htmlFor={homeLabelId} className="pl-5">
                   ラベル
                 </label>
               </p>
@@ -98,7 +101,7 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                 <p>部屋</p>
                 <p className="flex">
                   <input
-                    id="isShownRoomLabel"
+                    id={roomLabelId}
                     name="isShownRoomLabel"
                     type="checkbox"
                     checked={isShownRoomLabel}
@@ -106,7 +109,7 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                       setIsShownRoomLabel(e.currentTarget.checked);
                     }}
                   />
-                  <label htmlFor="isShownRoomLabel" className="pl-5">
+                  <label htmlFor={roomLabelId} className="pl-5">
                     ラベル
                   </label>
                 </p>
