@@ -12,11 +12,11 @@ export type AddressCalendarForPage = {
     day: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   }[];
   filters: {
-    prefecture: string[];
-    homeType: string[];
-    roomType: string[];
-    sex: { name: string; value: string }[];
-    capacity: string[];
+    prefecture: { name: string; value: string; group?: string }[];
+    homeType: { name: string; value: string; group?: string }[];
+    roomType: { name: string; value: string; group?: string }[];
+    sex: { name: string; value: string; group?: string }[];
+    capacity: { name: string; value: string; group?: string }[];
   };
 };
 
@@ -42,13 +42,13 @@ export async function GET(request: Request) {
 
   const json: AddressCalendarForPage = {
     filters: {
-      prefecture: prefectures.map((prefecture) => prefecture.name),
+      prefecture: prefectures.map(({ name }) => ({ name, value: name })),
       homeType: (() => {
         const values = new Set<string>();
         homes.forEach((home) => {
           values.add(home.homeType);
         });
-        return Array.from(values).map((value) => value);
+        return Array.from(values).map((value) => ({ name: value, value }));
       })(),
       roomType: (() => {
         const values = new Set<string>();
@@ -57,7 +57,7 @@ export async function GET(request: Request) {
             values.add(room.type);
           });
         });
-        return Array.from(values).map((value) => value);
+        return Array.from(values).map((value) => ({ name: value, value }));
       })(),
       sex: [
         { name: 'すべて', value: '' },
@@ -65,7 +65,14 @@ export async function GET(request: Request) {
         { name: '女性が宿泊可能', value: 'female' },
         { name: '誰でも宿泊可能', value: 'anyone' },
       ],
-      capacity: ['1', '2', '3', '4', '5', '6'],
+      capacity: [
+        { name: '1', value: '1' },
+        { name: '2', value: '2' },
+        { name: '3', value: '3' },
+        { name: '4', value: '4' },
+        { name: '5', value: '5' },
+        { name: '6', value: '6' },
+      ],
     },
     homes: homes
       .map((home) => {

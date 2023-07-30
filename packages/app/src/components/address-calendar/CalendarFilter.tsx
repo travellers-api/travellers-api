@@ -6,18 +6,18 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { queryToArray } from '../../utils/router';
 
-export type CalendarFilterProps = {
+type Props = {
   className?: string;
   filters: {
-    prefecture: string[];
-    homeType: string[];
-    roomType: string[];
-    sex: { name: string; value: string }[];
-    capacity: string[];
+    prefecture: { name: string; value: string; group?: string }[];
+    homeType: { name: string; value: string; group?: string }[];
+    roomType: { name: string; value: string; group?: string }[];
+    sex: { name: string; value: string; group?: string }[];
+    capacity: { name: string; value: string; group?: string }[];
   };
 };
 
-export const CalendarFilter: React.FC<CalendarFilterProps> = ({ className, filters }) => {
+export const CalendarFilter: React.FC<Props> = ({ className, filters }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const filterRef = useRef<HTMLDetailsElement>(null);
@@ -72,34 +72,34 @@ export const CalendarFilter: React.FC<CalendarFilterProps> = ({ className, filte
                 <Filter
                   id="prefecture"
                   title="都道府県"
+                  multiple
                   defaultValue={queryToArray(searchParams.getAll('prefecture')) ?? []}
                   values={filters.prefecture}
-                  multiple
                 />
                 <Filter
                   id="homeType"
                   title="拠点種別"
+                  multiple
                   defaultValue={queryToArray(searchParams.getAll('homeType')) ?? []}
                   values={filters.homeType}
-                  multiple
                 />
                 <Filter
                   id="roomType"
                   title="部屋種別"
+                  multiple
                   defaultValue={queryToArray(searchParams.getAll('roomType')) ?? []}
                   values={filters.roomType}
-                  multiple
                 />
                 <Filter
                   id="sex"
                   title="性別"
-                  defaultValue={queryToArray(searchParams.getAll('sex')) ?? []}
+                  defaultValue={searchParams.get('sex') ?? undefined}
                   values={filters.sex}
                 />
                 <Filter
                   id="capacity"
                   title="利用人数"
-                  defaultValue={queryToArray(searchParams.getAll('capacity')) ?? []}
+                  defaultValue={searchParams.get('capacity') ?? undefined}
                   values={filters.capacity}
                 />
               </div>
@@ -111,13 +111,22 @@ export const CalendarFilter: React.FC<CalendarFilterProps> = ({ className, filte
   );
 };
 
-const Filter: React.FC<{
-  id: string;
-  title: string;
-  defaultValue: string[];
-  values: ({ name: string; value: string } | string)[];
-  multiple?: boolean;
-}> = ({ id, title, defaultValue, values, multiple }) => {
+const Filter: React.FC<
+  {
+    id: string;
+    title: string;
+    values: { name: string; value: string; group?: string }[];
+  } & (
+    | {
+        multiple?: false;
+        defaultValue?: string;
+      }
+    | {
+        multiple: true;
+        defaultValue: string[];
+      }
+  )
+> = ({ id, title, multiple = false, defaultValue, values }) => {
   return (
     <div className="flex flex-col gap-4 text-sm">
       <label className="font-bold" htmlFor={id}>
@@ -127,7 +136,7 @@ const Filter: React.FC<{
         id={id}
         name={id}
         className="h-max rounded border px-8 py-4"
-        defaultValue={multiple ? defaultValue : defaultValue.at(0)}
+        defaultValue={defaultValue}
         multiple={multiple}
         size={Math.min(values.length, 10)}
       >
