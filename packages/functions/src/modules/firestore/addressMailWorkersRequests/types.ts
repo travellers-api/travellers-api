@@ -1,9 +1,8 @@
-import { z } from 'zod';
+import { ParsedMail } from 'mailparser';
 
-export const addressMailWorkersRequestZod = z.object({
-  from: z.string(),
-  to: z.string(),
-  raw: z.string(),
-});
-
-export type AddressMailWorkersRequest = z.infer<typeof addressMailWorkersRequestZod>;
+export type AddressMailWorkersRequest = {
+  from: string;
+  to: string;
+  raw: string;
+  parsed: ParsedMail;
+};

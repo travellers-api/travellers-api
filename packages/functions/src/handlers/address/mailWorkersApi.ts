@@ -1,7 +1,14 @@
 import { onRequest } from 'firebase-functions/v2/https';
+import { simpleParser } from 'mailparser';
+import { z } from 'zod';
 import { addAddressMailWorkersRequest } from '../../modules/firestore/addressMailWorkersRequests';
-import { addressMailWorkersRequestZod } from '../../modules/firestore/addressMailWorkersRequests/types';
 import { defaultRegion } from '../../modules/functions/constants';
+
+const bodySchema = z.object({
+  from: z.string(),
+  to: z.string(),
+  raw: z.string(),
+});
 
 export const mailWorkersApi = onRequest(
   {
@@ -19,12 +26,14 @@ export const mailWorkersApi = onRequest(
       return;
     }
 
-    const addressMail = await addressMailWorkersRequestZod.parseAsync(req.body).catch(() => null);
+    const addressMail = await bodySchema.parseAsync(req.body).catch(() => null);
     if (addressMail === null) {
       res.status(400).end();
       return;
     }
-    await addAddressMailWorkersRequest(addressMail);
+
+    const parsed = await simpleParser(addressMail.raw);
+    await addAddressMailWorkersRequest({ ...addressMail, parsed });
 
     res.status(201).end();
     return;
