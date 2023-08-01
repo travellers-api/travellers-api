@@ -1,6 +1,6 @@
 import { onRequest } from 'firebase-functions/v2/https';
-import { addAddressMail } from '../../modules/firestore/addressMails';
-import { addressMailZod } from '../../modules/firestore/addressMails/types';
+import { addAddressMailWorkersRequest } from '../../modules/firestore/addressMailWorkersRequests';
+import { addressMailWorkersRequestZod } from '../../modules/firestore/addressMailWorkersRequests/types';
 import { defaultRegion } from '../../modules/functions/constants';
 
 export const mailWorkersApi = onRequest(
@@ -19,12 +19,12 @@ export const mailWorkersApi = onRequest(
       return;
     }
 
-    const addressMail = await addressMailZod.parseAsync(req.body).catch(() => null);
+    const addressMail = await addressMailWorkersRequestZod.parseAsync(req.body).catch(() => null);
     if (addressMail === null) {
       res.status(400).end();
       return;
     }
-    await addAddressMail(addressMail);
+    await addAddressMailWorkersRequest(addressMail);
 
     res.status(201).end();
     return;
