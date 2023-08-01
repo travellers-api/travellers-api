@@ -5,3 +5,4 @@ export { crawlCalendar } from './crawlCalendar';
 export { crawlRecentlyReservations } from './crawlRecentlyReservations';
 export { onUpdateCachedHomes } from './onUpdateCachedHomes';
 export { generateCalendarCache } from './generateCalendarCache';
+export { mailWorkersApi } from './mailWorkersApi';
