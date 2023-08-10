@@ -4,5 +4,5 @@ export type AddressMailWorkersRequest = {
   from: string;
   to: string;
   raw: string;
-  parsed: ParsedMail;
+  parsed: Pick<ParsedMail, 'from' | 'to' | 'subject' | 'html' | 'text' | 'textAsHtml'>;
 };

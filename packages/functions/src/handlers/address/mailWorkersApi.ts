@@ -32,8 +32,8 @@ export const mailWorkersApi = onRequest(
       return;
     }
 
-    const parsed = await simpleParser(addressMail.raw);
-    await addAddressMailWorkersRequest({ ...addressMail, parsed });
+    const { from, to, subject, html, text, textAsHtml } = await simpleParser(addressMail.raw);
+    await addAddressMailWorkersRequest({ ...addressMail, parsed: { from, to, subject, html, text, textAsHtml } });
 
     res.status(201).end();
     return;
