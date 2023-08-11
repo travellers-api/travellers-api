@@ -8,7 +8,7 @@ import { defaultRegion } from '../../modules/functions/constants';
 import { publishDispatchHook } from '../../modules/hook/dispatch-hook';
 
 const homeZod = z.object({
-  id: z.string(),
+  id: z.number(),
   name: z.string(),
 });
 
