@@ -90,6 +90,16 @@ const convertRoom = (room: Room): CachedAddressHomeRoom => {
     type: room.is_dormitory ? 'ドミトリー' : '個室',
     capacity: room.capacity,
     sex: room.acceptable_sex === 'male' || room.acceptable_sex === 'female' ? room.acceptable_sex : null,
+    beds: room.bed_labels
+      .map((text) => {
+        const matches = text.trim().match(/(.+) x (\d)/);
+        if (!matches) {
+          return [];
+        }
+        const [, name = '', count = '0'] = matches;
+        return Array(Number(count)).fill(name);
+      })
+      .flat(),
     calendar: null,
   };
 };
