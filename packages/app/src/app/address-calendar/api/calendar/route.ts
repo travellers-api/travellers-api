@@ -46,30 +46,25 @@ export async function GET(request: Request) {
     filters: {
       prefecture: prefectures.map((prefecture) => prefecture.name),
       homeType: (() => {
-        const values = new Set<string>();
-        homes.forEach((home) => {
-          values.add(home.homeType);
-        });
+        const homeTypes = homes.map((home) => home.homeType);
+        const values = new Set<string>(...homeTypes);
         return Array.from(values).map((value) => value);
       })(),
       roomType: (() => {
-        const values = new Set<string>();
-        homes.forEach((home) => {
-          home.rooms?.forEach((room) => {
-            values.add(room.type);
-          });
-        });
+        const types = homes
+          .map((home) => home.rooms ?? [])
+          .flat()
+          .map((room) => room.type);
+        const values = new Set<string>(...types);
         return Array.from(values).map((value) => value);
       })(),
       bed: (() => {
-        const values = new Set<string>();
-        homes.forEach((home) => {
-          home.rooms?.forEach((room) => {
-            room.beds.forEach((bed) => {
-              values.add(bed);
-            });
-          });
-        });
+        const beds = homes
+          .map((home) => home.rooms)
+          .flat()
+          .map((room) => room?.beds)
+          .flat();
+        const values = new Set<string>(...beds);
         return Array.from(values).map((value) => value);
       })(),
       sex: [
