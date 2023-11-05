@@ -47,7 +47,7 @@ export async function GET(request: Request) {
       prefecture: prefectures.map((prefecture) => prefecture.name),
       homeType: (() => {
         const homeTypes = homes.map((home) => home.homeType).filter((item) => item);
-        const values = new Set<string>(homeTypes);
+        const values = new Set(homeTypes);
         return Array.from(values).map((value) => value);
       })(),
       roomType: (() => {
@@ -56,7 +56,7 @@ export async function GET(request: Request) {
           .flat()
           .map((room) => room.type)
           .filter((item) => item);
-        const values = new Set<string>(types);
+        const values = new Set(types);
         return Array.from(values).map((value) => value);
       })(),
       bed: (() => {
@@ -66,7 +66,7 @@ export async function GET(request: Request) {
           .map((room) => room.beds)
           .flat()
           .filter((item) => item);
-        const values = new Set<string>(beds);
+        const values = new Set(beds);
         return Array.from(values).map((value) => value);
       })(),
       sex: [
