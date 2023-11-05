@@ -15,6 +15,7 @@ export type AddressCalendarForPage = {
     prefecture: string[];
     homeType: string[];
     roomType: string[];
+    bed: string[];
     sex: { name: string; value: string }[];
     capacity: string[];
   };
@@ -37,6 +38,7 @@ export async function GET(request: Request) {
   const prefectureQuery = searchParams.getAll('prefecture');
   const homeTypeQuery = searchParams.getAll('homeType');
   const roomTypeQuery = searchParams.getAll('roomType');
+  const bedQuery = searchParams.getAll('bed');
   const sexQuery = searchParams.getAll('sex');
   const capacityQuery = searchParams.getAll('capacity');
 
@@ -59,6 +61,17 @@ export async function GET(request: Request) {
         });
         return Array.from(values).map((value) => value);
       })(),
+      bed: (() => {
+        const values = new Set<string>();
+        homes.forEach((home) => {
+          home.rooms?.forEach((room) => {
+            room.beds.forEach((bed) => {
+              values.add(bed);
+            });
+          });
+        });
+        return Array.from(values).map((value) => value);
+      })(),
       sex: [
         { name: 'すべて', value: '' },
         { name: '男性が宿泊可能', value: 'male' },
@@ -73,6 +86,10 @@ export async function GET(request: Request) {
 
         if (roomTypeQuery.length) {
           home.rooms = home.rooms?.filter((room) => roomTypeQuery.includes(room.type));
+        }
+
+        if (bedQuery.length) {
+          home.rooms = home.rooms?.filter((room) => bedQuery.some((bed) => room.beds.includes(bed)));
         }
 
         const sex = sexQuery.at(0);

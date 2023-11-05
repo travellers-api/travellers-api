@@ -10,6 +10,7 @@ type PageContext = {
     prefecture?: string | string[];
     homeType?: string | string[];
     roomType?: string | string[];
+    bed?: string | string[];
     sex?: string | string[];
     capacity?: string | string[];
   };
@@ -33,6 +34,8 @@ const getData = async (context: PageContext): Promise<AddressCalendarForPage> =>
   homeType.forEach((v) => url.searchParams.append('homeType', v));
   const roomType = searchParamToArray(context.searchParams?.roomType);
   roomType.forEach((v) => url.searchParams.append('roomType', v));
+  const bed = searchParamToArray(context.searchParams?.bed);
+  bed.forEach((v) => url.searchParams.append('bed', v));
   const sex = searchParamToArray(context.searchParams?.sex);
   sex.forEach((v) => url.searchParams.append('sex', v));
   const capacity = searchParamToArray(context.searchParams?.capacity);
