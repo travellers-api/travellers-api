@@ -60,9 +60,9 @@ export async function GET(request: Request) {
       })(),
       bed: (() => {
         const beds = homes
-          .map((home) => home.rooms)
+          .map((home) => home.rooms ?? [])
           .flat()
-          .map((room) => room?.beds)
+          .map((room) => room.beds)
           .flat();
         const values = new Set<string>(...beds);
         return Array.from(values).map((value) => value);
