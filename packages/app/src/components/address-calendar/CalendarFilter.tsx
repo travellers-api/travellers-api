@@ -12,6 +12,7 @@ export type CalendarFilterProps = {
     prefecture: string[];
     homeType: string[];
     roomType: string[];
+    bed: string[];
     sex: { name: string; value: string }[];
     capacity: string[];
   };
@@ -49,6 +50,9 @@ export const CalendarFilter: React.FC<CalendarFilterProps> = ({ className, filte
                     ).map((elm) => elm.value),
                     roomType: Array.from(
                       e.currentTarget.querySelectorAll<HTMLOptionElement>('[name="roomType"] option:checked')
+                    ).map((elm) => elm.value),
+                    bed: Array.from(
+                      e.currentTarget.querySelectorAll<HTMLOptionElement>('[name="bed"] option:checked')
                     ).map((elm) => elm.value),
                     sex: Array.from(
                       e.currentTarget.querySelectorAll<HTMLOptionElement>('[name="sex"] option:checked')
@@ -91,6 +95,13 @@ export const CalendarFilter: React.FC<CalendarFilterProps> = ({ className, filte
                   multiple
                 />
                 <Filter
+                  id="bed"
+                  title="ベッド"
+                  defaultValue={queryToArray(searchParams.getAll('bed')) ?? []}
+                  values={filters.bed}
+                  multiple
+                />
+                <Filter
                   id="sex"
                   title="性別"
                   defaultValue={queryToArray(searchParams.getAll('sex')) ?? []}
@@ -118,6 +129,10 @@ const Filter: React.FC<{
   values: ({ name: string; value: string } | string)[];
   multiple?: boolean;
 }> = ({ id, title, defaultValue, values, multiple }) => {
+  if (values.length === 0) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col gap-4 text-sm">
       <label className="font-bold" htmlFor={id}>

@@ -15,6 +15,7 @@ export type AddressCalendarForPage = {
     prefecture: string[];
     homeType: string[];
     roomType: string[];
+    bed: string[];
     sex: { name: string; value: string }[];
     capacity: string[];
   };
@@ -37,6 +38,7 @@ export async function GET(request: Request) {
   const prefectureQuery = searchParams.getAll('prefecture');
   const homeTypeQuery = searchParams.getAll('homeType');
   const roomTypeQuery = searchParams.getAll('roomType');
+  const bedQuery = searchParams.getAll('bed');
   const sexQuery = searchParams.getAll('sex');
   const capacityQuery = searchParams.getAll('capacity');
 
@@ -44,19 +46,27 @@ export async function GET(request: Request) {
     filters: {
       prefecture: prefectures.map((prefecture) => prefecture.name),
       homeType: (() => {
-        const values = new Set<string>();
-        homes.forEach((home) => {
-          values.add(home.homeType);
-        });
+        const homeTypes = homes.map((home) => home.homeType).filter((item) => item);
+        const values = new Set(homeTypes);
         return Array.from(values).map((value) => value);
       })(),
       roomType: (() => {
-        const values = new Set<string>();
-        homes.forEach((home) => {
-          home.rooms?.forEach((room) => {
-            values.add(room.type);
-          });
-        });
+        const types = homes
+          .map((home) => home.rooms ?? [])
+          .flat()
+          .map((room) => room.type)
+          .filter((item) => item);
+        const values = new Set(types);
+        return Array.from(values).map((value) => value);
+      })(),
+      bed: (() => {
+        const beds = homes
+          .map((home) => home.rooms ?? [])
+          .flat()
+          .map((room) => room.beds)
+          .flat()
+          .filter((item) => item);
+        const values = new Set(beds);
         return Array.from(values).map((value) => value);
       })(),
       sex: [
@@ -73,6 +83,10 @@ export async function GET(request: Request) {
 
         if (roomTypeQuery.length) {
           home.rooms = home.rooms?.filter((room) => roomTypeQuery.includes(room.type));
+        }
+
+        if (bedQuery.length) {
+          home.rooms = home.rooms?.filter((room) => bedQuery.some((bed) => room.beds.includes(bed)));
         }
 
         const sex = sexQuery.at(0);

@@ -17,6 +17,7 @@ export type Room = {
   capacity: number;
   sex: 'male' | 'female' | null;
   availables: string | null;
+  beds: string[];
   calendar: {
     reservedDates: string[];
     calStartDate: string;
