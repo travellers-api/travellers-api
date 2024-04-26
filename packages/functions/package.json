@@ -9,9 +9,9 @@
   "scripts": {
     "build": "rimraf lib && tsc",
     "build:watch": "rimraf lib && tsc --watch",
-    "serve": "yarn build && firebase emulators:start --only functions",
-    "shell": "yarn build && firebase functions:shell",
-    "start": "yarn shell",
+    "serve": "pnpm run build && firebase emulators:start --only functions",
+    "shell": "pnpm run build && firebase functions:shell",
+    "start": "pnpm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "lint": "eslint --ext .js,.ts .",

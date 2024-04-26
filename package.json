@@ -4,17 +4,13 @@
   "license": "UNLICENSED",
   "private": true,
   "workspaces": [
-    "packages/**"
+    "packages/*"
   ],
   "scripts": {
-    "build": "npx lerna run build",
-    "postbuild": "yarn bootstrap",
-    "bootstrap": "npx lerna bootstrap",
     "prepare": "husky install"
   },
   "devDependencies": {
     "husky": "^8.0.3",
-    "lerna": "^7.0.1",
     "lint-staged": "^13.2.2",
     "ts-node": "^10.9.1"
   }
