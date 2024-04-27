@@ -10,6 +10,7 @@ export const generateCalendarCache = functions
   .pubsub.schedule('0 * * * *')
   .onRun(async () => {
     const homes = await getHomes();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const json = { homes: homes.map(({ data: { address, ...data } }) => data) };
     await setAddressCalendarCache(json);
     await publishDispatchHook({ topic: 'system.address.calendar.update' });

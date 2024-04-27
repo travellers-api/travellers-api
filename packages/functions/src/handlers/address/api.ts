@@ -71,6 +71,7 @@ app.get<undefined, AddressCalendar>('/address/calendar', async (req, res) => {
   try {
     const json = await getAddressCalendarCache().catch(async () => {
       const homes = await getHomes();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const json = { homes: homes.map(({ data: { address, ...data } }) => data) };
       return json;
     });

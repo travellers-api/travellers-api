@@ -9,11 +9,6 @@
           "region": "asia-northeast1"
         },
         {
-          "source": "/circle/**",
-          "function": "circle-api",
-          "region": "asia-northeast1"
-        },
-        {
           "source": "/hafh/**",
           "function": "hafh-api",
           "region": "asia-northeast1"

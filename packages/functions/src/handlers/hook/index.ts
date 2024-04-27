@@ -1,5 +1,4 @@
 import * as functions from 'firebase-functions';
-import fetch from 'node-fetch';
 import { userAgent } from '../../modules/client/user-agent';
 import { getWebhooks } from '../../modules/firestore/webhooks';
 import { topicName as dispatchHookTopicName } from '../../modules/hook/dispatch-hook';
