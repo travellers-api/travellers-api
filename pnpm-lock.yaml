@@ -14,6 +14,12 @@ importers:
       lint-staged:
         specifier: ^15.2.2
         version: 15.2.2
+      prettier:
+        specifier: ^3.2.5
+        version: 3.2.5
+      prettier-plugin-tailwindcss:
+        specifier: ^0.5.14
+        version: 0.5.14(prettier@3.2.5)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.12.7)(typescript@5.4.5)
@@ -72,12 +78,6 @@ importers:
       postcss:
         specifier: ^8.4.24
         version: 8.4.38
-      prettier:
-        specifier: ^3.2.5
-        version: 3.2.5
-      prettier-plugin-tailwindcss:
-        specifier: ^0.5.14
-        version: 0.5.14(prettier@3.2.5)
       rimraf:
         specifier: ^5.0.5
         version: 5.0.5
@@ -163,9 +163,6 @@ importers:
       jest:
         specifier: ^29.3.1
         version: 29.7.0(@types/node@20.12.7)(ts-node@10.9.2(@types/node@20.12.7)(typescript@5.4.5))
-      prettier:
-        specifier: ^3.2.5
-        version: 3.2.5
       rimraf:
         specifier: ^5.0.5
         version: 5.0.5
