@@ -1,5 +1,4 @@
 import { Home } from '@travellers-api/address-fetcher/lib/core/home/types';
-import { CachedCircleHome } from '../firestore/cachedCircleHomes/types';
 
 export type Hook =
   | {
@@ -14,20 +13,6 @@ export type Hook =
       data: {
         id: Home['id'];
         name: Home['name'];
-      };
-    }
-  | {
-      topic: 'circle.home.create';
-      data: {
-        id: CachedCircleHome['id'];
-        name: CachedCircleHome['name'];
-      };
-    }
-  | {
-      topic: 'circle.home.delete';
-      data: {
-        id: CachedCircleHome['id'];
-        name: CachedCircleHome['name'];
       };
     }
   | {
