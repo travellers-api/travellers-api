@@ -14,18 +14,6 @@ type AddressReservation = {
   };
 };
 
-type CircleReservation = {
-  id: string;
-  status: 'pending' | 'approved' | 'staying' | 'stayed' | 'canceled' | 'rejected' | null;
-  checkInDate: string;
-  checkOutDate: string;
-  home: {
-    name: string;
-    city: string;
-    roomType: string;
-  };
-};
-
 type HafhReservation = {
   id: string;
   status: 'pending' | 'approved' | 'staying' | 'stayed' | 'canceled' | 'rejected' | null;
@@ -43,28 +31,16 @@ type Params = {
 
 type Props = {
   screenName: string;
-  reservations: (
-    | { service: 'ADDress'; data: AddressReservation }
-    | { service: 'circle'; data: CircleReservation }
-    | { service: 'HafH'; data: HafhReservation }
-  )[];
+  reservations: ({ service: 'ADDress'; data: AddressReservation } | { service: 'HafH'; data: HafhReservation })[];
 };
 
 const getData = async (screenName: string): Promise<Props> => {
-  const [address, circle, hafh] = await Promise.all([
+  const [address, hafh] = await Promise.all([
     fetch(`https://api.travellers-api.amon.dev/address/users/${screenName}/reservations`, {
       next: { revalidate: 60 * 60 },
     }).then(async (res) => {
       const { reservations } = res.ok
         ? ((await res.json()) as { reservations: AddressReservation[] })
-        : { reservations: [] };
-      return { ok: res.ok, reservations };
-    }),
-    fetch(`https://api.travellers-api.amon.dev/circle/users/${screenName}/reservations`, {
-      next: { revalidate: 60 * 60 },
-    }).then(async (res) => {
-      const { reservations } = res.ok
-        ? ((await res.json()) as { reservations: CircleReservation[] })
         : { reservations: [] };
       return { ok: res.ok, reservations };
     }),
@@ -78,7 +54,7 @@ const getData = async (screenName: string): Promise<Props> => {
     }),
   ]);
 
-  if (!address.ok && !circle.ok && !hafh.ok) {
+  if (!address.ok && !hafh.ok) {
     notFound();
   }
 
@@ -86,7 +62,6 @@ const getData = async (screenName: string): Promise<Props> => {
     screenName,
     reservations: [
       ...address.reservations.map((data) => ({ service: 'ADDress' as const, data })),
-      ...circle.reservations.map((data) => ({ service: 'circle' as const, data })),
       ...hafh.reservations.map((data) => ({ service: 'HafH' as const, data })),
     ]
       .sort((a, z) => (a.data.checkInDate > z.data.checkInDate ? 1 : -1))
@@ -131,9 +106,6 @@ export default async function Page({ params }: { params: Params }) {
                   <p className="line-clamp-1 font-sans text-3xl font-bold opacity-80">{reservation.data.home.name}</p>
                   <div className="flex gap-8">
                     <p className="font-sans text-xs font-bold text-black/50">{reservation.service}</p>
-                    {reservation.service === 'circle' && (
-                      <p className="font-sans text-xs font-bold text-black/50">{reservation.data.home.city}</p>
-                    )}
                   </div>
                 </div>
               </div>
