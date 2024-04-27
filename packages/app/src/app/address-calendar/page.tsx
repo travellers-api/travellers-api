@@ -68,11 +68,6 @@ export default async function Page(context: PageContext) {
                 問い合わせ: あもん
               </a>
             </li>
-            <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
-              <Link className="underline" href="/circle-calendar">
-                circle版
-              </Link>
-            </li>
           </ul>
         </div>
       </header>
