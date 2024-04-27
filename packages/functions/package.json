@@ -3,15 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "engines": {
-    "node": "18"
+    "node": "20"
   },
   "main": "lib/index.js",
   "scripts": {
     "build": "rimraf lib && tsc",
     "build:watch": "rimraf lib && tsc --watch",
-    "serve": "yarn build && firebase emulators:start --only functions",
-    "shell": "yarn build && firebase functions:shell",
-    "start": "yarn shell",
+    "serve": "pnpm run build && firebase emulators:start --only functions",
+    "shell": "pnpm run build && firebase functions:shell",
+    "start": "pnpm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "lint": "eslint --ext .js,.ts .",
@@ -19,34 +19,33 @@
     "test": "jest"
   },
   "dependencies": {
-    "@google-cloud/pubsub": "^3.7.1",
+    "@google-cloud/pubsub": "^4.3.3",
     "@travellers-api/address-fetcher": "^0.7.0",
     "@travellers-api/circle-fetcher": "0.1.5",
     "@travellers-api/hafh-fetcher": "0.1.2",
     "cheerio": "^1.0.0-rc.12",
     "dayjs": "^1.11.8",
-    "firebase-admin": "^11.9.0",
+    "firebase-admin": "^12.1.0",
     "firebase-functions": "^4.4.1",
     "lodash": "^4.17.21",
-    "node-fetch": "2",
-    "p-limit": "3",
+    "node-fetch": "^3.3.2",
+    "p-limit": "^5.0.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/jest": "^29.2.3",
     "@types/lodash": "^4.14.195",
     "@types/node-fetch": "^2.6.2",
-    "@typescript-eslint/eslint-plugin": "^5.43.0",
-    "@typescript-eslint/parser": "^5.43.0",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
     "dotenv": "^16.0.3",
-    "eslint": "^8.28.0",
-    "eslint-config-prettier": "^8.5.0",
+    "eslint": "^9.1.1",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.26.0",
     "firebase-functions-test": "^3.1.0",
     "jest": "^29.3.1",
-    "prettier": "^2.8.8",
-    "rimraf": "^4.4.1",
+    "rimraf": "^5.0.5",
     "ts-jest": "^29.0.3",
-    "typescript": "^4.9.3"
+    "typescript": "^5.4.5"
   }
 }

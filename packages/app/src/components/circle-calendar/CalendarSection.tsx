@@ -1,6 +1,6 @@
 'use client';
 
-import { useVirtual } from '@tanstack/react-virtual';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import classNames from 'classnames';
 import { useCallback, useRef } from 'react';
 import { LabelText } from '../../components/address-calendar/LabelText';
@@ -44,10 +44,11 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
     const roomCount = 1;
     return roomCount * 31 + 10;
   }, []);
-  const virtual = useVirtual({
-    size: homes.length,
-    parentRef,
+
+  const virtualizer = useVirtualizer({
+    count: homes.length,
     overscan: 5,
+    getScrollElement: () => parentRef.current,
     estimateSize,
   });
 
@@ -85,11 +86,11 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
             className="relative flex h-[var(--total-size)] flex-col"
             style={
               {
-                '--total-size': `${virtual.totalSize}px`,
+                '--total-size': `${virtualizer.getTotalSize()}px`,
               } as React.CSSProperties
             }
           >
-            {virtual.virtualItems.map((virtualRow) => {
+            {virtualizer.getVirtualItems().map((virtualRow) => {
               const home = homes[virtualRow.index]!;
 
               return (
@@ -139,12 +140,12 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                                         available === 'N'
                                           ? 'bg-black/40'
                                           : available === 'O'
-                                          ? 'bg-black/20'
-                                          : available === 'H'
-                                          ? 'bg-black/20'
-                                          : available === 'Y'
-                                          ? ''
-                                          : null
+                                            ? 'bg-black/20'
+                                            : available === 'H'
+                                              ? 'bg-black/20'
+                                              : available === 'Y'
+                                                ? ''
+                                                : null
                                       )}
                                     >
                                       <span>&nbsp;</span>
@@ -152,12 +153,12 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                                         {available === 'N'
                                           ? '予約済み・予約不可'
                                           : available === 'O'
-                                          ? '予約期間外'
-                                          : available === 'H'
-                                          ? '拠点休日'
-                                          : available === 'Y'
-                                          ? '予約可能'
-                                          : null}
+                                            ? '予約期間外'
+                                            : available === 'H'
+                                              ? '拠点休日'
+                                              : available === 'Y'
+                                                ? '予約可能'
+                                                : null}
                                       </span>
                                     </div>
                                   </li>
