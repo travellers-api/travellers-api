@@ -1,6 +1,6 @@
 'use client';
 
-import { useVirtual } from '@tanstack/react-virtual';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import classNames from 'classnames';
 import React, { useCallback, useRef, useState } from 'react';
 import { LabelText } from '../../components/address-calendar/LabelText';
@@ -55,10 +55,11 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
     },
     [homes]
   );
-  const virtual = useVirtual({
-    size: homes.length,
-    parentRef,
+
+  const virtualizer = useVirtualizer({
+    count: homes.length,
     overscan: 5,
+    getScrollElement: () => parentRef.current,
     estimateSize,
   });
 
@@ -128,11 +129,11 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
             className="relative flex h-[var(--total-size)] flex-col"
             style={
               {
-                '--total-size': `${virtual.totalSize}px`,
+                '--total-size': `${virtualizer.getTotalSize()}px`,
               } as React.CSSProperties
             }
           >
-            {virtual.virtualItems.map((virtualRow) => {
+            {virtualizer.getVirtualItems().map((virtualRow) => {
               const home = homes[virtualRow.index]!;
 
               return (
