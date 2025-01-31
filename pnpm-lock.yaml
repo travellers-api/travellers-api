@@ -100,8 +100,8 @@ importers:
         specifier: ^4.3.3
         version: 4.3.3(encoding@0.1.13)
       '@travellers-api/address-fetcher':
-        specifier: ^0.7.0
-        version: 0.7.0(encoding@0.1.13)
+        specifier: ^0.8.0
+        version: 0.8.0(encoding@0.1.13)
       '@travellers-api/hafh-fetcher':
         specifier: 0.1.2
         version: 0.1.2(encoding@0.1.13)
@@ -890,8 +890,8 @@ packages:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
 
-  '@travellers-api/address-fetcher@0.7.0':
-    resolution: {integrity: sha512-wO/Bmt9QdVZKSyIEIsKLgn0L6DZuRG+iv+7ARckVwtb4joGuwy+NR5kJ1AKC5kxV10OjbHwJHvczqm25OoALLg==}
+  '@travellers-api/address-fetcher@0.8.0':
+    resolution: {integrity: sha512-i1xS6x4VIeJqCBFC1hKQyqZThEpOVONK72CS5wJj8LP74SHyD9f8Uy7m/lqVgR14ZdFA2VsJFXxwK33Up3OMLQ==}
 
   '@travellers-api/hafh-fetcher@0.1.2':
     resolution: {integrity: sha512-RKrrX6Brulv3a47YuivU2rlr37q/D7Oj9G1GsrLkeZvFWM2lJM15l8cabUvv3nEPlBjFzT1gcOtaFaUXbrB2Ng==}
@@ -4792,7 +4792,7 @@ snapshots:
 
   '@tootallnate/once@2.0.0': {}
 
-  '@travellers-api/address-fetcher@0.7.0(encoding@0.1.13)':
+  '@travellers-api/address-fetcher@0.8.0(encoding@0.1.13)':
     dependencies:
       cheerio: 1.0.0-rc.12
       dayjs: 1.11.10
@@ -7854,7 +7854,7 @@ snapshots:
     dependencies:
       chokidar: 3.6.0
       immutable: 4.3.5
-      source-map-js: 1.2.0
+      source-map-js: 1.2.1
     optional: true
 
   scheduler@0.25.0: {}
