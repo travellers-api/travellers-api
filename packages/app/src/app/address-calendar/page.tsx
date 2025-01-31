@@ -61,7 +61,7 @@ export default async function Page(context: Props) {
         </h1>
         <div className="text-center font-sans text-sm leading-6 tracking-wide opacity-80">
           <ul className="flex flex-wrap justify-center gap-x-8">
-            <li className='nth-[n+2]:before:content-["_/_"]'>
+            <li className="nth-[n+2]:before:content-['_/_']">
               <a
                 className="underline"
                 href="https://address.love/"
@@ -71,7 +71,7 @@ export default async function Page(context: Props) {
                 ADDress公式サイト
               </a>
             </li>
-            <li className='nth-[n+2]:before:content-["_/_"]'>
+            <li className="nth-[n+2]:before:content-['_/_']">
               <a
                 className="underline"
                 href="https://twitter.com/amotarao"
