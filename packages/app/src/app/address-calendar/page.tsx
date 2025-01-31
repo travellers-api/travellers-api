@@ -50,6 +50,11 @@ const getData = async ({
   return json;
 };
 
+const LINKS = [
+  { href: "https://address.love/", text: "ADDress公式サイト" },
+  { href: "https://twitter.com/amotarao", text: "問い合わせ: あもん" },
+];
+
 export default async function Page(context: Props) {
   const { homes, dates, filters } = await getData(context);
 
@@ -61,26 +66,18 @@ export default async function Page(context: Props) {
         </h1>
         <div className="text-center font-sans text-sm leading-6 tracking-wide opacity-80">
           <ul className="flex flex-wrap justify-center gap-x-8">
-            <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
-              <a
-                className="underline"
-                href="https://address.love/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                ADDress公式サイト
-              </a>
-            </li>
-            <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
-              <a
-                className="underline"
-                href="https://twitter.com/amotarao"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                問い合わせ: あもん
-              </a>
-            </li>
+            {LINKS.map(({ href, text }) => (
+              <li key={href} className="nth-[n+2]:before:content-['_/_']">
+                <a
+                  className="underline"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {text}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </header>
