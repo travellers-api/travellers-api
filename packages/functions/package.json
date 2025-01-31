@@ -14,7 +14,7 @@
     "start": "pnpm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "lint": "eslint .",
+    "lint": "eslint --fix .",
     "format": "prettier --write .",
     "test": "jest"
   },
