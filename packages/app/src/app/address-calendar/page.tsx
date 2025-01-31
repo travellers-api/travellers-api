@@ -1,8 +1,8 @@
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { CalendarFilter } from '../../components/address-calendar/CalendarFilter';
-import { CalendarSection } from '../../components/address-calendar/CalendarSection';
-import { AddressCalendarForPage } from './api/calendar/route';
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { CalendarFilter } from "../../components/address-calendar/CalendarFilter";
+import { CalendarSection } from "../../components/address-calendar/CalendarSection";
+import { AddressCalendarForPage } from "./api/calendar/route";
 
 type PageContext = {
   searchParams?: {
@@ -17,30 +17,32 @@ type PageContext = {
 
 const searchParamToArray = (value?: string | string[]): string[] => {
   if (!value) return [];
-  if (typeof value === 'string') return [value];
+  if (typeof value === "string") return [value];
   return value;
 };
 
-const getData = async (context: PageContext): Promise<AddressCalendarForPage> => {
+const getData = async (
+  context: PageContext,
+): Promise<AddressCalendarForPage> => {
   const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : 'http://localhost:3000';
+    : "http://localhost:3000";
   const url = new URL(`${baseUrl}/address-calendar/api/calendar`);
 
   const prefecture = searchParamToArray(context.searchParams?.prefecture);
-  prefecture.forEach((v) => url.searchParams.append('prefecture', v));
+  prefecture.forEach((v) => url.searchParams.append("prefecture", v));
   const homeType = searchParamToArray(context.searchParams?.homeType);
-  homeType.forEach((v) => url.searchParams.append('homeType', v));
+  homeType.forEach((v) => url.searchParams.append("homeType", v));
   const roomType = searchParamToArray(context.searchParams?.roomType);
-  roomType.forEach((v) => url.searchParams.append('roomType', v));
+  roomType.forEach((v) => url.searchParams.append("roomType", v));
   const bed = searchParamToArray(context.searchParams?.bed);
-  bed.forEach((v) => url.searchParams.append('bed', v));
+  bed.forEach((v) => url.searchParams.append("bed", v));
   const sex = searchParamToArray(context.searchParams?.sex);
-  sex.forEach((v) => url.searchParams.append('sex', v));
+  sex.forEach((v) => url.searchParams.append("sex", v));
   const capacity = searchParamToArray(context.searchParams?.capacity);
-  capacity.forEach((v) => url.searchParams.append('capacity', v));
+  capacity.forEach((v) => url.searchParams.append("capacity", v));
 
-  const res = await fetch(url, { cache: 'force-cache' }).catch(() => null);
+  const res = await fetch(url, { cache: "force-cache" }).catch(() => null);
   if (!res) notFound();
   const json = await res.json();
   return json;
@@ -58,12 +60,22 @@ export default async function Page(context: PageContext) {
         <div className="text-center font-sans text-sm leading-6 tracking-wide opacity-80">
           <ul className="flex flex-wrap justify-center gap-x-8">
             <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
-              <a className="underline" href="https://address.love/" target="_blank" rel="noopener noreferrer">
+              <a
+                className="underline"
+                href="https://address.love/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 ADDress公式サイト
               </a>
             </li>
             <li className='[&:nth-child(n+2)]:before:content-["_/_"]'>
-              <a className="underline" href="https://twitter.com/amotarao" target="_blank" rel="noopener noreferrer">
+              <a
+                className="underline"
+                href="https://twitter.com/amotarao"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 問い合わせ: あもん
               </a>
             </li>
@@ -77,5 +89,5 @@ export default async function Page(context: PageContext) {
 }
 
 export const metadata: Metadata = {
-  title: 'ADDress予約状況カレンダー (非公式)',
+  title: "ADDress予約状況カレンダー (非公式)",
 };

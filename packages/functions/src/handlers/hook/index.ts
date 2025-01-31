@@ -1,10 +1,16 @@
-import * as functions from 'firebase-functions';
-import { userAgent } from '../../modules/client/user-agent';
-import { getWebhooks } from '../../modules/firestore/webhooks';
-import { topicName as dispatchHookTopicName } from '../../modules/hook/dispatch-hook';
-import { publishSendWebhooks, topicName as sendWebhookTopicName } from '../../modules/hook/send-webhook';
-import { DispatchHookMessage, SendWebhookMessage } from '../../modules/hook/types';
-import { defaultRegion } from './../../modules/functions/constants';
+import * as functions from "firebase-functions";
+import { userAgent } from "../../modules/client/user-agent";
+import { getWebhooks } from "../../modules/firestore/webhooks";
+import { topicName as dispatchHookTopicName } from "../../modules/hook/dispatch-hook";
+import {
+  publishSendWebhooks,
+  topicName as sendWebhookTopicName,
+} from "../../modules/hook/send-webhook";
+import {
+  DispatchHookMessage,
+  SendWebhookMessage,
+} from "../../modules/hook/types";
+import { defaultRegion } from "./../../modules/functions/constants";
 
 export const onDispatchHookMessage = functions
   .region(defaultRegion)
@@ -21,11 +27,11 @@ export const onSendWebhookMessage = functions
   .onPublish(async (message) => {
     const { hook, request } = message.json as SendWebhookMessage;
     await fetch(request.url, {
-      method: 'POST',
+      method: "POST",
       headers: {
         ...request.headers,
-        'Content-Type': 'application/json',
-        'User-Agent': userAgent,
+        "Content-Type": "application/json",
+        "User-Agent": userAgent,
       },
       body: JSON.stringify(hook),
     });

@@ -1,12 +1,21 @@
-import { Home, Room } from '@travellers-api/address-fetcher/lib/core/home/types';
+import {
+  Home,
+  Room,
+} from "@travellers-api/address-fetcher/lib/core/home/types";
 
 export type CachedAddressHomeBase = Pick<
   Home,
-  'id' | 'url' | 'name' | 'thumbnail' | 'prefecture' | 'homeType' | 'reservationLimit'
+  | "id"
+  | "url"
+  | "name"
+  | "thumbnail"
+  | "prefecture"
+  | "homeType"
+  | "reservationLimit"
 >;
 
 export type CachedAddressHome = CachedAddressHomeBase &
-  Partial<Pick<Home, 'address'>> & {
+  Partial<Pick<Home, "address">> & {
     rooms?: CachedAddressHomeRoom[];
   };
 

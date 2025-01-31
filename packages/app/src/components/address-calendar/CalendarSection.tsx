@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useVirtualizer } from '@tanstack/react-virtual';
-import classNames from 'classnames';
-import React, { useCallback, useRef, useState } from 'react';
-import { LabelText } from '../../components/address-calendar/LabelText';
-import { Home } from '../../lib/address/calendar/types';
+import { useVirtualizer } from "@tanstack/react-virtual";
+import classNames from "classnames";
+import React, { useCallback, useRef, useState } from "react";
+import { LabelText } from "../../components/address-calendar/LabelText";
+import { Home } from "../../lib/address/calendar/types";
 import {
   shortenHomeType,
   shortenPrefectureName,
   shortenRoomType,
   simplifyRoomName,
   simplifyRoomType,
-} from '../../lib/address/calendar/utils';
+} from "../../lib/address/calendar/utils";
 
 export type CalendarSectionProps = {
   className?: string;
@@ -22,20 +22,30 @@ export type CalendarSectionProps = {
   }[];
 };
 
-export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, homes, dates }) => {
+export const CalendarSection: React.FC<CalendarSectionProps> = ({
+  className,
+  homes,
+  dates,
+}) => {
   return (
     <section className={className}>
       <aside className="mb-10 flex items-center gap-10 px-20">
         <p className="text-xs">凡例</p>
         <ul className="flex py-5 text-xs">
           <li>
-            <div className="border-y border-l px-8 py-2 text-center">予約可能</div>
+            <div className="border-y border-l px-8 py-2 text-center">
+              予約可能
+            </div>
           </li>
           <li>
-            <div className="border-y border-l bg-black/20 px-8 py-2 text-center">予約期間外・拠点休日</div>
+            <div className="border-y border-l bg-black/20 px-8 py-2 text-center">
+              予約期間外・拠点休日
+            </div>
           </li>
           <li>
-            <div className="border-y border-l bg-black/50 px-8 py-2 text-center text-white">予約済み・予約不可</div>
+            <div className="border-y border-l bg-black/50 px-8 py-2 text-center text-white">
+              予約済み・予約不可
+            </div>
           </li>
         </ul>
       </aside>
@@ -44,7 +54,10 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({ className, hom
   );
 };
 
-const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({ homes, dates }) => {
+const InnerSection: React.FC<Pick<CalendarSectionProps, "homes" | "dates">> = ({
+  homes,
+  dates,
+}) => {
   const [isShownHomeLabel, setIsShownHomeLabel] = useState(true);
   const [isShownRoomLabel, setIsShownRoomLabel] = useState(true);
   const parentRef = useRef<HTMLDivElement>(null);
@@ -53,7 +66,7 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
     (i: number) => {
       return (homes[i]!.rooms?.length ?? 1) * 31 + 10;
     },
-    [homes]
+    [homes],
   );
 
   const virtualizer = useVirtualizer({
@@ -68,9 +81,9 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
       className="w-full overflow-x-scroll"
       style={
         {
-          '--dates-count': dates.length,
-          '--home-width': isShownHomeLabel ? '224px' : '108px',
-          '--room-width': isShownRoomLabel ? '144px' : '64px',
+          "--dates-count": dates.length,
+          "--home-width": isShownHomeLabel ? "224px" : "108px",
+          "--room-width": isShownRoomLabel ? "144px" : "64px",
         } as React.CSSProperties
       }
     >
@@ -117,19 +130,22 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                   <li key={date.date} className="border-l text-center text-xs">
                     <p>{date.date.slice(5, 7)}</p>
                     <p>{date.date.slice(8)}</p>
-                    <p>{'日月火水木金土'[date.day] ?? ''}</p>
+                    <p>{"日月火水木金土"[date.day] ?? ""}</p>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
         </header>
-        <div ref={parentRef} className="h-max max-h-[70vh] w-full overflow-y-auto px-20">
+        <div
+          ref={parentRef}
+          className="h-max max-h-[70vh] w-full overflow-y-auto px-20"
+        >
           <ul
             className="relative flex h-[var(--total-size)] flex-col"
             style={
               {
-                '--total-size': `${virtualizer.getTotalSize()}px`,
+                "--total-size": `${virtualizer.getTotalSize()}px`,
               } as React.CSSProperties
             }
           >
@@ -142,23 +158,34 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                   className="absolute left-0 top-[var(--start)] h-[var(--size)] w-full"
                   style={
                     {
-                      '--start': `${virtualRow.start}px`,
-                      '--size': `${virtualRow.size}px`,
+                      "--start": `${virtualRow.start}px`,
+                      "--size": `${virtualRow.size}px`,
                     } as React.CSSProperties
                   }
                 >
                   <div className="grid grid-cols-[var(--home-width)_1fr] border-b pb-10">
                     <div className="flex items-center gap-4 self-start py-5 text-sm">
                       <p className="shrink-0 font-bold">
-                        <a className="underline" href={home.url} target="_blank" rel="noreferrer">
+                        <a
+                          className="underline"
+                          href={home.url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
                           {home.name}
                         </a>
                       </p>
                       {isShownHomeLabel && (
                         <div className="itesm-center flex gap-4">
-                          <LabelText className="shrink-0">{shortenPrefectureName(home.prefecture)}</LabelText>
-                          <LabelText className="shrink-0">{shortenHomeType(home.homeType)}</LabelText>
-                          {home.reservationLimit === '予約制限あり' && <LabelText className="shrink-0">制限</LabelText>}
+                          <LabelText className="shrink-0">
+                            {shortenPrefectureName(home.prefecture)}
+                          </LabelText>
+                          <LabelText className="shrink-0">
+                            {shortenHomeType(home.homeType)}
+                          </LabelText>
+                          {home.reservationLimit === "予約制限あり" && (
+                            <LabelText className="shrink-0">制限</LabelText>
+                          )}
                         </div>
                       )}
                     </div>
@@ -170,13 +197,20 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                               {isShownRoomLabel && (
                                 <div className="flex gap-4 self-center">
                                   {room.sex && (
-                                    <LabelText className="shrink-0">{room.sex === 'male' ? '男' : '女'}</LabelText>
+                                    <LabelText className="shrink-0">
+                                      {room.sex === "male" ? "男" : "女"}
+                                    </LabelText>
                                   )}
                                   <LabelText className="shrink-0">
-                                    {shortenRoomType(simplifyRoomType(room.type))}
+                                    {shortenRoomType(
+                                      simplifyRoomType(room.type),
+                                    )}
                                   </LabelText>
-                                  {room.calendar && room.calendar.availableWeeks !== 12 ? (
-                                    <LabelText className="shrink-0">{room.calendar.availableWeeks}週</LabelText>
+                                  {room.calendar &&
+                                  room.calendar.availableWeeks !== 12 ? (
+                                    <LabelText className="shrink-0">
+                                      {room.calendar.availableWeeks}週
+                                    </LabelText>
                                   ) : null}
                                 </div>
                               )}
@@ -187,41 +221,45 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, 'homes' | 'dates'>> = ({
                             {room.calendar && room.availables ? (
                               <div className="self-center text-xs">
                                 <ul className="grid grid-cols-[repeat(var(--dates-count),24px)] self-center">
-                                  {room.availables.split('').map((available, i) => (
-                                    <li key={i}>
-                                      <div
-                                        className={classNames(
-                                          'border-l text-center',
-                                          available === 'N'
-                                            ? 'bg-black/40'
-                                            : available === 'O'
-                                              ? 'bg-black/20'
-                                              : available === 'H'
-                                                ? 'bg-black/20'
-                                                : available === 'Y'
-                                                  ? ''
-                                                  : null
-                                        )}
-                                      >
-                                        <span>&nbsp;</span>
-                                        <span className="sr-only">
-                                          {available === 'N'
-                                            ? '予約済み・予約不可'
-                                            : available === 'O'
-                                              ? '予約期間外'
-                                              : available === 'H'
-                                                ? '拠点休日'
-                                                : available === 'Y'
-                                                  ? '予約可能'
-                                                  : null}
-                                        </span>
-                                      </div>
-                                    </li>
-                                  ))}
+                                  {room.availables
+                                    .split("")
+                                    .map((available, i) => (
+                                      <li key={i}>
+                                        <div
+                                          className={classNames(
+                                            "border-l text-center",
+                                            available === "N"
+                                              ? "bg-black/40"
+                                              : available === "O"
+                                                ? "bg-black/20"
+                                                : available === "H"
+                                                  ? "bg-black/20"
+                                                  : available === "Y"
+                                                    ? ""
+                                                    : null,
+                                          )}
+                                        >
+                                          <span>&nbsp;</span>
+                                          <span className="sr-only">
+                                            {available === "N"
+                                              ? "予約済み・予約不可"
+                                              : available === "O"
+                                                ? "予約期間外"
+                                                : available === "H"
+                                                  ? "拠点休日"
+                                                  : available === "Y"
+                                                    ? "予約可能"
+                                                    : null}
+                                          </span>
+                                        </div>
+                                      </li>
+                                    ))}
                                 </ul>
                               </div>
                             ) : (
-                              <div className="self-center text-xs">取得不可</div>
+                              <div className="self-center text-xs">
+                                取得不可
+                              </div>
                             )}
                           </div>
                         </li>

@@ -4,8 +4,8 @@ const nextConfig = {
   swcMinify: true,
   redirects: () => [
     {
-      source: '/a/:path*',
-      destination: '/u/:path*',
+      source: "/a/:path*",
+      destination: "/u/:path*",
       permanent: true,
     },
   ],

@@ -1,5 +1,5 @@
-import { CachedAddressHome } from '../cachedAddressHomes/types';
+import { CachedAddressHome } from "../cachedAddressHomes/types";
 
 export type AddressCalendar = {
-  homes: Omit<CachedAddressHome, 'address'>[];
+  homes: Omit<CachedAddressHome, "address">[];
 };
