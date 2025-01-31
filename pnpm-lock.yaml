@@ -87,9 +87,6 @@ importers:
       rimraf:
         specifier: ^5.0.5
         version: 5.0.5
-      sass:
-        specifier: ^1.63.3
-        version: 1.75.0
       tailwindcss:
         specifier: ^4.0.0
         version: 4.0.0
@@ -5342,7 +5339,8 @@ snapshots:
 
   bignumber.js@9.1.2: {}
 
-  binary-extensions@2.3.0: {}
+  binary-extensions@2.3.0:
+    optional: true
 
   bl@4.1.0:
     dependencies:
@@ -5482,6 +5480,7 @@ snapshots:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.3
+    optional: true
 
   chownr@1.1.4: {}
 
@@ -6554,7 +6553,8 @@ snapshots:
 
   ignore@5.3.1: {}
 
-  immutable@4.3.5: {}
+  immutable@4.3.5:
+    optional: true
 
   import-fresh@3.3.0:
     dependencies:
@@ -6607,6 +6607,7 @@ snapshots:
   is-binary-path@2.1.0:
     dependencies:
       binary-extensions: 2.3.0
+    optional: true
 
   is-boolean-object@1.2.1:
     dependencies:
@@ -7749,6 +7750,7 @@ snapshots:
   readdirp@3.6.0:
     dependencies:
       picomatch: 2.3.1
+    optional: true
 
   reflect.getprototypeof@1.0.10:
     dependencies:
@@ -7853,6 +7855,7 @@ snapshots:
       chokidar: 3.6.0
       immutable: 4.3.5
       source-map-js: 1.2.0
+    optional: true
 
   scheduler@0.25.0: {}
 
