@@ -1,6 +1,6 @@
 import { Prefecture } from "./types";
 
-export const UNKNOWN_PREFECTURE: Prefecture = {
+export const UNKNOWN_PREFECTURE = {
   name: "海外",
   code: 99,
 } as const;
