@@ -83,7 +83,7 @@ export function CalendarFilter({ className, filters }: Props) {
             <div className="flex flex-col gap-20">
               <div className="flex flex-col items-start gap-10">
                 <button
-                  className="rounded border px-12 py-4 text-sm"
+                  className="rounded-sm border px-12 py-4 text-sm"
                   type="submit"
                 >
                   フィルタ確定
@@ -173,7 +173,7 @@ function Filter({ id, title, defaultValue, values, multiple }: FilterProps) {
       <select
         id={id}
         name={id}
-        className="h-max rounded border px-8 py-4"
+        className="h-max rounded-sm border px-8 py-4"
         defaultValue={multiple ? defaultValue : defaultValue.at(0)}
         multiple={multiple}
         size={Math.min(values.length, 10)}
