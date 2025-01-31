@@ -2,8 +2,8 @@ import { getRoomsFromHomeId } from "@travellers-api/address-fetcher/lib/core/hom
 import { getRoomCalendar } from "@travellers-api/address-fetcher/lib/core/home/room/calendar";
 import { RoomCalendar } from "@travellers-api/address-fetcher/lib/core/home/room/calendar/types";
 import { Room } from "@travellers-api/address-fetcher/lib/core/home/room/types";
-import * as functions from "firebase-functions";
-import * as pLimit from "p-limit";
+import { onSchedule } from "firebase-functions/scheduler";
+import pLimit from "p-limit";
 import { ADDRESS_HOME_MAX_ID } from "../../constants/address";
 import { dayjs } from "../../lib/dayjs";
 import { generateNumbers, getCookieByUid } from "../../modules/address";
@@ -18,19 +18,19 @@ import { defaultRegion } from "../../modules/functions/constants";
 const limit = pLimit(1);
 
 // 各拠点ごとに1時間に1回、予約状況を取得
-export const crawlCalendar = functions
-  .region(defaultRegion)
-  .pubsub.schedule("* * * * *")
-  .onRun(async (context) => {
+export const crawlCalendarV2 = onSchedule(
+  { schedule: "* * * * *", region: defaultRegion },
+  async (event) => {
     const loopMinutes = 60;
-    const now = dayjs(context.timestamp).tz("Asia/Tokyo");
+    const now = dayjs(event.scheduleTime).tz("Asia/Tokyo");
     const homeIds = generateNumbers(now, ADDRESS_HOME_MAX_ID, loopMinutes);
 
     console.log(JSON.stringify({ homeIds }));
 
     const cookie = await getCookieByUid("amon");
     await Promise.all(homeIds.map((id) => single(cookie, id)));
-  });
+  },
+);
 
 const single = async (cookie: string, homeId: number) => {
   const exists = await existsHome(homeId);

@@ -1,7 +1,7 @@
-export { api } from "./api";
-export { crawlCalendar } from "./crawlCalendar";
-export { crawlHomes } from "./crawlHomes";
-export { crawlHomesSingle } from "./crawlHomesSingle";
-export { crawlRecentlyReservations } from "./crawlRecentlyReservations";
-export { generateCalendarCache } from "./generateCalendarCache";
-export { onUpdateCachedHomes } from "./onUpdateCachedHomes";
+export { apiV2 } from "./api";
+export { crawlCalendarV2 } from "./crawlCalendar";
+export { crawlHomesV2 } from "./crawlHomes";
+export { crawlHomesSingleV2 } from "./crawlHomesSingle";
+export { crawlRecentlyReservationsV2 } from "./crawlRecentlyReservations";
+export { generateCalendarCacheV2 } from "./generateCalendarCache";
+export { onUpdateCachedHomesV2 } from "./onUpdateCachedHomes";

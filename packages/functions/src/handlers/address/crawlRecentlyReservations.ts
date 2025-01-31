@@ -1,6 +1,6 @@
 import { getPreReservation } from "@travellers-api/address-fetcher/lib/core/pre-reservation";
-import * as functions from "firebase-functions";
-import * as pLimit from "p-limit";
+import { onSchedule } from "firebase-functions/scheduler";
+import pLimit from "p-limit";
 import { ADDRESS_HOME_MAX_ID } from "../../constants/address";
 import { dayjs } from "../../lib/dayjs";
 import { generateNumbers, getCookieByUid } from "../../modules/address";
@@ -12,12 +12,11 @@ import { defaultRegion } from "../../modules/functions/constants";
 const limit = pLimit(1);
 
 // 各拠点ごとに1日に6回、直近の予約状況を取得
-export const crawlRecentlyReservations = functions
-  .region(defaultRegion)
-  .pubsub.schedule("* * * * *")
-  .onRun(async (context) => {
+export const crawlRecentlyReservationsV2 = onSchedule(
+  { schedule: "* * * * *", region: defaultRegion },
+  async (event) => {
     const loopMinutes = 240;
-    const now = dayjs(context.timestamp).tz("Asia/Tokyo");
+    const now = dayjs(event.scheduleTime).tz("Asia/Tokyo");
     const today = now.format("YYYY-MM-DD");
     const homeIds = generateNumbers(now, ADDRESS_HOME_MAX_ID, loopMinutes);
 
@@ -27,7 +26,8 @@ export const crawlRecentlyReservations = functions
     await Promise.all(
       homeIds.map((homeId) => getRecentlyReservations(cookie, today, homeId)),
     );
-  });
+  },
+);
 
 const getRecentlyReservations = async (
   cookie: string,

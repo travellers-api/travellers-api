@@ -1,7 +1,7 @@
 import { notFoundMessage } from "@travellers-api/address-fetcher/lib/constants";
 import { getHome } from "@travellers-api/address-fetcher/lib/core/home";
-import * as functions from "firebase-functions";
-import * as pLimit from "p-limit";
+import { onSchedule } from "firebase-functions/scheduler";
+import pLimit from "p-limit";
 import { ADDRESS_HOME_MAX_ID } from "../../constants/address";
 import { dayjs } from "../../lib/dayjs";
 import { generateNumbers, getCookieByUid } from "../../modules/address";
@@ -15,19 +15,19 @@ import { defaultRegion } from "../../modules/functions/constants";
 const limit = pLimit(1);
 
 // 各拠点ごとに1日に2回、存在チェックと住所取得を実行
-export const crawlHomesSingle = functions
-  .region(defaultRegion)
-  .pubsub.schedule("* * * * *")
-  .onRun(async (context) => {
+export const crawlHomesSingleV2 = onSchedule(
+  { schedule: "* * * * *", region: defaultRegion },
+  async (event) => {
     const loopMinutes = 720;
-    const now = dayjs(context.timestamp).tz("Asia/Tokyo");
+    const now = dayjs(event.scheduleTime).tz("Asia/Tokyo");
     const homeIds = generateNumbers(now, ADDRESS_HOME_MAX_ID, loopMinutes);
 
     console.log(JSON.stringify({ homeIds }));
 
     const cookie = await getCookieByUid("amon");
     await Promise.all(homeIds.map((id) => single(id, cookie)));
-  });
+  },
+);
 
 const single = async (homeId: number, cookie: string) => {
   const exists = await existsHome(homeId);
