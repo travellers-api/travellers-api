@@ -5,12 +5,12 @@
       "rewrites": [
         {
           "source": "/address/**",
-          "function": "address-api",
+          "function": "address-apiV2",
           "region": "asia-northeast1"
         },
         {
           "source": "/hafh/**",
-          "function": "hafh-api",
+          "function": "hafh-apiV2",
           "region": "asia-northeast1"
         }
       ]
