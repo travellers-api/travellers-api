@@ -3,7 +3,10 @@ import { fetchCalendar } from "../../../../lib/address/calendar/fetchers";
 import { Home, Room } from "../../../../lib/address/calendar/types";
 import { excludeClosedRooms } from "../../../../lib/address/calendar/utils";
 import { dayjs } from "../../../../lib/dayjs";
-import { prefectures } from "../../../../lib/prefecture/constants";
+import {
+  PREFECTURES,
+  UNKNOWN_PREFECTURE,
+} from "../../../../lib/prefecture/constants";
 
 export type AddressCalendarForPage = {
   homes: Home[];
@@ -46,7 +49,7 @@ export async function GET(request: Request) {
 
   const json: AddressCalendarForPage = {
     filters: {
-      prefecture: prefectures.map((prefecture) => prefecture.name),
+      prefecture: PREFECTURES.map((prefecture) => prefecture.name),
       homeType: (() => {
         const homeTypes = homes
           .map((home) => home.homeType)
@@ -175,7 +178,12 @@ export async function GET(request: Request) {
       })
       .filter((home) => {
         if (prefectureQuery.length) {
-          const match = prefectureQuery.includes(home.prefecture);
+          const prefecture = PREFECTURES.map(({ name }) => name).includes(
+            home.prefecture,
+          )
+            ? home.prefecture
+            : UNKNOWN_PREFECTURE.name;
+          const match = prefectureQuery.includes(prefecture);
           if (!match) return false;
         }
 
@@ -192,11 +200,11 @@ export async function GET(request: Request) {
       })
       .sort((a, z) => {
         const aPrefecture =
-          prefectures.find((prefecture) => a.prefecture === prefecture.name)
-            ?.code ?? 0;
+          PREFECTURES.find((prefecture) => a.prefecture === prefecture.name)
+            ?.code ?? UNKNOWN_PREFECTURE.code;
         const zPrefecture =
-          prefectures.find((prefecture) => z.prefecture === prefecture.name)
-            ?.code ?? 0;
+          PREFECTURES.find((prefecture) => z.prefecture === prefecture.name)
+            ?.code ?? UNKNOWN_PREFECTURE.code;
 
         if (aPrefecture !== zPrefecture) {
           return aPrefecture - zPrefecture;
