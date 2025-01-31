@@ -1,8 +1,9 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import { NextConfig } from "next";
+
+const config: NextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  redirects: () => [
+  redirects: async () => [
     {
       source: "/a/:path*",
       destination: "/u/:path*",
@@ -11,4 +12,4 @@ const nextConfig = {
   ],
 };
 
-module.exports = nextConfig;
+export default config;
