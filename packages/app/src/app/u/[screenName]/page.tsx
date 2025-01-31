@@ -39,19 +39,20 @@ type HafhReservation = {
   };
 };
 
-type Params = {
-  screenName: string;
+type Props = {
+  params: Promise<{
+    screenName: string;
+  }>;
 };
 
-type Props = {
-  screenName: string;
+type Data = {
   reservations: (
     | { service: "ADDress"; data: AddressReservation }
     | { service: "HafH"; data: HafhReservation }
   )[];
 };
 
-const getData = async (screenName: string): Promise<Props> => {
+const getData = async (screenName: string): Promise<Data> => {
   const [address, hafh] = await Promise.all([
     fetch(
       `https://api.travellers-api.amon.dev/address/users/${screenName}/reservations`,
@@ -81,8 +82,7 @@ const getData = async (screenName: string): Promise<Props> => {
     notFound();
   }
 
-  const props: Props = {
-    screenName,
+  const props: Data = {
     reservations: [
       ...address.reservations.map((data) => ({
         service: "ADDress" as const,
@@ -101,8 +101,9 @@ const getData = async (screenName: string): Promise<Props> => {
   return props;
 };
 
-export default async function Page({ params }: { params: Params }) {
-  const { screenName, reservations } = await getData(params.screenName);
+export default async function Page({ params }: Props) {
+  const { screenName } = await params;
+  const { reservations } = await getData(screenName);
 
   return (
     <div className="pb-80">
@@ -158,12 +159,9 @@ export default async function Page({ params }: { params: Params }) {
   );
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { screenName } = await params;
   return {
-    title: `${params.screenName}の滞在予定`,
+    title: `${screenName}の滞在予定`,
   };
 }

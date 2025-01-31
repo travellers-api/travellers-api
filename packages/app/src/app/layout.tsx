@@ -50,5 +50,3 @@ const analytics = getAnalytics(app);`,
     </html>
   );
 }
-
-export const revalidate = 60 * 60;
