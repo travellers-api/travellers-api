@@ -35,7 +35,7 @@ app.get<
     });
     const reservations = await getReservations(cookie);
     res.json({ reservations });
-  } catch (e) {
+  } catch {
     res.status(500).end();
   }
 });
@@ -73,19 +73,18 @@ app.get<
   }
 });
 
-app.get<undefined, AddressCalendar>("/address/calendar", async (req, res) => {
+app.get<undefined, AddressCalendar>("/address/calendar", async (_req, res) => {
   try {
     const json = await getAddressCalendarCache().catch(async () => {
       const homes = await getHomes();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const json = {
-        homes: homes.map(({ data: { address, ...data } }) => data),
+        homes: homes.map(({ data: { address: _address, ...data } }) => data),
       };
       return json;
     });
     res.setHeader("Cache-Control", "public, max-age=60, must-revalidate");
     res.json(json);
-  } catch (e) {
+  } catch {
     res.status(500).end();
   }
 });

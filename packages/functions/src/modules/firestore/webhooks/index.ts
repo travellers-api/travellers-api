@@ -14,7 +14,6 @@ export const getWebhooks = async (
     .where("topics", "array-contains", topic)
     .get()) as QuerySnapshot<Webhook>;
   return querySnapshot.docs.map((snapshot) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { topics, ...data } = snapshot.data();
     return data;
   });

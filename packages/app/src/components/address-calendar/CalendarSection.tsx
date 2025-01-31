@@ -13,7 +13,7 @@ import {
   simplifyRoomType,
 } from "../../lib/address/calendar/utils";
 
-export type CalendarSectionProps = {
+type Props = {
   className?: string;
   homes: Home[];
   dates: {
@@ -22,11 +22,7 @@ export type CalendarSectionProps = {
   }[];
 };
 
-export const CalendarSection: React.FC<CalendarSectionProps> = ({
-  className,
-  homes,
-  dates,
-}) => {
+export function CalendarSection({ className, homes, dates }: Props) {
   return (
     <section className={className}>
       <aside className="mb-10 flex items-center gap-10 px-20">
@@ -52,12 +48,9 @@ export const CalendarSection: React.FC<CalendarSectionProps> = ({
       <InnerSection homes={homes} dates={dates} />
     </section>
   );
-};
+}
 
-const InnerSection: React.FC<Pick<CalendarSectionProps, "homes" | "dates">> = ({
-  homes,
-  dates,
-}) => {
+function InnerSection({ homes, dates }: Pick<Props, "homes" | "dates">) {
   const [isShownHomeLabel, setIsShownHomeLabel] = useState(true);
   const [isShownRoomLabel, setIsShownRoomLabel] = useState(true);
   const parentRef = useRef<HTMLDivElement>(null);
@@ -274,4 +267,4 @@ const InnerSection: React.FC<Pick<CalendarSectionProps, "homes" | "dates">> = ({
       </div>
     </section>
   );
-};
+}

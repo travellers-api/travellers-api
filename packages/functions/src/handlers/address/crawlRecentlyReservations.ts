@@ -55,11 +55,8 @@ const getRecentlyReservations = async (
     });
   });
 
-  const saves: {
-    [roomId: string]: {
-      data: { [checkInDate: string]: { reserved: boolean } };
-    };
-  } = {};
+  const saves: Record<string, { data: Record<string, { reserved: boolean }> }> =
+    {};
   await Promise.all(
     requests.map(async ({ roomId, checkInDate, checkOutDate }) => {
       const { errors } = await limit(() =>
