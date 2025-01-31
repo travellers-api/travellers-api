@@ -4,42 +4,44 @@ import { CalendarFilter } from "../../components/address-calendar/CalendarFilter
 import { CalendarSection } from "../../components/address-calendar/CalendarSection";
 import { AddressCalendarForPage } from "./api/calendar/route";
 
-type PageContext = {
-  searchParams?: {
-    prefecture?: string | string[];
-    homeType?: string | string[];
-    roomType?: string | string[];
-    bed?: string | string[];
-    sex?: string | string[];
-    capacity?: string | string[];
-  };
+type Props = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-const searchParamToArray = (value?: string | string[]): string[] => {
+const searchParamToArray = (value: string | string[] | undefined): string[] => {
   if (!value) return [];
   if (typeof value === "string") return [value];
   return value;
 };
 
-const getData = async (
-  context: PageContext,
-): Promise<AddressCalendarForPage> => {
+const getData = async ({
+  searchParams,
+}: Props): Promise<AddressCalendarForPage> => {
+  const {
+    prefecture: prefectureParam,
+    homeType: homeTypeParam,
+    roomType: roomTypeParam,
+    bed: bedParam,
+    sex: sexParam,
+    capacity: capacityParam,
+  } = await searchParams;
+
   const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
     ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : "http://localhost:3000";
   const url = new URL(`${baseUrl}/address-calendar/api/calendar`);
 
-  const prefecture = searchParamToArray(context.searchParams?.prefecture);
+  const prefecture = searchParamToArray(prefectureParam);
   prefecture.forEach((v) => url.searchParams.append("prefecture", v));
-  const homeType = searchParamToArray(context.searchParams?.homeType);
+  const homeType = searchParamToArray(homeTypeParam);
   homeType.forEach((v) => url.searchParams.append("homeType", v));
-  const roomType = searchParamToArray(context.searchParams?.roomType);
+  const roomType = searchParamToArray(roomTypeParam);
   roomType.forEach((v) => url.searchParams.append("roomType", v));
-  const bed = searchParamToArray(context.searchParams?.bed);
+  const bed = searchParamToArray(bedParam);
   bed.forEach((v) => url.searchParams.append("bed", v));
-  const sex = searchParamToArray(context.searchParams?.sex);
+  const sex = searchParamToArray(sexParam);
   sex.forEach((v) => url.searchParams.append("sex", v));
-  const capacity = searchParamToArray(context.searchParams?.capacity);
+  const capacity = searchParamToArray(capacityParam);
   capacity.forEach((v) => url.searchParams.append("capacity", v));
 
   const res = await fetch(url, { cache: "force-cache" }).catch(() => null);
@@ -48,7 +50,7 @@ const getData = async (
   return json;
 };
 
-export default async function Page(context: PageContext) {
+export default async function Page(context: Props) {
   const { homes, dates, filters } = await getData(context);
 
   return (
