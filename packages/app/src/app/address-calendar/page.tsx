@@ -93,5 +93,3 @@ export default async function Page(context: Props) {
 export const metadata: Metadata = {
   title: "ADDress予約状況カレンダー (非公式)",
 };
-
-export const revalidate = 60 * 60;
