@@ -1,7 +1,7 @@
-import * as functions from "firebase-functions";
+import { Change, DocumentSnapshot } from "firebase-functions/firestore";
 
 export const getWriteType = (
-  change: functions.Change<functions.firestore.DocumentSnapshot>,
+  change: Change<DocumentSnapshot>,
 ): "create" | "update" | "delete" => {
   const beforeExists = change.before.exists;
   const afterExists = change.after.exists;

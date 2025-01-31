@@ -5,7 +5,7 @@ import {
 import { getReservations } from "@travellers-api/hafh-fetcher/lib/core/reservation";
 import { Reservation } from "@travellers-api/hafh-fetcher/lib/core/reservation/types";
 import * as express from "express";
-import * as functions from "firebase-functions";
+import { onRequest } from "firebase-functions/https";
 import { getSecret, updateSecret } from "../../modules/firestore/secret/hafh";
 import { defaultRegion } from "../../modules/functions/constants";
 
@@ -46,4 +46,4 @@ app.get<
   }
 });
 
-export const api = functions.region(defaultRegion).https.onRequest(app);
+export const apiV2 = onRequest({ region: defaultRegion }, app);

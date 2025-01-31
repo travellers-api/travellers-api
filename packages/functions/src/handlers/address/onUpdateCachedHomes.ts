@@ -1,5 +1,5 @@
 import { Home } from "@travellers-api/address-fetcher/lib/core/home/types";
-import * as functions from "firebase-functions";
+import { onDocumentWritten } from "firebase-functions/firestore";
 import { pick } from "lodash";
 import { z } from "zod";
 import { collectionId } from "../../modules/firestore/cachedAddressHomes";
@@ -12,15 +12,16 @@ const homeZod = z.object({
   name: z.string(),
 });
 
-export const onUpdateCachedHomes = functions
-  .region(defaultRegion)
-  .firestore.document(`/${collectionId}/{id}`)
-  .onWrite(async (change) => {
-    const type = getWriteType(change);
+export const onUpdateCachedHomesV2 = onDocumentWritten(
+  { document: `/${collectionId}/{id}`, region: defaultRegion },
+  async (event) => {
+    if (!event.data) throw new Error("No data");
+
+    const type = getWriteType(event.data);
 
     switch (type) {
       case "create": {
-        const home = change.after.data() as Home;
+        const home = event.data.after.data() as Home;
         const data = pick(home, ["id", "name"]);
 
         try {
@@ -38,7 +39,7 @@ export const onUpdateCachedHomes = functions
       }
 
       case "delete": {
-        const home = change.before.data() as Home;
+        const home = event.data.before.data() as Home;
         const data = pick(home, ["id", "name"]);
 
         try {
@@ -55,4 +56,5 @@ export const onUpdateCachedHomes = functions
         break;
       }
     }
-  });
+  },
+);

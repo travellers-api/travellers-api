@@ -5,7 +5,7 @@ import {
 import { getReservations } from "@travellers-api/address-fetcher/lib/core/reservation";
 import { Reservation } from "@travellers-api/address-fetcher/lib/core/reservation/types";
 import * as express from "express";
-import * as functions from "firebase-functions";
+import { onRequest } from "firebase-functions/https";
 import { getHomes } from "../../modules/firestore/cachedAddressHomes";
 import { getAddressCalendarCache } from "../../modules/firestore/caches";
 import { AddressCalendar } from "../../modules/firestore/caches/types";
@@ -89,4 +89,4 @@ app.get<undefined, AddressCalendar>("/address/calendar", async (_req, res) => {
   }
 });
 
-export const api = functions.region(defaultRegion).https.onRequest(app);
+export const apiV2 = onRequest({ region: defaultRegion }, app);
