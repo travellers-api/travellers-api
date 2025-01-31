@@ -1,20 +1,31 @@
-import { CollectionReference } from 'firebase-admin/firestore';
-import { firestore } from '../../firebase';
-import { CachedAddressHome, CachedAddressHomeBase } from './types';
+import { CollectionReference } from "firebase-admin/firestore";
+import { firestore } from "../../firebase";
+import { CachedAddressHome, CachedAddressHomeBase } from "./types";
 
-export const collectionId = 'cachedAddressHomes';
+export const collectionId = "cachedAddressHomes";
 
-const collection = firestore.collection(collectionId) as CollectionReference<CachedAddressHome>;
+const collection = firestore.collection(
+  collectionId,
+) as CollectionReference<CachedAddressHome>;
 
-export const setHomeBase = async (id: number, data: CachedAddressHomeBase): Promise<void> => {
+export const setHomeBase = async (
+  id: number,
+  data: CachedAddressHomeBase,
+): Promise<void> => {
   await collection.doc(id.toString()).set(data, { merge: true });
 };
 
-export const setHomeAddress = async (id: number, data: Pick<CachedAddressHome, 'address'>): Promise<void> => {
+export const setHomeAddress = async (
+  id: number,
+  data: Pick<CachedAddressHome, "address">,
+): Promise<void> => {
   await collection.doc(id.toString()).set(data, { merge: true });
 };
 
-export const setHomeRooms = async (id: number, data: Pick<CachedAddressHome, 'rooms'>): Promise<void> => {
+export const setHomeRooms = async (
+  id: number,
+  data: Pick<CachedAddressHome, "rooms">,
+): Promise<void> => {
   await collection.doc(id.toString()).set(data, { merge: true });
 };
 
@@ -22,7 +33,9 @@ export const deleteHome = async (id: number): Promise<void> => {
   await collection.doc(id.toString()).delete();
 };
 
-export const getHomes = async (): Promise<{ id: number; data: CachedAddressHome }[]> => {
+export const getHomes = async (): Promise<
+  { id: number; data: CachedAddressHome }[]
+> => {
   const querySnapshot = await collection.get();
   return querySnapshot.docs.map((snapshot) => ({
     id: Number(snapshot.id),
@@ -30,7 +43,9 @@ export const getHomes = async (): Promise<{ id: number; data: CachedAddressHome 
   }));
 };
 
-export const getHome = async (id: number): Promise<CachedAddressHome | null> => {
+export const getHome = async (
+  id: number,
+): Promise<CachedAddressHome | null> => {
   const snapshot = await collection.doc(id.toString()).get();
   const data = snapshot.data();
   if (!data) return null;

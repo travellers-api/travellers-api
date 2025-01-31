@@ -1,22 +1,22 @@
-import { Home } from '@travellers-api/address-fetcher/lib/core/home/types';
+import { Home } from "@travellers-api/address-fetcher/lib/core/home/types";
 
 export type Hook =
   | {
-      topic: 'address.home.create';
+      topic: "address.home.create";
       data: {
-        id: Home['id'];
-        name: Home['name'];
+        id: Home["id"];
+        name: Home["name"];
       };
     }
   | {
-      topic: 'address.home.delete';
+      topic: "address.home.delete";
       data: {
-        id: Home['id'];
-        name: Home['name'];
+        id: Home["id"];
+        name: Home["name"];
       };
     }
   | {
-      topic: 'system.address.calendar.update';
+      topic: "system.address.calendar.update";
     };
 
 export type DispatchHookMessage = Hook;

@@ -1,11 +1,11 @@
-import { Home } from '@travellers-api/address-fetcher/lib/core/home/types';
-import * as functions from 'firebase-functions';
-import { pick } from 'lodash';
-import { z } from 'zod';
-import { collectionId } from '../../modules/firestore/cachedAddressHomes';
-import { getWriteType } from '../../modules/firestore/write';
-import { defaultRegion } from '../../modules/functions/constants';
-import { publishDispatchHook } from '../../modules/hook/dispatch-hook';
+import { Home } from "@travellers-api/address-fetcher/lib/core/home/types";
+import * as functions from "firebase-functions";
+import { pick } from "lodash";
+import { z } from "zod";
+import { collectionId } from "../../modules/firestore/cachedAddressHomes";
+import { getWriteType } from "../../modules/firestore/write";
+import { defaultRegion } from "../../modules/functions/constants";
+import { publishDispatchHook } from "../../modules/hook/dispatch-hook";
 
 const homeZod = z.object({
   id: z.number(),
@@ -19,9 +19,9 @@ export const onUpdateCachedHomes = functions
     const type = getWriteType(change);
 
     switch (type) {
-      case 'create': {
+      case "create": {
         const home = change.after.data() as Home;
-        const data = pick(home, ['id', 'name']);
+        const data = pick(home, ["id", "name"]);
 
         try {
           homeZod.parse(data);
@@ -31,15 +31,15 @@ export const onUpdateCachedHomes = functions
         }
 
         await publishDispatchHook({
-          topic: 'address.home.create',
+          topic: "address.home.create",
           data,
         });
         break;
       }
 
-      case 'delete': {
+      case "delete": {
         const home = change.before.data() as Home;
-        const data = pick(home, ['id', 'name']);
+        const data = pick(home, ["id", "name"]);
 
         try {
           homeZod.parse(data);
@@ -49,7 +49,7 @@ export const onUpdateCachedHomes = functions
         }
 
         await publishDispatchHook({
-          topic: 'address.home.delete',
+          topic: "address.home.delete",
           data,
         });
         break;

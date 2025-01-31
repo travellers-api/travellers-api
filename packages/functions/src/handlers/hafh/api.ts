@@ -1,10 +1,13 @@
-import { checkValidityToken, getIdAndToken } from '@travellers-api/hafh-fetcher/lib/core/authentication';
-import { getReservations } from '@travellers-api/hafh-fetcher/lib/core/reservation';
-import { Reservation } from '@travellers-api/hafh-fetcher/lib/core/reservation/types';
-import * as express from 'express';
-import * as functions from 'firebase-functions';
-import { getSecret, updateSecret } from '../../modules/firestore/secret/hafh';
-import { defaultRegion } from '../../modules/functions/constants';
+import {
+  checkValidityToken,
+  getIdAndToken,
+} from "@travellers-api/hafh-fetcher/lib/core/authentication";
+import { getReservations } from "@travellers-api/hafh-fetcher/lib/core/reservation";
+import { Reservation } from "@travellers-api/hafh-fetcher/lib/core/reservation/types";
+import * as express from "express";
+import * as functions from "firebase-functions";
+import { getSecret, updateSecret } from "../../modules/firestore/secret/hafh";
+import { defaultRegion } from "../../modules/functions/constants";
 
 const app = express();
 
@@ -15,7 +18,7 @@ app.get<
   {
     reservations: Reservation[];
   }
->('/hafh/users/:screenName/reservations', async (req, res) => {
+>("/hafh/users/:screenName/reservations", async (req, res) => {
   try {
     const { screenName } = req.params;
     const secret = await getSecret(screenName);
@@ -24,7 +27,9 @@ app.get<
         if (isValid) return secret;
         throw new Error();
       })
-      .catch(() => getIdAndToken({ email: secret.email, password: secret.password }))
+      .catch(() =>
+        getIdAndToken({ email: secret.email, password: secret.password }),
+      )
       .then(async ({ id, token }) => {
         await updateSecret(screenName, { id, token });
         return token;
@@ -33,7 +38,7 @@ app.get<
     const reservations = await getReservations(token);
     res.json({ reservations });
   } catch (e) {
-    if (e instanceof Error && e.message === 'not found') {
+    if (e instanceof Error && e.message === "not found") {
       res.status(404).end();
     }
 

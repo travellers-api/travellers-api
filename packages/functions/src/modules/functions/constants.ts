@@ -1,1 +1,1 @@
-export const defaultRegion = 'asia-northeast1';
+export const defaultRegion = "asia-northeast1";
