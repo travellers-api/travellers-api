@@ -4,7 +4,7 @@ import {
 } from "@travellers-api/address-fetcher/lib/core/authentication";
 import { getReservations } from "@travellers-api/address-fetcher/lib/core/reservation";
 import { Reservation } from "@travellers-api/address-fetcher/lib/core/reservation/types";
-import * as express from "express";
+import express from "express";
 import { onRequest } from "firebase-functions/https";
 import { getHomes } from "../../modules/firestore/cachedAddressHomes";
 import { getAddressCalendarCache } from "../../modules/firestore/caches";
