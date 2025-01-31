@@ -1,6 +1,11 @@
 import { Prefecture } from "./types";
 
-export const prefectures: Prefecture[] = [
+export const UNKNOWN_PREFECTURE: Prefecture = {
+  name: "海外",
+  code: 99,
+} as const;
+
+export const PREFECTURES: Prefecture[] = [
   { name: "北海道", code: 1 },
   { name: "青森県", code: 2 },
   { name: "岩手県", code: 3 },
@@ -48,4 +53,5 @@ export const prefectures: Prefecture[] = [
   { name: "宮崎県", code: 45 },
   { name: "鹿児島県", code: 46 },
   { name: "沖縄県", code: 47 },
+  UNKNOWN_PREFECTURE,
 ];
