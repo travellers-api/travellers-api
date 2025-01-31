@@ -5,7 +5,7 @@ import { CalendarSection } from "../../components/address-calendar/CalendarSecti
 import { AddressCalendarForPage } from "./api/calendar/route";
 
 type Props = {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 const searchParamToArray = (value: string | string[] | undefined): string[] => {

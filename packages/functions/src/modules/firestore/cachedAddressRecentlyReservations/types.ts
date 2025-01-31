@@ -1,5 +1,6 @@
-export type CachedAddressRecentlyReservation = {
-  [key: string]: {
+export type CachedAddressRecentlyReservation = Record<
+  string,
+  {
     reserved: boolean;
-  };
-};
+  }
+>;

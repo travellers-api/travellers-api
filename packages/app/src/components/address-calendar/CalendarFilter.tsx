@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { queryToArray } from "../../utils/router";
 
-export type CalendarFilterProps = {
+type Props = {
   className?: string;
   filters: {
     prefecture: string[];
@@ -18,10 +18,7 @@ export type CalendarFilterProps = {
   };
 };
 
-export const CalendarFilter: React.FC<CalendarFilterProps> = ({
-  className,
-  filters,
-}) => {
+export function CalendarFilter({ className, filters }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const filterRef = useRef<HTMLDetailsElement>(null);
@@ -153,15 +150,17 @@ export const CalendarFilter: React.FC<CalendarFilterProps> = ({
       </details>
     </nav>
   );
-};
+}
 
-const Filter: React.FC<{
+type FilterProps = {
   id: string;
   title: string;
   defaultValue: string[];
   values: ({ name: string; value: string } | string)[];
   multiple?: boolean;
-}> = ({ id, title, defaultValue, values, multiple }) => {
+};
+
+function Filter({ id, title, defaultValue, values, multiple }: FilterProps) {
   if (values.length === 0) {
     return null;
   }
@@ -193,4 +192,4 @@ const Filter: React.FC<{
       </select>
     </div>
   );
-};
+}

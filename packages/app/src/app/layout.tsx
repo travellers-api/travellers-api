@@ -2,7 +2,6 @@ import { Noto_Sans_JP } from "next/font/google";
 import Script from "next/script";
 import "../styles/globals.scss";
 
-/* eslint-disable-next-line new-cap */
 const notoSansJp = Noto_Sans_JP({
   weight: ["400", "700"],
   subsets: ["latin"],
