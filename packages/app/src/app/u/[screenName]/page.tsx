@@ -165,3 +165,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${screenName}の滞在予定`,
   };
 }
+
+export const revalidate = 60 * 60;
