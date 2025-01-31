@@ -4,7 +4,7 @@ import {
 } from "@travellers-api/hafh-fetcher/lib/core/authentication";
 import { getReservations } from "@travellers-api/hafh-fetcher/lib/core/reservation";
 import { Reservation } from "@travellers-api/hafh-fetcher/lib/core/reservation/types";
-import * as express from "express";
+import express from "express";
 import { onRequest } from "firebase-functions/https";
 import { getSecret, updateSecret } from "../../modules/firestore/secret/hafh";
 import { defaultRegion } from "../../modules/functions/constants";
