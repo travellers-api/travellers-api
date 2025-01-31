@@ -5,10 +5,10 @@
   "engines": {
     "node": "20"
   },
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "rimraf lib && tsc",
-    "build:watch": "rimraf lib && tsc --watch",
+    "build": "rimraf dist && tsc",
+    "build:watch": "rimraf dist && tsc --watch",
     "serve": "pnpm run build && firebase emulators:start --only functions",
     "shell": "pnpm run build && firebase functions:shell",
     "start": "pnpm run shell",

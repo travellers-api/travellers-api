@@ -6,7 +6,7 @@ import tsEslint from "typescript-eslint";
 
 export default tsEslint.config(
   {
-    ignores: ["./lib/", "jest.config.js", "dotenv-config.js", "*.spec.ts"],
+    ignores: ["dist/*", "jest.config.js", "dotenv-config.js", "*.spec.ts"],
   },
   eslint.configs.recommended,
   tsEslint.configs.recommended,
