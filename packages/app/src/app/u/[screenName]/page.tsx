@@ -122,7 +122,7 @@ export default async function Page({ params }: Props) {
         <ul className="flex flex-col gap-20">
           {reservations.map((reservation) => (
             <li key={`${reservation.service}_${reservation.data.id}`}>
-              <div className="grid min-h-[120px] grid-cols-[100px_1fr] rounded-3xl border-2 p-20">
+              <div className="min-h-120 grid grid-cols-[100px_1fr] rounded-3xl border-2 p-20">
                 <div className="font-sans text-xs font-bold text-black/50">
                   <p>
                     <time dateTime={reservation.data.checkInDate}>
