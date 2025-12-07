@@ -60,6 +60,9 @@ importers:
         specifier: ^19.2.1
         version: 19.2.1(react@19.2.1)
     devDependencies:
+      '@next/eslint-plugin-next':
+        specifier: ^16.0.7
+        version: 16.0.7
       '@tailwindcss/postcss':
         specifier: ^4.0.1
         version: 4.0.1
