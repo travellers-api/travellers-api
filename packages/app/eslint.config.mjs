@@ -1,15 +1,10 @@
 // @ts-check
 
-import { FlatCompat } from "@eslint/eslintrc";
 import eslint from "@eslint/js";
+import eslintNextPlugin from "@next/eslint-plugin-next";
 import eslintConfigPrettier from "eslint-config-prettier";
 import eslintPluginReact from "eslint-plugin-react";
-import eslintPluginReactHooks from "eslint-plugin-react-hooks";
 import tsEslint from "typescript-eslint";
-
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-});
 
 export default tsEslint.config(
   {
@@ -36,16 +31,25 @@ export default tsEslint.config(
       ],
     },
   },
-  ...compat.config({
-    extends: ["next"],
-  }),
   eslintPluginReact.configs.flat.recommended,
   eslintPluginReact.configs.flat["jsx-runtime"],
   {
-    plugins: {
-      "react-hooks": eslintPluginReactHooks,
+    settings: {
+      react: {
+        version: "detect",
+      },
     },
-    rules: { ...eslintPluginReactHooks.configs.recommended.rules },
+  },
+  {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    plugins: {
+      next: eslintNextPlugin,
+    },
+    settings: {
+      next: {
+        rootDir: "packages/app/",
+      },
+    },
   },
   eslintConfigPrettier,
 );
