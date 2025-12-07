@@ -34,6 +34,13 @@ export default tsEslint.config(
   eslintPluginReact.configs.flat.recommended,
   eslintPluginReact.configs.flat["jsx-runtime"],
   {
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+  },
+  {
     files: ["**/*.{js,jsx,ts,tsx}"],
     plugins: {
       next: eslintNextPlugin,
