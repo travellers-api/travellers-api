@@ -107,7 +107,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <div className="pb-80">
-      <header className="max-w-480 mx-auto mb-20 flex flex-col gap-10 px-20 py-20">
+      <header className="mx-auto mb-20 flex max-w-480 flex-col gap-10 px-20 py-20">
         <h1 className="text-center font-sans text-xl font-bold tracking-wide opacity-80">
           {screenName}の滞在予定
         </h1>
@@ -118,11 +118,11 @@ export default async function Page({ params }: Props) {
           </p>
         </div>
       </header>
-      <section className="max-w-480 mx-auto px-20">
+      <section className="mx-auto max-w-480 px-20">
         <ul className="flex flex-col gap-20">
           {reservations.map((reservation) => (
             <li key={`${reservation.service}_${reservation.data.id}`}>
-              <div className="min-h-120 grid grid-cols-[100px_1fr] rounded-3xl border-2 p-20">
+              <div className="grid min-h-120 grid-cols-[100px_1fr] rounded-3xl border-2 p-20">
                 <div className="font-sans text-xs font-bold text-black/50">
                   <p>
                     <time dateTime={reservation.data.checkInDate}>
