@@ -135,7 +135,7 @@ function InnerSection({ homes, dates }: Pick<Props, "homes" | "dates">) {
           className="h-max max-h-[70vh] w-full overflow-y-auto px-20"
         >
           <ul
-            className="relative flex h-[var(--total-size)] flex-col"
+            className="relative flex h-(--total-size) flex-col"
             style={
               {
                 "--total-size": `${virtualizer.getTotalSize()}px`,
@@ -148,7 +148,7 @@ function InnerSection({ homes, dates }: Pick<Props, "homes" | "dates">) {
               return (
                 <li
                   key={virtualRow.key}
-                  className="absolute left-0 top-[var(--start)] h-[var(--size)] w-full"
+                  className="absolute top-(--start) left-0 h-(--size) w-full"
                   style={
                     {
                       "--start": `${virtualRow.start}px`,
