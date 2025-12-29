@@ -4,7 +4,6 @@ import classNames from "classnames";
 import { formatUrl } from "next/dist/shared/lib/router/utils/format-url";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { queryToArray } from "../../utils/router";
 
 type Props = {
   className?: string;
@@ -98,49 +97,41 @@ export function CalendarFilter({ className, filters }: Props) {
                 <Filter
                   id="prefecture"
                   title="都道府県"
-                  defaultValue={
-                    queryToArray(searchParams.getAll("prefecture")) ?? []
-                  }
+                  defaultValue={searchParams.getAll("prefecture")}
                   values={filters.prefecture}
                   multiple
                 />
                 <Filter
                   id="homeType"
                   title="拠点種別"
-                  defaultValue={
-                    queryToArray(searchParams.getAll("homeType")) ?? []
-                  }
+                  defaultValue={searchParams.getAll("homeType")}
                   values={filters.homeType}
                   multiple
                 />
                 <Filter
                   id="roomType"
                   title="部屋種別"
-                  defaultValue={
-                    queryToArray(searchParams.getAll("roomType")) ?? []
-                  }
+                  defaultValue={searchParams.getAll("roomType")}
                   values={filters.roomType}
                   multiple
                 />
                 <Filter
                   id="bed"
                   title="ベッド"
-                  defaultValue={queryToArray(searchParams.getAll("bed")) ?? []}
+                  defaultValue={searchParams.getAll("bed")}
                   values={filters.bed}
                   multiple
                 />
                 <Filter
                   id="sex"
                   title="性別"
-                  defaultValue={queryToArray(searchParams.getAll("sex")) ?? []}
+                  defaultValue={searchParams.getAll("sex")}
                   values={filters.sex}
                 />
                 <Filter
                   id="capacity"
                   title="利用人数"
-                  defaultValue={
-                    queryToArray(searchParams.getAll("capacity")) ?? []
-                  }
+                  defaultValue={searchParams.getAll("capacity")}
                   values={filters.capacity}
                 />
               </div>
