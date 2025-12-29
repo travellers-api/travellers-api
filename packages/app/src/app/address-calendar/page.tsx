@@ -46,7 +46,9 @@ const getData = async ({
 
   const res = await fetch(url, { cache: "force-cache" }).catch(() => null);
   if (!res) notFound();
-  const json = await res.json();
+  const text = await res.text();
+  console.log(text);
+  const json = JSON.parse(text);
   return json;
 };
 
