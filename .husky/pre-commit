@@ -1,2 +1,1 @@
-pnpm -F @travellers-api/app run lint-staged
-pnpm -F @travellers-api/functions run lint-staged
+lint-staged
