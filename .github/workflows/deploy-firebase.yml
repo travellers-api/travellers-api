@@ -24,10 +24,12 @@ jobs:
       - name: Deploy to Firebase
         env:
           FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+          FIREBASERC: ${{ vars.FIREBASERC }}
           SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
           GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/service-account-key.json
         run: |
           echo "$SERVICE_ACCOUNT_KEY" > "$GOOGLE_APPLICATION_CREDENTIALS"
-          trap 'rm -f "$GOOGLE_APPLICATION_CREDENTIALS"' EXIT
+          echo "$FIREBASERC" > .firebaserc
+          trap 'rm -f "$GOOGLE_APPLICATION_CREDENTIALS" .firebaserc' EXIT
           pnpm add -g firebase-tools
           firebase deploy --project "$FIREBASE_PROJECT_ID" --non-interactive
