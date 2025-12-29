@@ -1,16 +1,16 @@
 import { revalidatePath } from "next/cache";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { sleep } from "../../../../utils/sleep";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   return handler(request);
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   return handler(request);
 }
 
-async function handler(request: Request) {
+async function handler(request: NextRequest) {
   const key = request.headers.get("X-REVALIDATE-KEY");
 
   if (key !== process.env.REVALIDATE_KEY) {

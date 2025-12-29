@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { fetchCalendar } from "../../../../lib/address/calendar/fetchers";
 import { Home, Room } from "../../../../lib/address/calendar/types";
 import { excludeClosedRooms } from "../../../../lib/address/calendar/utils";
@@ -24,7 +24,7 @@ export type AddressCalendarForPage = {
   };
 };
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const homes = await fetchCalendar({ next: { revalidate: 60 } }).catch(
     () => null,
   );
