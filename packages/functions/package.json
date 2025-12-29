@@ -29,7 +29,7 @@
     "firebase-functions": "^7.0.2",
     "lodash": "^4.17.21",
     "p-limit": "7.2.0",
-    "zod": "^4.1.13"
+    "zod": "^4.2.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
