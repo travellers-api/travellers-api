@@ -36,6 +36,7 @@
     "dotenv": "^16.4.7",
     "firebase-functions-test": "^3.4.0",
     "rimraf": "^6.1.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
   }
 }
