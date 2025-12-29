@@ -3,9 +3,6 @@
   "version": "0.0.0",
   "license": "UNLICENSED",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "format": "prettier --write .",
     "format-check": "prettier --check .",
@@ -13,6 +10,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@types/node": "^22.19.3",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
@@ -22,9 +20,5 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript-eslint": "^8.50.1"
   },
-  "pnpm": {
-    "overrides": {
-      "@types/node": "20"
-    }
-  }
+  "packageManager": "pnpm@10.26.2"
 }
