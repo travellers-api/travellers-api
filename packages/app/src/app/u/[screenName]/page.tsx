@@ -39,12 +39,6 @@ type HafhReservation = {
   };
 };
 
-type Props = {
-  params: Promise<{
-    screenName: string;
-  }>;
-};
-
 type Data = {
   reservations: (
     | { service: "ADDress"; data: AddressReservation }
@@ -101,7 +95,7 @@ const getData = async (screenName: string): Promise<Data> => {
   return props;
 };
 
-export default async function Page({ params }: Props) {
+export default async function Page({ params }: PageProps<"/u/[screenName]">) {
   const { screenName } = await params;
   const { reservations } = await getData(screenName);
 
@@ -159,7 +153,9 @@ export default async function Page({ params }: Props) {
   );
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps<"/u/[screenName]">): Promise<Metadata> {
   const { screenName } = await params;
   return {
     title: `${screenName}の滞在予定`,
