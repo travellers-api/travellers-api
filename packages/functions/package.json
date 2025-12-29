@@ -16,7 +16,8 @@
     "logs": "firebase functions:log",
     "lint": "eslint --fix .",
     "format": "prettier --write .",
-    "test": "jest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@google-cloud/pubsub": "^4.10.0",
