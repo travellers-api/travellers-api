@@ -1,5 +1,2 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 pnpm -F @travellers-api/app run lint-staged
 pnpm -F @travellers-api/functions run lint-staged
