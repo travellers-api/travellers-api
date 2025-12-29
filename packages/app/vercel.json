@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "pnpm -F @travellers-api/app install --frozen-lockfile",
+  "devCommand": "pnpm -F @travellers-api/app run dev",
+  "buildCommand": "pnpm -F @travellers-api/app run build"
+}
