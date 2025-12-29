@@ -1,0 +1,13 @@
+{
+  "projects": {},
+  "targets": {
+    "": {
+      "hosting": {
+        "api": [
+          ""
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
