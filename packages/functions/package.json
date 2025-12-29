@@ -34,7 +34,7 @@
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/lodash": "^4.17.21",
-    "dotenv": "^16.4.7",
+    "dotenv": "^17.2.3",
     "firebase-functions-test": "^3.4.0",
     "rimraf": "^6.1.2",
     "typescript": "^5.9.3",
