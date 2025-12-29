@@ -14,6 +14,7 @@ export const setAddressCalendarCache = async (
 export const getAddressCalendarCache = async (): Promise<AddressCalendar> => {
   const snapshot = await collection.doc("address-calendar").get();
   const data = snapshot.data();
+  console.log(data);
   if (!data) throw new Error();
   return JSON.parse(data.json) as AddressCalendar;
 };
