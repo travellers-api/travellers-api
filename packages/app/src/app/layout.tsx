@@ -1,5 +1,6 @@
 import { Noto_Sans_JP } from "next/font/google";
 import Script from "next/script";
+
 import "../styles/globals.css";
 
 const notoSansJp = Noto_Sans_JP({
@@ -8,11 +9,7 @@ const notoSansJp = Noto_Sans_JP({
   variable: "--font-sans",
 });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ja-JP">
       <head>

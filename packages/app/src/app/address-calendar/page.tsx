@@ -4,10 +4,6 @@ import { CalendarFilter } from "../../components/address-calendar/CalendarFilter
 import { CalendarSection } from "../../components/address-calendar/CalendarSection";
 import { AddressCalendarForPage } from "./api/calendar/route";
 
-type Props = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
-
 const searchParamToArray = (value: string | string[] | undefined): string[] => {
   if (!value) return [];
   if (typeof value === "string") return [value];
@@ -16,7 +12,7 @@ const searchParamToArray = (value: string | string[] | undefined): string[] => {
 
 const getData = async ({
   searchParams,
-}: Props): Promise<AddressCalendarForPage> => {
+}: PageProps<"/address-calendar">): Promise<AddressCalendarForPage> => {
   const {
     prefecture: prefectureParam,
     homeType: homeTypeParam,
@@ -55,8 +51,8 @@ const LINKS = [
   { href: "https://twitter.com/amotarao", text: "問い合わせ: あもん" },
 ];
 
-export default async function Page(context: Props) {
-  const { homes, dates, filters } = await getData(context);
+export default async function Page(props: PageProps<"/address-calendar">) {
+  const { homes, dates, filters } = await getData(props);
 
   return (
     <div className="pb-80">
