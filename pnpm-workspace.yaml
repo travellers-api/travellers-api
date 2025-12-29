@@ -1,5 +1,2 @@
 packages:
   - "packages/*"
-
-overrides:
-  "@types/node": "^22"

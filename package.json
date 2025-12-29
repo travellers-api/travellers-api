@@ -20,5 +20,10 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript-eslint": "^8.50.1"
   },
+  "pnpm": {
+    "overrides": {
+      "@types/node": "^22"
+    }
+  },
   "packageManager": "pnpm@10.26.2"
 }
