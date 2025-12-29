@@ -2,7 +2,7 @@
 
 import { useVirtualizer } from "@tanstack/react-virtual";
 import classNames from "classnames";
-import React, { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { LabelText } from "../../components/address-calendar/LabelText";
 import { Home } from "../../lib/address/calendar/types";
 import {
@@ -72,13 +72,11 @@ function InnerSection({ homes, dates }: Pick<Props, "homes" | "dates">) {
   return (
     <section
       className="w-full overflow-x-scroll"
-      style={
-        {
-          "--dates-count": dates.length,
-          "--home-width": isShownHomeLabel ? "224px" : "108px",
-          "--room-width": isShownRoomLabel ? "144px" : "64px",
-        } as React.CSSProperties
-      }
+      style={{
+        "--dates-count": dates.length,
+        "--home-width": isShownHomeLabel ? "224px" : "108px",
+        "--room-width": isShownRoomLabel ? "144px" : "64px",
+      }}
     >
       <div className="w-max">
         <header className="w-full px-20">
@@ -136,11 +134,9 @@ function InnerSection({ homes, dates }: Pick<Props, "homes" | "dates">) {
         >
           <ul
             className="relative flex h-(--total-size) flex-col"
-            style={
-              {
-                "--total-size": `${virtualizer.getTotalSize()}px`,
-              } as React.CSSProperties
-            }
+            style={{
+              "--total-size": `${virtualizer.getTotalSize()}px`,
+            }}
           >
             {virtualizer.getVirtualItems().map((virtualRow) => {
               const home = homes[virtualRow.index]!;
@@ -149,12 +145,10 @@ function InnerSection({ homes, dates }: Pick<Props, "homes" | "dates">) {
                 <li
                   key={virtualRow.key}
                   className="absolute top-(--start) left-0 h-(--size) w-full"
-                  style={
-                    {
-                      "--start": `${virtualRow.start}px`,
-                      "--size": `${virtualRow.size}px`,
-                    } as React.CSSProperties
-                  }
+                  style={{
+                    "--start": `${virtualRow.start}px`,
+                    "--size": `${virtualRow.size}px`,
+                  }}
                 >
                   <div className="grid grid-cols-[var(--home-width)_1fr] border-b pb-10">
                     <div className="flex items-center gap-4 self-start py-5 text-sm">
