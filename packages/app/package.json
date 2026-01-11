@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --fix .",
-    "lint-check": "eslint .",
-    "format": "prettier --write ."
+    "lint-check": "eslint ."
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.13.18",
