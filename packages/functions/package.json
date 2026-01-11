@@ -12,7 +12,6 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "lint": "eslint --fix .",
-    "format": "prettier --write .",
     "test": "vitest run",
     "test:watch": "vitest"
   },
