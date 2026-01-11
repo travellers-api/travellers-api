@@ -1,8 +1,8 @@
 {
   "name": "travellers-api",
   "version": "0.0.0",
-  "license": "UNLICENSED",
   "private": true,
+  "license": "UNLICENSED",
   "scripts": {
     "format": "oxfmt",
     "format:check": "oxfmt --check",
@@ -21,10 +21,10 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript-eslint": "^8.52.0"
   },
+  "packageManager": "pnpm@10.26.2",
   "pnpm": {
     "overrides": {
       "@types/node": "^22"
     }
-  },
-  "packageManager": "pnpm@10.26.2"
+  }
 }
