@@ -94,8 +94,8 @@ importers:
   packages/functions:
     dependencies:
       '@google-cloud/pubsub':
-        specifier: ^5.2.1
-        version: 5.2.1
+        specifier: ^5.2.2
+        version: 5.2.2
       '@travellers-api/address-fetcher':
         specifier: ^0.8.0
         version: 0.8.0(encoding@0.1.13)
@@ -483,8 +483,8 @@ packages:
     resolution: {integrity: sha512-N8qS6dlORGHwk7WjGXKOSsLjIjNINCPicsOX6gyyLiYk7mq3MtII96NZ9N2ahwA2vnkLmZODOIH9rlNniYWvCQ==}
     engines: {node: '>=18'}
 
-  '@google-cloud/pubsub@5.2.1':
-    resolution: {integrity: sha512-AGuH/dN8059pLg1A4vMLFQfZEuIwLy1Ykmh8b4XmBM6eT93mAgmrV2y2JMq6dRWTIaBpYGFA7NjRviNL/W/fmQ==}
+  '@google-cloud/pubsub@5.2.2':
+    resolution: {integrity: sha512-mf26hQnwms46Fe/gQtt+zEO8QpQ3bkHZNzXAVJCQShhYo+xMsYkSMKJdn0aV2yxC4grlxgUrh3Ao8umJ2q1zkA==}
     engines: {node: '>=18'}
 
   '@google-cloud/storage@7.18.0':
@@ -3984,7 +3984,7 @@ snapshots:
 
   '@google-cloud/promisify@5.0.0': {}
 
-  '@google-cloud/pubsub@5.2.1':
+  '@google-cloud/pubsub@5.2.2':
     dependencies:
       '@google-cloud/paginator': 6.0.0
       '@google-cloud/precise-date': 5.0.0
