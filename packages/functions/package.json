@@ -19,7 +19,7 @@
     "@google-cloud/pubsub": "^5.2.2",
     "@travellers-api/address-fetcher": "^0.8.0",
     "@travellers-api/hafh-fetcher": "0.1.2",
-    "cheerio": "^1.1.2",
+    "cheerio": "^1.2.0",
     "dayjs": "^1.11.19",
     "firebase-admin": "^13.6.0",
     "firebase-functions": "^7.0.3",
