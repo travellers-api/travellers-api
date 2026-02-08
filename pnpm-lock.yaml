@@ -16,7 +16,7 @@ importers:
         version: 9.39.2
       '@types/node':
         specifier: ^22
-        version: 22.19.5
+        version: 22.19.10
       eslint:
         specifier: ^9.39.2
         version: 9.39.2(jiti@2.6.1)
@@ -138,7 +138,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.0.16
-        version: 4.0.16(@opentelemetry/api@1.9.0)(@types/node@22.19.5)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2)
+        version: 4.0.16(@opentelemetry/api@1.9.0)(@types/node@22.19.10)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2)
 
 packages:
 
@@ -1139,6 +1139,9 @@ packages:
 
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
+
+  '@types/node@22.19.10':
+    resolution: {integrity: sha512-tF5VOugLS/EuDlTBijk0MqABfP8UxgYazTLo3uIn3b4yJgg26QRbVYJYsDtHrjdDUIRfP70+VfhTTc+CE1yskw==}
 
   '@types/node@22.19.5':
     resolution: {integrity: sha512-HfF8+mYcHPcPypui3w3mvzuIErlNOh2OAG+BCeBZCEwyiD5ls2SiCwEyT47OELtf7M3nHxBdu0FsmzdKxkN52Q==}
@@ -2176,6 +2179,7 @@ packages:
 
   glob@10.5.0:
     resolution: {integrity: sha512-DfXN8DfhJ7NH3Oe7cFmu3NCu1wKbkReJ8TorzSAFbSKrlNaQSKfIzqYqVY8zlbs2NLBbWpRiU52GX2PbaBVNkg==}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   glob@13.0.0:
@@ -4482,7 +4486,7 @@ snapshots:
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 22.19.5
+      '@types/node': 22.19.10
 
   '@types/caseless@0.12.5':
     optional: true
@@ -4494,11 +4498,11 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 22.19.5
+      '@types/node': 22.19.10
 
   '@types/cors@2.8.19':
     dependencies:
-      '@types/node': 22.19.5
+      '@types/node': 22.19.10
 
   '@types/deep-eql@4.0.2': {}
 
@@ -4506,14 +4510,14 @@ snapshots:
 
   '@types/express-serve-static-core@4.19.8':
     dependencies:
-      '@types/node': 22.19.5
+      '@types/node': 22.19.10
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
 
   '@types/express-serve-static-core@5.1.0':
     dependencies:
-      '@types/node': 22.19.5
+      '@types/node': 22.19.10
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
@@ -4551,6 +4555,10 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
+  '@types/node@22.19.10':
+    dependencies:
+      undici-types: 6.21.0
+
   '@types/node@22.19.5':
     dependencies:
       undici-types: 6.21.0
@@ -4578,22 +4586,22 @@ snapshots:
   '@types/send@0.17.6':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 22.19.5
+      '@types/node': 22.19.10
 
   '@types/send@1.2.1':
     dependencies:
-      '@types/node': 22.19.5
+      '@types/node': 22.19.10
 
   '@types/serve-static@1.15.10':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 22.19.5
+      '@types/node': 22.19.10
       '@types/send': 0.17.6
 
   '@types/serve-static@2.2.0':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 22.19.5
+      '@types/node': 22.19.10
 
   '@types/tough-cookie@4.0.5':
     optional: true
@@ -4757,13 +4765,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.0.3
 
-  '@vitest/mocker@4.0.16(vite@7.3.0(@types/node@22.19.5)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2))':
+  '@vitest/mocker@4.0.16(vite@7.3.0(@types/node@22.19.10)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2))':
     dependencies:
       '@vitest/spy': 4.0.16
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.0(@types/node@22.19.5)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2)
+      vite: 7.3.0(@types/node@22.19.10)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2)
 
   '@vitest/pretty-format@4.0.16':
     dependencies:
@@ -6765,7 +6773,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 22.19.5
+      '@types/node': 22.19.10
       long: 5.3.2
 
   proxy-addr@2.0.7:
@@ -7384,7 +7392,7 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite@7.3.0(@types/node@22.19.5)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2):
+  vite@7.3.0(@types/node@22.19.10)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2):
     dependencies:
       esbuild: 0.27.2
       fdir: 6.5.0(picomatch@4.0.3)
@@ -7393,17 +7401,17 @@ snapshots:
       rollup: 4.54.0
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 22.19.5
+      '@types/node': 22.19.10
       fsevents: 2.3.3
       jiti: 2.6.1
       lightningcss: 1.30.2
       sass: 1.75.0
       yaml: 2.8.2
 
-  vitest@4.0.16(@opentelemetry/api@1.9.0)(@types/node@22.19.5)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2):
+  vitest@4.0.16(@opentelemetry/api@1.9.0)(@types/node@22.19.10)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2):
     dependencies:
       '@vitest/expect': 4.0.16
-      '@vitest/mocker': 4.0.16(vite@7.3.0(@types/node@22.19.5)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2))
+      '@vitest/mocker': 4.0.16(vite@7.3.0(@types/node@22.19.10)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2))
       '@vitest/pretty-format': 4.0.16
       '@vitest/runner': 4.0.16
       '@vitest/snapshot': 4.0.16
@@ -7420,11 +7428,11 @@ snapshots:
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vite: 7.3.0(@types/node@22.19.5)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2)
+      vite: 7.3.0(@types/node@22.19.10)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.75.0)(yaml@2.8.2)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@opentelemetry/api': 1.9.0
-      '@types/node': 22.19.5
+      '@types/node': 22.19.10
     transitivePeerDependencies:
       - jiti
       - less
