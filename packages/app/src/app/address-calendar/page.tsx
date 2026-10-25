@@ -29,7 +29,7 @@ export default function Page() {
           </ul>
         </div>
       </header>
-      <div className="px-20 text-center font-sans text-sm leading-6 tracking-wide opacity-80">
+      <div className="px-20 text-center font-sans text-sm leading-24 tracking-wide opacity-80">
         <p>サービスの提供を終了しました。</p>
         <p>ドメインは 2027/7/30 まで有効です。</p>
       </div>
