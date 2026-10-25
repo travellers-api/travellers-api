@@ -15,7 +15,6 @@ export default tsEslint.config(
   tsEslint.configs.stylistic,
   {
     rules: {
-      "no-restricted-imports": ["error", { paths: ["dayjs"] }],
       "@typescript-eslint/consistent-type-definitions": ["error", "type"],
       "@typescript-eslint/no-unused-vars": [
         "error",
